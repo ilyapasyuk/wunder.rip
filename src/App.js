@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./styles.css";
 
-const Todo = ({ isComplited, text, id, onCompletedChange, onTextChange }) => {
+const Todo = ({ isCompleted, text, id, onCompletedChange }) => {
   return (
     <div style={{ textAlign: "center" }}>
       <input
         type="checkbox"
-        value={isComplited}
+        value={isCompleted}
         onChange={e => onCompletedChange({ value: e.target.checked, id })}
       />
       {text}
@@ -19,9 +19,9 @@ export default function App() {
   const [activeField, setActiveField] = useState("");
 
   const keyHandle = e => {
-    if (e.charCode === 13) {
+    if (e.charCode === 13 && Boolean(e.target.value.length)) {
       setTodo([
-        { text: e.target.value, isComplited: false, id: todos.length },
+        { text: e.target.value, isCompleted: false, id: todos.length },
         ...todos
       ]);
       setActiveField("");
@@ -30,7 +30,7 @@ export default function App() {
 
   const onCompletedChange = ({ id, value }) => {
     let foundTodo = todos.find(todo => todo.id === id);
-    foundTodo.isComplited = value;
+    foundTodo.isCompleted = value;
 
     const newTodos = todos
       .map(todo => {
@@ -41,7 +41,7 @@ export default function App() {
         return todo;
       })
       .sort((a, b) => {
-        return a.isComplited > b.isComplited;
+          return a.isCompleted > b.isCompleted;
       });
 
     setTodo(newTodos);
@@ -60,7 +60,7 @@ export default function App() {
         <Todo
           key={todo.id}
           text={todo.text}
-          isComplited={todo.isComplited}
+          isCompleted={todo.isCompleted}
           id={todo.id}
           onCompletedChange={onCompletedChange}
         />
