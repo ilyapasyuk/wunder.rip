@@ -9,7 +9,7 @@ export default function App() {
 
   useEffect(() => {
     const existTodos = window.localStorage.getItem('todos')
-    saveTodos(JSON.parse(existTodos))
+    if (JSON.parse(existTodos)) saveTodos(JSON.parse(existTodos))
   }, [])
 
   const keyHandle = e => {
