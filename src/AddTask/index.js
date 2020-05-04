@@ -8,6 +8,7 @@ const AddTask = ({activeField, onChange, keyHandle}) => {
             value={activeField}
             onChange={e => onChange(e.target.value)}
             onKeyPress={keyHandle}
+            placeholder="+ Add task"
         />
     )
 }

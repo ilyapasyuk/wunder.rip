@@ -1,15 +1,13 @@
 import React from 'react'
-import {StyledTodo} from "./style";
+import {StyledTodo, StyledCheckbox, StyledTaskName} from "./style";
 
-const Todo = ({ isCompleted, text, id, onCompletedChange }) => {
+const Todo = ({isCompleted, text, id, onCompletedChange}) => {
     return (
-        <StyledTodo >
-            <input
-                type="checkbox"
-                value={isCompleted}
-                onChange={e => onCompletedChange({ value: e.target.checked, id })}
-            />
-            {text}
+        <StyledTodo onClick={() => onCompletedChange({value: !isCompleted, id})}>
+            <StyledCheckbox isCompleted={isCompleted}>
+                <input type="checkbox" value={isCompleted} />
+            </StyledCheckbox>
+            <StyledTaskName isCompleted={isCompleted}>{text}</StyledTaskName>
         </StyledTodo>
     );
 };

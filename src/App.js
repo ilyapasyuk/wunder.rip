@@ -16,6 +16,8 @@ export default function App() {
       setActiveField("");
     }
   };
+  
+  console.log('todos', todos)
 
   const onCompletedChange = ({ id, value }) => {
     let foundTodo = todos.find(todo => todo.id === id);

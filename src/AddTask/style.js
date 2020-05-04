@@ -5,13 +5,19 @@ const StyledAddTask = styled.input`
     overflow: hidden;
     position: relative;
     margin: 14px 0;
-    padding: 0 12px;
     border-radius: 3px;
     border: 0;
     display: block;
     width: 100%;
     height: 47px;
     color: #fff;
+    font-size: 16px;
+    padding: 13px 60px 14px 13px;
+    outline: none;
+    
+    &::placeholder {
+        color: #fff;
+    }
 `
 
 export {StyledAddTask}
