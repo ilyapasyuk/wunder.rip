@@ -5,7 +5,7 @@ const Todo = ({isCompleted, text, id, onCompletedChange}) => {
     return (
         <StyledTodo onClick={() => onCompletedChange({value: !isCompleted, id})}>
             <StyledCheckbox isCompleted={isCompleted}>
-                <input type="checkbox" value={isCompleted} />
+                <input type="checkbox" value={isCompleted}/>
             </StyledCheckbox>
             <StyledTaskName isCompleted={isCompleted}>{text}</StyledTaskName>
         </StyledTodo>
