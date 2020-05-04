@@ -1,26 +1,15 @@
 import React, { useState } from "react";
-import "./styles.css";
-
-const Todo = ({ isCompleted, text, id, onCompletedChange }) => {
-  return (
-    <div style={{ textAlign: "center" }}>
-      <input
-        type="checkbox"
-        value={isCompleted}
-        onChange={e => onCompletedChange({ value: e.target.checked, id })}
-      />
-      {text}
-    </div>
-  );
-};
+import AddTask from './AddTask'
+import Todo from './Todo'
+import {GlobalStyles, StyledApp} from './style'
 
 export default function App() {
-  const [todos, setTodo] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [activeField, setActiveField] = useState("");
 
   const keyHandle = e => {
     if (e.charCode === 13 && Boolean(e.target.value.length)) {
-      setTodo([
+      setTodos([
         { text: e.target.value, isCompleted: false, id: todos.length },
         ...todos
       ]);
@@ -44,27 +33,23 @@ export default function App() {
           return a.isCompleted > b.isCompleted;
       });
 
-    setTodo(newTodos);
+    setTodos(newTodos);
   };
 
   return (
-    <div className="App">
-      <input
-        type="text"
-        value={activeField}
-        onChange={e => setActiveField(e.target.value)}
-        onKeyPress={keyHandle}
-      />
+    <StyledApp>
+        <AddTask activeField={activeField} keyHandle={keyHandle} onChange={setActiveField}/>
 
-      {todos.map(todo => (
-        <Todo
-          key={todo.id}
-          text={todo.text}
-          isCompleted={todo.isCompleted}
-          id={todo.id}
-          onCompletedChange={onCompletedChange}
-        />
-      ))}
-    </div>
+          {todos.map(todo => (
+            <Todo
+              key={todo.id}
+              text={todo.text}
+              isCompleted={todo.isCompleted}
+              id={todo.id}
+              onCompletedChange={onCompletedChange}
+            />
+          ))}
+      <GlobalStyles />
+    </StyledApp>
   );
 }
