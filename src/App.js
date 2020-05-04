@@ -1,11 +1,14 @@
 import React, { useState, useCallback, useEffect } from "react";
 import AddTask from './AddTask'
 import Todo from './Todo'
+import useAudio from './Player'
 import {GlobalStyles, StyledApp} from './style'
 
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [activeField, setActiveField] = useState("");
+  const [playing, toggle] = useAudio('./wl3-complete.ogg');
+
 
   useEffect(() => {
     const existTodos = window.localStorage.getItem('todos')
@@ -38,6 +41,7 @@ export default function App() {
           return a.isCompleted > b.isCompleted;
       });
 
+    toggle()
     saveTodos(newTodos);
   };
 
