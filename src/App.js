@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import AddTask from './AddTask'
 import Todo from './Todo'
 import {GlobalStyles, StyledApp} from './style'
@@ -7,17 +7,20 @@ export default function App() {
   const [todos, setTodos] = useState([]);
   const [activeField, setActiveField] = useState("");
 
+  useEffect(() => {
+    const existTodos = window.localStorage.getItem('todos')
+    saveTodos(JSON.parse(existTodos))
+  }, [])
+
   const keyHandle = e => {
     if (e.charCode === 13 && Boolean(e.target.value.length)) {
-      setTodos([
+      saveTodos([
         { text: e.target.value, isCompleted: false, id: todos.length },
         ...todos
       ]);
       setActiveField("");
     }
   };
-  
-  console.log('todos', todos)
 
   const onCompletedChange = ({ id, value }) => {
     let foundTodo = todos.find(todo => todo.id === id);
@@ -35,8 +38,13 @@ export default function App() {
           return a.isCompleted > b.isCompleted;
       });
 
-    setTodos(newTodos);
+    saveTodos(newTodos);
   };
+
+  const saveTodos = useCallback((todos) => {
+    setTodos(todos)
+    window.localStorage.setItem('todos', JSON.stringify(todos))
+  }, [])
 
   return (
     <StyledApp>
