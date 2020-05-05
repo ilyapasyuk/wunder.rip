@@ -1,72 +1,46 @@
-import React, {useState, useCallback, useEffect} from "react";
-import AddTask from './AddTask'
-import Todo from './Todo'
-import useAudio from './Player'
-import {GlobalStyles, StyledApp} from './style'
+import React from "react";
+import { Router, Route, Switch } from "react-router-dom";
+import { Container } from "reactstrap";
 
-export default function App() {
-    const [todos, setTodos] = useState([]);
-    const [activeField, setActiveField] = useState("");
-    const [playing, toggle] = useAudio('./wl3-complete.ogg');
+import PrivateRoute from "./components/PrivateRoute";
+import Loading from "./components/Loading";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import Home from "./views/Home";
+import Profile from "./views/Profile";
+import Todos from "./components/App";
+import { useAuth0 } from "./react-auth0-spa";
+import history from "./utils/history";
 
+// styles
+import "./App.css";
 
-    useEffect(() => {
-        const existTodos = window.localStorage.getItem('todos')
-        if (JSON.parse(existTodos)) saveTodos(JSON.parse(existTodos))
-    }, [])
+// fontawesome
+import initFontAwesome from "./utils/initFontAwesome";
+initFontAwesome();
 
-    const keyHandle = e => {
-        if (e.charCode === 13 && Boolean(e.target.value.length)) {
-            saveTodos([
-                {text: e.target.value, isCompleted: false, id: todos.length},
-                ...todos
-            ]);
-            setActiveField("");
-        }
-    };
+const App = () => {
+  const { loading } = useAuth0();
 
-    const onCompletedChange = ({id, value}) => {
-        let foundTodo = todos.find(todo => todo.id === id);
-        foundTodo.isCompleted = value;
+  if (loading) {
+    return <Loading />;
+  }
 
-        const newTodos = todos
-            .map(todo => {
-                if (todo.id === id) {
-                    return foundTodo;
-                }
+  return (
+    <Router history={history}>
+      <div id="app" className="d-flex flex-column h-100">
+        <NavBar />
+        <Container className="flex-grow-1 mt-5">
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <PrivateRoute path="/todos" component={Todos} />
+            <PrivateRoute path="/profile" component={Profile} />
+          </Switch>
+        </Container>
+        <Footer />
+      </div>
+    </Router>
+  );
+};
 
-                return todo;
-            })
-            .sort((a, b) => {
-                return a.isCompleted > b.isCompleted;
-            });
-
-        if (value) {
-            toggle()
-        }
-
-        saveTodos(newTodos);
-    };
-
-    const saveTodos = useCallback((todos) => {
-        setTodos(todos)
-        window.localStorage.setItem('todos', JSON.stringify(todos))
-    }, [])
-
-    return (
-        <StyledApp>
-            <AddTask activeField={activeField} keyHandle={keyHandle} onChange={setActiveField}/>
-
-            {todos.map(todo => (
-                <Todo
-                    key={todo.id}
-                    text={todo.text}
-                    isCompleted={todo.isCompleted}
-                    id={todo.id}
-                    onCompletedChange={onCompletedChange}
-                />
-            ))}
-            <GlobalStyles/>
-        </StyledApp>
-    );
-}
+export default App;
