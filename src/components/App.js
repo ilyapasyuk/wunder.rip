@@ -2,7 +2,6 @@ import React, {useState, useCallback, useEffect} from "react";
 import AddTask from './AddTask'
 import Todo from './Todo'
 import useAudio from './Player'
-import {GlobalStyles, StyledApp} from './style'
 
 export default function App() {
     const [todos, setTodos] = useState([]);
@@ -53,7 +52,7 @@ export default function App() {
     }, [])
 
     return (
-        <StyledApp>
+        <>
             <AddTask activeField={activeField} keyHandle={keyHandle} onChange={setActiveField}/>
 
             {todos.map(todo => (
@@ -65,7 +64,6 @@ export default function App() {
                     onCompletedChange={onCompletedChange}
                 />
             ))}
-            <GlobalStyles/>
-        </StyledApp>
+        </>
     );
 }

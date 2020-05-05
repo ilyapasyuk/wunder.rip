@@ -1,9 +1,9 @@
 import React from "react";
 
 const Footer = () => (
-  <footer className="bg-light p-3 text-center">
+  <footer className="bg-dark p-3 text-center">
     <div className="logo" />
-    <p>
+    <p style={{color: 'white'}}>
       WunderTodo
     </p>
   </footer>

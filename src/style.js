@@ -19,6 +19,5 @@ const GlobalStyles = createGlobalStyle`
 const StyledApp = styled.div`
   background: #bc4a3a;
   height: 100%;
-  padding: 14px;
 `
 export {GlobalStyles, StyledApp}
