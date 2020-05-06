@@ -1,8 +1,8 @@
 {
-  "rules": [
+  "rewrites": [
     {
-      "pathname": "/api/*",
-      "dest": "https://wundertodos-node-server.now.sh/"
+      "source": "/api/*",
+      "destination": "https://wundertodos-node-server.now.sh/"
     }
   ]
 }
