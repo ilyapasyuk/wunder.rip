@@ -30,6 +30,7 @@ export default function App() {
             const tasks = await Api.get('/api/todos/', {
                 params,
             })
+            console.log('tasks', tasks)
             saveTodos(tasks)
         } catch (e) {
             console.log('e', e)
