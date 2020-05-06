@@ -27,7 +27,7 @@ export default function App() {
     async function getTasks(user) {
         const params = { user }
         try {
-            const tasks = await Api.get('/api/todos/', {
+            const tasks = await Api.get('/todos/', {
                 params,
             })
             console.log('tasks', tasks)
@@ -40,7 +40,7 @@ export default function App() {
     async function createTask(text, user) {
         const params = { text, user }
         try {
-            const res = await Api.post('/api/todos', params)
+            const res = await Api.post('/todos/', params)
             console.log('res', res)
         } catch (e) {
             console.log('e', e)
