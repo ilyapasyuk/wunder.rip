@@ -3,10 +3,7 @@
   "routes": [
     {
       "src": "/api",
-      "status": 308,
-      "headers": {
-        "Location": "https://wundertodos-node-server.now.sh/"
-      }
+      "dest": "https://wundertodos-node-server.now.sh/"
     }
   ]
 }
