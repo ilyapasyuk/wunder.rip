@@ -1,7 +1,7 @@
-import React from "react"
-import {StyledAddTask} from "./style"
+import React from 'react'
+import { StyledAddTask } from './style'
 
-const AddTask = ({activeField, onChange, keyHandle}) => {
+const AddTask = ({ activeField, onChange, keyHandle }) => {
     return (
         <StyledAddTask
             type="text"

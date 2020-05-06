@@ -1,4 +1,4 @@
-import styled, {createGlobalStyle} from "styled-components";
+import styled, { createGlobalStyle } from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
   body,
@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
 `
 
 const StyledApp = styled.div`
-  background: #bc4a3a;
-  height: 100%;
+    background: #bc4a3a;
+    height: 100%;
 `
-export {GlobalStyles, StyledApp}
+export { GlobalStyles, StyledApp }

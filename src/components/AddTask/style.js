@@ -14,10 +14,10 @@ const StyledAddTask = styled.input`
     font-size: 16px;
     padding: 13px 60px 14px 13px;
     outline: none;
-    
+
     &::placeholder {
         color: #fff;
     }
 `
 
-export {StyledAddTask}
+export { StyledAddTask }
