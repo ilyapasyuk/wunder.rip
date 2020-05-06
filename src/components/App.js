@@ -1,63 +1,85 @@
-import React, {useState, useCallback, useEffect} from "react";
+import React, { useState, useCallback, useEffect } from 'react'
+import Api from '../Services/api'
 import AddTask from './AddTask'
 import Todo from './Todo'
 import useAudio from './Player'
+import { useAuth0 } from '../react-auth0-spa'
 
 export default function App() {
-    const [todos, setTodos] = useState([]);
-    const [activeField, setActiveField] = useState("");
-    const [playing, toggle] = useAudio('./wl3-complete.ogg');
+    const [todos, setTodos] = useState([])
+    const [activeField, setActiveField] = useState('')
+    const [playing, toggle] = useAudio('./wl3-complete.ogg')
+    const { user } = useAuth0()
 
     useEffect(() => {
-        const existTodos = window.localStorage.getItem('todos')
-        if (JSON.parse(existTodos)) saveTodos(JSON.parse(existTodos))
+        getTasks(user.sub)
     }, [])
 
     const keyHandle = e => {
         if (e.charCode === 13 && Boolean(e.target.value.length)) {
-            saveTodos([
-                {text: e.target.value, isCompleted: false, id: todos.length},
-                ...todos
-            ]);
-            setActiveField("");
+            const text = e.target.value
+            saveTodos([{ text, isCompleted: false, id: todos.length }, ...todos])
+            setActiveField('')
+            return createTask(text, user.sub)
         }
-    };
+    }
 
-    const onCompletedChange = ({id, value}) => {
-        let foundTodo = todos.find(todo => todo.id === id);
-        foundTodo.isCompleted = value;
+    async function getTasks(user) {
+        const params = { user }
+        try {
+            const tasks = await Api.get('https://wundertodos-node-server.now.sh//todos/', {
+                params,
+            })
+            saveTodos(tasks)
+        } catch (e) {
+            console.log('e', e)
+        }
+    }
+
+    async function createTask(text, user) {
+        const params = { text, user }
+        try {
+            const res = await Api.post('https://wundertodos-node-server.now.sh//todos', params)
+            console.log('res', res)
+        } catch (e) {
+            console.log('e', e)
+        }
+    }
+
+    const onCompletedChange = ({ id, value }) => {
+        let foundTodo = todos.find(todo => todo.id === id)
+        foundTodo.isCompleted = value
 
         const newTodos = todos
             .map(todo => {
                 if (todo.id === id) {
-                    return foundTodo;
+                    return foundTodo
                 }
 
-                return todo;
+                return todo
             })
             .sort((a, b) => {
-                return a.isCompleted > b.isCompleted;
-            });
+                return a.isCompleted > b.isCompleted
+            })
 
         if (value) {
             toggle()
         }
 
-        saveTodos(newTodos);
-    };
+        saveTodos(newTodos)
+    }
 
-    const saveTodos = useCallback((todos) => {
+    const saveTodos = useCallback(todos => {
         setTodos(todos)
-        window.localStorage.setItem('todos', JSON.stringify(todos))
     }, [])
 
     return (
         <>
-            <AddTask activeField={activeField} keyHandle={keyHandle} onChange={setActiveField}/>
+            <AddTask activeField={activeField} keyHandle={keyHandle} onChange={setActiveField} />
 
             {todos.map(todo => (
                 <Todo
-                    key={todo.id}
+                    key={todo._id}
                     text={todo.text}
                     isCompleted={todo.isCompleted}
                     id={todo.id}
@@ -65,5 +87,5 @@ export default function App() {
                 />
             ))}
         </>
-    );
+    )
 }

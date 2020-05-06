@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react'
 
 const Home = () => (
-  <Fragment>
-    <h1>Please Login</h1>
-  </Fragment>
-);
+    <Fragment>
+        <h1>Please Login</h1>
+    </Fragment>
+)
 
-export default Home;
+export default Home

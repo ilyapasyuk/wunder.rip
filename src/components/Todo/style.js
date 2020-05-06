@@ -16,26 +16,26 @@ const StyledTodo = styled.div`
 const StyledCheckbox = styled.span`
     padding-left: 8px;
     padding-right: 8px;
-    
+
     input {
-      display: none;
+        display: none;
     }
-    
+
     &:before {
         content: '';
-        border: 1px solid rgba(0,0,0,0.35);
+        border: 1px solid rgba(0, 0, 0, 0.35);
         cursor: pointer;
         width: 16px;
         height: 16px;
         display: block;
         border-radius: 3px;
-        background: ${({isCompleted}) => isCompleted && 'rgba(0,0,0,0.35)'};
+        background: ${({ isCompleted }) => isCompleted && 'rgba(0,0,0,0.35)'};
     }
 `
 
 const StyledTaskName = styled.div`
-  text-decoration: ${({isCompleted}) => isCompleted && 'line-through'};
-  pointer-events: none;
+    text-decoration: ${({ isCompleted }) => isCompleted && 'line-through'};
+    pointer-events: none;
 `
 
-export {StyledTodo, StyledCheckbox, StyledTaskName}
+export { StyledTodo, StyledCheckbox, StyledTaskName }
