@@ -27,7 +27,7 @@ export default function App() {
     async function getTasks(user) {
         const params = { user }
         try {
-            const tasks = await Api.get('https://wundertodos-node-server.now.sh//todos/', {
+            const tasks = await Api.get('https://wundertodos-node-server.now.sh/todos/', {
                 params,
             })
             saveTodos(tasks)
@@ -39,7 +39,7 @@ export default function App() {
     async function createTask(text, user) {
         const params = { text, user }
         try {
-            const res = await Api.post('https://wundertodos-node-server.now.sh//todos', params)
+            const res = await Api.post('https://wundertodos-node-server.now.sh/todos', params)
             console.log('res', res)
         } catch (e) {
             console.log('e', e)
