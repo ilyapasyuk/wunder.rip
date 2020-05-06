@@ -1,8 +1,12 @@
 {
-  "rewrites": [
+  "version": 2,
+  "routes": [
     {
-      "source": "/api/*",
-      "destination": "https://wundertodos-node-server.now.sh/"
+      "src": "/api",
+      "status": 308,
+      "headers": {
+        "Location": "https://wundertodos-node-server.now.sh/"
+      }
     }
   ]
 }
