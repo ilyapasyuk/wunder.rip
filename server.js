@@ -36,7 +36,7 @@ app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
 
-app.route('/todos/')
+app.route('/todos')
     .get(async (req, res, next) => {
         const { user } = req.query
 
