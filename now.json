@@ -1,0 +1,8 @@
+{
+  "rules": [
+    {
+      "pathname": "/api/*",
+      "dest": "https://wundertodos-node-server.now.sh/"
+    }
+  ]
+}
