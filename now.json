@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://wundertodos-node-server.now.sh/$1" }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "https://wundertodos-node-server.now.sh/$1" }
   ]
 }
