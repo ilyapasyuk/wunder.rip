@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "name": "wundertodo-web-app",
+  "routes": [
+    { "src": "/api/(.*)", "dest": "https://wundertodos-node-server.now.sh/$1" }
+  ]
+}

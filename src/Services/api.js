@@ -3,7 +3,7 @@ import Axios from 'axios'
 class Api {
     constructor() {
         this.instance = Axios.create({
-            baseURL: `https://wundertodos-node-server.now.sh/`,
+            baseURL: `/api/`,
             validateStatus: status => {
                 return status >= 200 && status < 300
             },
