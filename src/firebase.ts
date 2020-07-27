@@ -2,14 +2,14 @@ import firebase from 'firebase'
 import 'firebase/database'
 
 const config = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_DATABASE_URL,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_APP_ID,
-    measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+    apiKey: 'AIzaSyAdqcW0V8x6bJVmPr4TY6cdh77rt3FV1oY',
+    authDomain: 'wundertodo-app.firebaseapp.com',
+    databaseURL: 'https://wundertodo-app.firebaseio.com',
+    projectId: 'wundertodo-app',
+    storageBucket: 'wundertodo-app.appspot.com',
+    messagingSenderId: '1060019824315',
+    appId: '1:1060019824315:web:c2b8543673a0124731ab9e',
+    measurementId: 'G-D21ESB91W5',
 }
 
 firebase.initializeApp(config)
