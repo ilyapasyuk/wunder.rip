@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import './App.css'
-
 import firebase, { databaseRef } from './firebase'
+import { StyledAddTask, StyledCheckbox, StyledTaskName, StyledTodo } from './style'
 
 type Todo = {
     task: string
@@ -47,6 +46,16 @@ function App() {
         setCurrentTodo('')
     }
 
+    const toggleDone = (todo: Todo) => {
+        const value: Todo = {
+            task: todo.task,
+            done: !todo.done,
+            useruid: user,
+        }
+
+        databaseRef.update({ [`todos/${user}/${todo.id}/`]: value })
+    }
+
     useEffect(() => {
         if (user) {
             databaseRef.child(`todos/${user}`).on('value', snapshot => {
@@ -72,7 +81,10 @@ function App() {
                 {user && (
                     <>
                         {todos.length}
-                        <input value={currentTodo} onChange={e => setCurrentTodo(e.target.value)} />
+                        <StyledAddTask
+                            value={currentTodo}
+                            onChange={e => setCurrentTodo(e.target.value)}
+                        />
                         <button onClick={() => addTodo(currentTodo)} disabled={!currentTodo}>
                             add Todo
                         </button>
@@ -80,7 +92,15 @@ function App() {
                 )}
 
                 {todos.map(todo => {
-                    return <div>{todo.task}</div>
+                    return (
+                        <StyledTodo key={todo.id}>
+                            <StyledCheckbox
+                                isCompleted={todo.done}
+                                onClick={() => toggleDone(todo)}
+                            />
+                            <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
+                        </StyledTodo>
+                    )
                 })}
             </header>
         </div>
