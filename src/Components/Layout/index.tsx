@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-import firebase, { databaseRef } from './firebase'
-import { StyledAddTask, StyledCheckbox, StyledTaskName, StyledTodo } from './style'
+import firebase, { databaseRef } from 'Service/firebase'
+import {
+    GlobalStyle,
+    StyledAddTask,
+    StyledCheckbox,
+    StyledLayout,
+    StyledTaskName,
+    StyledTodo,
+} from './style'
 
 type Todo = {
     task: string
@@ -10,7 +17,7 @@ type Todo = {
     id?: string
 }
 
-function App() {
+const Layout = () => {
     const [todos, setTodos] = useState<Todo[]>([])
     const [user, setUser] = useState<string>('')
     const [currentTodo, setCurrentTodo] = useState<string>('')
@@ -24,6 +31,7 @@ function App() {
             // const token = result.credential.accessToken
             // The signed-in user info.
             const user = result.user?.uid || ''
+            window.localStorage.setItem('user', user)
             setUser(user)
         } catch (error) {
             // Handle Errors here.
@@ -44,6 +52,14 @@ function App() {
         }
         databaseRef.child(`todos/${user}`).push(value)
         setCurrentTodo('')
+    }
+
+    const keyHandle = (e: any) => {
+        if (e.charCode === 13 && Boolean(e.target.value.length)) {
+            const text = e.target.value
+            setCurrentTodo('')
+            addTodo(text)
+        }
     }
 
     const toggleDone = (todo: Todo) => {
@@ -74,37 +90,39 @@ function App() {
         }
     }, [user])
 
-    return (
-        <div className="App">
-            <header className="App-header">
-                {!user && <button onClick={loginWithGoogle}>Google</button>}
-                {user && (
-                    <>
-                        {todos.length}
-                        <StyledAddTask
-                            value={currentTodo}
-                            onChange={e => setCurrentTodo(e.target.value)}
-                        />
-                        <button onClick={() => addTodo(currentTodo)} disabled={!currentTodo}>
-                            add Todo
-                        </button>
-                    </>
-                )}
+    useEffect(() => {
+        const user = window.localStorage.getItem('user') || ''
 
-                {todos.map(todo => {
-                    return (
-                        <StyledTodo key={todo.id}>
-                            <StyledCheckbox
-                                isCompleted={todo.done}
-                                onClick={() => toggleDone(todo)}
-                            />
-                            <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
-                        </StyledTodo>
-                    )
-                })}
-            </header>
-        </div>
+        if (user) {
+            setUser(user)
+        }
+    }, [])
+
+    return (
+        <StyledLayout>
+            <GlobalStyle />
+            {!user && <button onClick={loginWithGoogle}>Google</button>}
+            {user && (
+                <>
+                    {todos.length}
+                    <StyledAddTask
+                        value={currentTodo}
+                        onChange={e => setCurrentTodo(e.target.value)}
+                        onKeyPress={keyHandle}
+                    />
+                </>
+            )}
+
+            {todos.map(todo => {
+                return (
+                    <StyledTodo key={todo.id}>
+                        <StyledCheckbox isCompleted={todo.done} onClick={() => toggleDone(todo)} />
+                        <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
+                    </StyledTodo>
+                )
+            })}
+        </StyledLayout>
     )
 }
 
-export default App
+export { Layout }

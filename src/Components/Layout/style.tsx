@@ -1,4 +1,32 @@
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+   *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    body {
+      background-color: #23241f;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    code {
+      font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    }
+`
+
+const StyledLayout = styled.div`
+    padding: 16px;
+`
 
 const StyledAddTask = styled.input`
     background: rgba(158, 54, 40, 0.55);
@@ -63,4 +91,4 @@ const StyledTaskName = styled.div`
     pointer-events: none;
 `
 
-export { StyledAddTask, StyledTodo, StyledCheckbox, StyledTaskName }
+export { GlobalStyle, StyledLayout, StyledAddTask, StyledTodo, StyledCheckbox, StyledTaskName }
