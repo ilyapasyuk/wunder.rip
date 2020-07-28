@@ -54,6 +54,14 @@ const Layout = () => {
         setCurrentTodo('')
     }
 
+    const keyHandle = (e: any) => {
+        if (e.charCode === 13 && Boolean(e.target.value.length)) {
+            const text = e.target.value
+            setCurrentTodo('')
+            addTodo(text)
+        }
+    }
+
     const toggleDone = (todo: Todo) => {
         const value: Todo = {
             task: todo.task,
@@ -100,10 +108,8 @@ const Layout = () => {
                     <StyledAddTask
                         value={currentTodo}
                         onChange={e => setCurrentTodo(e.target.value)}
+                        onKeyPress={keyHandle}
                     />
-                    <button onClick={() => addTodo(currentTodo)} disabled={!currentTodo}>
-                        add Todo
-                    </button>
                 </>
             )}
 

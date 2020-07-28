@@ -1,6 +1,14 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
+   *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        font-family: 'Roboto', sans-serif;
+    }
+    
     body {
       background-color: #23241f;
       margin: 0;
@@ -16,7 +24,9 @@ const GlobalStyle = createGlobalStyle`
     }
 `
 
-const StyledLayout = styled.div``
+const StyledLayout = styled.div`
+    padding: 16px;
+`
 
 const StyledAddTask = styled.input`
     background: rgba(158, 54, 40, 0.55);
