@@ -50,7 +50,7 @@ const Layout = () => {
     const addTodo = (todo: string) => {
         const timestamp = +new Date()
         const value: Todo = {
-            task: todo,
+            task: todo.slice(0, 100),
             done: false,
             useruid: user,
             createdAt: timestamp,
@@ -82,13 +82,22 @@ const Layout = () => {
         databaseRef.update({ [`todos/${user}/${todo.id}/`]: null })
     }
 
+    const renameTodo = (todo: Todo) => {
+        const value: Todo = {
+            task: todo.task,
+            done: !todo.done,
+            useruid: user,
+            createdAt: todo.createdAt,
+        }
+        databaseRef.update({ [`todos/${user}/${todo.id}/`]: value })
+    }
+
     useEffect(() => {
         if (user) {
             databaseRef.child(`todos/${user}`).on('value', snapshot => {
                 let items = snapshot.val() || []
                 const prepareTodos: Todo[] = Object.keys(items)
                     .map(i => {
-                        console.log('createdAt', items[i].createdAt)
                         return {
                             id: i,
                             createdAt: items[i].createdAt,
@@ -115,15 +124,14 @@ const Layout = () => {
         <StyledLayout>
             <GlobalStyle />
             {!user && <button onClick={loginWithGoogle}>Google</button>}
+
             {user && (
-                <>
-                    <StyledAddTask
-                        value={currentTodo}
-                        onChange={e => setCurrentTodo(e.target.value)}
-                        onKeyPress={keyHandle}
-                        placeholder="Add task..."
-                    />
-                </>
+                <StyledAddTask
+                    value={currentTodo}
+                    onChange={e => setCurrentTodo(e.target.value)}
+                    onKeyPress={keyHandle}
+                    placeholder="Add task..."
+                />
             )}
 
             {todos.map(todo => {

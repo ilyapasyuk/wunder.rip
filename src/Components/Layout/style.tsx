@@ -103,6 +103,19 @@ const StyledTaskName = styled.div`
     color: ${props => props.theme.taskName};
     text-decoration: ${({ isCompleted }: StyledCheckboxProps) => isCompleted && 'line-through'};
     pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 42px 8px 42px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+
+    span {
+        text-overflow: ellipsis;
+    }
 `
 
 const StyledDeleteButton = styled.button`
