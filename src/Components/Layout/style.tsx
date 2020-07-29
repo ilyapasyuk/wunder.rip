@@ -9,6 +9,10 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
     }
     
+    html, body, #wunderTodo {
+        height: 100%;
+    }
+    
     body {
       background-color: white;
       margin: 0;
@@ -26,6 +30,8 @@ const GlobalStyle = createGlobalStyle`
 
 const StyledLayout = styled.div`
     padding: 16px;
+    background-color: ${props => props.theme.backGroundApp};
+    height: 100%;
 `
 
 const StyledAddTask = styled.input`
