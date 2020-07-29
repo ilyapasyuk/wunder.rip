@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
     }
     
     body {
-      background-color: #23241f;
+      background-color: white;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -29,22 +29,24 @@ const StyledLayout = styled.div`
 `
 
 const StyledAddTask = styled.input`
-    background: rgba(158, 54, 40, 0.55);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
+    box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
+    border-radius: 4px;
+    font-size: 16px;
     overflow: hidden;
     position: relative;
     margin: 14px 0;
-    border-radius: 3px;
-    border: 0;
     display: block;
     width: 100%;
     height: 47px;
-    color: #fff;
-    font-size: 16px;
+    color: black;
     padding: 13px 60px 14px 13px;
     outline: none;
 
     &::placeholder {
-        color: #fff;
+        color: grey;
     }
 `
 
@@ -52,13 +54,19 @@ const StyledTodo = styled.div`
     background: #fff;
     list-style: none;
     height: 46px;
-    border-radius: 3px;
     display: flex;
     padding-left: 4px;
     padding-right: 4px;
     align-items: center;
     position: relative;
-    margin-bottom: 1px;
+    z-index: 9999;
+    overflow: hidden;
+    border: 1px solid #ededed;
+    user-select: none;
+    -webkit-text-size-adjust: 100%;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
+    border-radius: 4px;
 `
 
 interface StyledCheckboxProps {
@@ -91,4 +99,33 @@ const StyledTaskName = styled.div`
     pointer-events: none;
 `
 
-export { GlobalStyle, StyledLayout, StyledAddTask, StyledTodo, StyledCheckbox, StyledTaskName }
+const StyledDeleteButton = styled.button`
+    border: 0;
+    outline: none;
+    padding: 0;
+    background: transparent;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+
+    &:hover {
+        svg {
+            fill: #1b7edf;
+        }
+    }
+
+    svg {
+        width: 20px;
+        fill: grey;
+    }
+`
+
+export {
+    GlobalStyle,
+    StyledLayout,
+    StyledAddTask,
+    StyledTodo,
+    StyledCheckbox,
+    StyledTaskName,
+    StyledDeleteButton,
+}

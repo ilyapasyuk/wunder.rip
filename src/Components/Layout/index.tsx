@@ -8,13 +8,16 @@ import {
     StyledLayout,
     StyledTaskName,
     StyledTodo,
+    StyledDeleteButton,
 } from './style'
+import { Delete } from './delete'
 
 type Todo = {
     task: string
     done: boolean
     useruid: string
     id?: string
+    createdAt?: number
 }
 
 const Layout = () => {
@@ -45,10 +48,12 @@ const Layout = () => {
     }
 
     const addTodo = (todo: string) => {
+        const timestamp = +new Date()
         const value: Todo = {
             task: todo,
             done: false,
             useruid: user,
+            createdAt: timestamp,
         }
         databaseRef.child(`todos/${user}`).push(value)
         setCurrentTodo('')
@@ -67,25 +72,33 @@ const Layout = () => {
             task: todo.task,
             done: !todo.done,
             useruid: user,
+            createdAt: todo.createdAt,
         }
 
         databaseRef.update({ [`todos/${user}/${todo.id}/`]: value })
     }
 
+    const deleteTodo = (todo: Todo) => {
+        databaseRef.update({ [`todos/${user}/${todo.id}/`]: null })
+    }
+
     useEffect(() => {
         if (user) {
             databaseRef.child(`todos/${user}`).on('value', snapshot => {
-                let items = snapshot.val()
-                let newState = []
-                for (let item in items) {
-                    newState.push({
-                        id: item,
-                        task: items[item].task,
-                        done: items[item].done,
-                        useruid: items[item].useruid,
+                let items = snapshot.val() || []
+                const prepareTodos: Todo[] = Object.keys(items)
+                    .map(i => {
+                        console.log('createdAt', items[i].createdAt)
+                        return {
+                            id: i,
+                            createdAt: items[i].createdAt,
+                            task: items[i].task,
+                            done: items[i].done,
+                            useruid: items[i].useruid,
+                        }
                     })
-                }
-                setTodos(newState)
+                    .sort((a, b) => b.createdAt - a.createdAt)
+                setTodos(prepareTodos)
             })
         }
     }, [user])
@@ -104,11 +117,11 @@ const Layout = () => {
             {!user && <button onClick={loginWithGoogle}>Google</button>}
             {user && (
                 <>
-                    {todos.length}
                     <StyledAddTask
                         value={currentTodo}
                         onChange={e => setCurrentTodo(e.target.value)}
                         onKeyPress={keyHandle}
+                        placeholder="Add task..."
                     />
                 </>
             )}
@@ -118,6 +131,9 @@ const Layout = () => {
                     <StyledTodo key={todo.id}>
                         <StyledCheckbox isCompleted={todo.done} onClick={() => toggleDone(todo)} />
                         <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
+                        <StyledDeleteButton onClick={() => deleteTodo(todo)}>
+                            <Delete />
+                        </StyledDeleteButton>
                     </StyledTodo>
                 )
             })}
