@@ -13,6 +13,7 @@ import {
 } from './style'
 import { Delete } from './delete'
 import { Header } from '../Header'
+import { GlobalLazyImageStyle } from '../LazyImage/style'
 
 type Todo = {
     task: string
@@ -22,9 +23,18 @@ type Todo = {
     createdAt?: number
 }
 
+type User = {
+    id: string
+    avatar: string
+    email: string
+    fullName: string
+}
+
+const INITIAL_USER: User = { id: '', email: '', avatar: '', fullName: '' }
+
 const Layout = () => {
     const [todos, setTodos] = useState<Todo[]>([])
-    const [user, setUser] = useState<string>('')
+    const [user, setUser] = useState<User>(INITIAL_USER)
     const [currentTodo, setCurrentTodo] = useState<string>('')
 
     const loginWithGoogle = async () => {
@@ -35,9 +45,14 @@ const Layout = () => {
 
             // const token = result.credential.accessToken
             // The signed-in user info.
-            const user = result.user?.uid || ''
-            window.localStorage.setItem('user', user)
-            setUser(user)
+            const id = result.user?.uid || ''
+            const email = result.user?.email || ''
+            const avatar = result.user?.photoURL || ''
+            const fullName = result.user?.displayName || ''
+
+            const preparedUser = { id, avatar, email, fullName }
+            window.localStorage.setItem('user', JSON.stringify(preparedUser))
+            setUser(preparedUser)
         } catch (error) {
             // Handle Errors here.
             var errorCode = error.code
@@ -54,10 +69,10 @@ const Layout = () => {
         const value: Todo = {
             task: todo.slice(0, 100),
             done: false,
-            useruid: user,
+            useruid: user.id,
             createdAt: timestamp,
         }
-        databaseRef.child(`todos/${user}`).push(value)
+        databaseRef.child(`todos/${user.id}`).push(value)
         setCurrentTodo('')
     }
 
@@ -73,30 +88,20 @@ const Layout = () => {
         const value: Todo = {
             task: todo.task,
             done: !todo.done,
-            useruid: user,
+            useruid: user.id,
             createdAt: todo.createdAt,
         }
 
-        databaseRef.update({ [`todos/${user}/${todo.id}/`]: value })
+        databaseRef.update({ [`todos/${user.id}/${todo.id}/`]: value })
     }
 
     const deleteTodo = (todo: Todo) => {
-        databaseRef.update({ [`todos/${user}/${todo.id}/`]: null })
-    }
-
-    const renameTodo = (todo: Todo) => {
-        const value: Todo = {
-            task: todo.task,
-            done: !todo.done,
-            useruid: user,
-            createdAt: todo.createdAt,
-        }
-        databaseRef.update({ [`todos/${user}/${todo.id}/`]: value })
+        databaseRef.update({ [`todos/${user.id}/${todo.id}/`]: null })
     }
 
     useEffect(() => {
-        if (user) {
-            databaseRef.child(`todos/${user}`).on('value', snapshot => {
+        if (user.id) {
+            databaseRef.child(`todos/${user.id}`).on('value', snapshot => {
                 let items = snapshot.val() || []
                 const prepareTodos: Todo[] = Object.keys(items)
                     .map(i => {
@@ -115,45 +120,58 @@ const Layout = () => {
     }, [user])
 
     useEffect(() => {
-        const user = window.localStorage.getItem('user') || ''
+        const userFromLocalStorage: string = window.localStorage.getItem('user') || ''
+        const user = userFromLocalStorage ? JSON.parse(userFromLocalStorage) : INITIAL_USER
 
         if (user) {
             setUser(user)
         }
     }, [])
 
+    const onLogout = () => {
+        window.localStorage.removeItem('user')
+        setUser(INITIAL_USER)
+    }
+
     return (
         <StyledLayout>
             <GlobalStyle />
-            {!user && <button onClick={loginWithGoogle}>Google</button>}
+            <GlobalLazyImageStyle />
 
-            <Header />
+            <Header
+                avatar={user.avatar}
+                email={user.email}
+                fullName={user.fullName}
+                onLogout={onLogout}
+            />
 
-            <StyledTodos>
-                {user && (
+            {user.id && (
+                <StyledTodos>
                     <StyledAddTask
                         value={currentTodo}
                         onChange={e => setCurrentTodo(e.target.value)}
                         onKeyPress={keyHandle}
                         placeholder="Add task..."
                     />
-                )}
 
-                {todos.map(todo => {
-                    return (
-                        <StyledTodo key={todo.id}>
-                            <StyledCheckbox
-                                isCompleted={todo.done}
-                                onClick={() => toggleDone(todo)}
-                            />
-                            <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
-                            <StyledDeleteButton onClick={() => deleteTodo(todo)}>
-                                <Delete />
-                            </StyledDeleteButton>
-                        </StyledTodo>
-                    )
-                })}
-            </StyledTodos>
+                    {todos.map(todo => {
+                        return (
+                            <StyledTodo key={todo.id}>
+                                <StyledCheckbox
+                                    isCompleted={todo.done}
+                                    onClick={() => toggleDone(todo)}
+                                />
+                                <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
+                                <StyledDeleteButton onClick={() => deleteTodo(todo)}>
+                                    <Delete />
+                                </StyledDeleteButton>
+                            </StyledTodo>
+                        )
+                    })}
+                </StyledTodos>
+            )}
+
+            {!user.id && <button onClick={loginWithGoogle}>Google</button>}
         </StyledLayout>
     )
 }
