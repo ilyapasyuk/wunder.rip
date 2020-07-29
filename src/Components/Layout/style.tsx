@@ -9,8 +9,12 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
     }
     
+    html, body, #wunderTodo {
+        height: 100%;
+    }
+    
     body {
-      background-color: #23241f;
+      background-color: white;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -25,40 +29,53 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const StyledLayout = styled.div`
-    padding: 16px;
+    background-color: ${props => props.theme.backGroundApp};
+    height: 100%;
 `
 
 const StyledAddTask = styled.input`
-    background: rgba(158, 54, 40, 0.55);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
+    box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
+    border-radius: 4px;
+    font-size: 16px;
     overflow: hidden;
     position: relative;
-    margin: 14px 0;
-    border-radius: 3px;
-    border: 0;
+    margin: 0 0 14px;
     display: block;
     width: 100%;
     height: 47px;
-    color: #fff;
-    font-size: 16px;
+    color: #1b7edf;
     padding: 13px 60px 14px 13px;
     outline: none;
 
     &::placeholder {
-        color: #fff;
+        color: #1b7edf;
     }
+`
+
+const StyledTodos = styled.div`
+    padding: 16px;
 `
 
 const StyledTodo = styled.div`
     background: #fff;
     list-style: none;
     height: 46px;
-    border-radius: 3px;
     display: flex;
     padding-left: 4px;
     padding-right: 4px;
     align-items: center;
     position: relative;
-    margin-bottom: 1px;
+    z-index: 9;
+    overflow: hidden;
+    border: 1px solid #ededed;
+    user-select: none;
+    -webkit-text-size-adjust: 100%;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
+    border-radius: 4px;
 `
 
 interface StyledCheckboxProps {
@@ -86,9 +103,52 @@ const StyledCheckbox = styled.span`
 `
 
 const StyledTaskName = styled.div`
-    color: #23241f;
+    color: ${props => props.theme.taskName};
     text-decoration: ${({ isCompleted }: StyledCheckboxProps) => isCompleted && 'line-through'};
     pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 42px 8px 42px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+
+    span {
+        text-overflow: ellipsis;
+    }
 `
 
-export { GlobalStyle, StyledLayout, StyledAddTask, StyledTodo, StyledCheckbox, StyledTaskName }
+const StyledDeleteButton = styled.button`
+    border: 0;
+    outline: none;
+    padding: 0;
+    background: transparent;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+
+    &:hover {
+        svg {
+            fill: #1b7edf;
+        }
+    }
+
+    svg {
+        width: 20px;
+        fill: grey;
+    }
+`
+
+export {
+    GlobalStyle,
+    StyledLayout,
+    StyledAddTask,
+    StyledTodos,
+    StyledTodo,
+    StyledCheckbox,
+    StyledTaskName,
+    StyledDeleteButton,
+}
