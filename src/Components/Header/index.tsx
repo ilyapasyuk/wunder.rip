@@ -23,6 +23,7 @@ const Header = ({ avatar, email, fullName, onLogout }: Props) => {
 
     return (
         <StyledHeader>
+            Wunder Rip
             {avatar && (
                 <StyledAvatar onClick={() => setShowMenu(true)}>
                     <LazyImage src={avatar} alt="avatar" height={30} width={30} />
@@ -33,7 +34,7 @@ const Header = ({ avatar, email, fullName, onLogout }: Props) => {
                                 <StyledFullName>{fullName}</StyledFullName>
                                 <StyledEmail>{email}</StyledEmail>
                             </StyledDropdownItem>
-                            <StyledDropdownItem isDanger onClick={onLogout}>
+                            <StyledDropdownItem type="isDanger" onClick={onLogout}>
                                 Sign Out
                             </StyledDropdownItem>
                         </StyledDropdown>

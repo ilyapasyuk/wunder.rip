@@ -13,6 +13,7 @@ const StyledHeader = styled.header`
     display: flex;
     align-items: center;
     padding: 0 16px;
+    justify-content: space-between;
 `
 
 const StyledAvatar = styled.div`
@@ -30,10 +31,23 @@ const StyledDropdown = styled.div`
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     -webkit-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
+    right: 16px;
 `
 
 interface StyledDropdownItemProps {
-    isDanger?: boolean
+    type?: 'isDanger' | 'isInfo' | 'isLink'
+}
+
+const getColor = (type = 'isInfo'): string => {
+    switch (type) {
+        case 'isDanger':
+            return '#db3a29'
+        case 'isLink':
+            return '#1b7edf'
+        case 'isInfo':
+        default:
+            return '#777'
+    }
 }
 
 const StyledDropdownItem = styled.div`
@@ -43,7 +57,7 @@ const StyledDropdownItem = styled.div`
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
     &:hover {
-        color: ${(props: StyledDropdownItemProps) => (props.isDanger ? '#db3a29' : '#1b7edf')};
+        color: ${(props: StyledDropdownItemProps) => getColor(props.type)};
     }
 `
 
