@@ -29,7 +29,6 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const StyledLayout = styled.div`
-    padding: 16px;
     background-color: ${props => props.theme.backGroundApp};
     height: 100%;
 `
@@ -43,7 +42,7 @@ const StyledAddTask = styled.input`
     font-size: 16px;
     overflow: hidden;
     position: relative;
-    margin: 14px 0;
+    margin: 0 0 14px;
     display: block;
     width: 100%;
     height: 47px;
@@ -56,6 +55,10 @@ const StyledAddTask = styled.input`
     }
 `
 
+const StyledTodos = styled.div`
+    padding: 16px;
+`
+
 const StyledTodo = styled.div`
     background: #fff;
     list-style: none;
@@ -65,7 +68,7 @@ const StyledTodo = styled.div`
     padding-right: 4px;
     align-items: center;
     position: relative;
-    z-index: 9999;
+    z-index: 9;
     overflow: hidden;
     border: 1px solid #ededed;
     user-select: none;
@@ -143,6 +146,7 @@ export {
     GlobalStyle,
     StyledLayout,
     StyledAddTask,
+    StyledTodos,
     StyledTodo,
     StyledCheckbox,
     StyledTaskName,

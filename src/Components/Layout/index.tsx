@@ -9,8 +9,10 @@ import {
     StyledTaskName,
     StyledTodo,
     StyledDeleteButton,
+    StyledTodos,
 } from './style'
 import { Delete } from './delete'
+import { Header } from '../Header'
 
 type Todo = {
     task: string
@@ -125,26 +127,33 @@ const Layout = () => {
             <GlobalStyle />
             {!user && <button onClick={loginWithGoogle}>Google</button>}
 
-            {user && (
-                <StyledAddTask
-                    value={currentTodo}
-                    onChange={e => setCurrentTodo(e.target.value)}
-                    onKeyPress={keyHandle}
-                    placeholder="Add task..."
-                />
-            )}
+            <Header />
 
-            {todos.map(todo => {
-                return (
-                    <StyledTodo key={todo.id}>
-                        <StyledCheckbox isCompleted={todo.done} onClick={() => toggleDone(todo)} />
-                        <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
-                        <StyledDeleteButton onClick={() => deleteTodo(todo)}>
-                            <Delete />
-                        </StyledDeleteButton>
-                    </StyledTodo>
-                )
-            })}
+            <StyledTodos>
+                {user && (
+                    <StyledAddTask
+                        value={currentTodo}
+                        onChange={e => setCurrentTodo(e.target.value)}
+                        onKeyPress={keyHandle}
+                        placeholder="Add task..."
+                    />
+                )}
+
+                {todos.map(todo => {
+                    return (
+                        <StyledTodo key={todo.id}>
+                            <StyledCheckbox
+                                isCompleted={todo.done}
+                                onClick={() => toggleDone(todo)}
+                            />
+                            <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
+                            <StyledDeleteButton onClick={() => deleteTodo(todo)}>
+                                <Delete />
+                            </StyledDeleteButton>
+                        </StyledTodo>
+                    )
+                })}
+            </StyledTodos>
         </StyledLayout>
     )
 }
