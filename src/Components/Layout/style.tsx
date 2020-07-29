@@ -47,12 +47,12 @@ const StyledAddTask = styled.input`
     display: block;
     width: 100%;
     height: 47px;
-    color: black;
+    color: #1b7edf;
     padding: 13px 60px 14px 13px;
     outline: none;
 
     &::placeholder {
-        color: grey;
+        color: #1b7edf;
     }
 `
 
@@ -100,7 +100,7 @@ const StyledCheckbox = styled.span`
 `
 
 const StyledTaskName = styled.div`
-    color: #23241f;
+    color: ${props => props.theme.taskName};
     text-decoration: ${({ isCompleted }: StyledCheckboxProps) => isCompleted && 'line-through'};
     pointer-events: none;
 `
