@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
 import firebase, { databaseRef } from 'Service/firebase'
+import { Header } from 'Components/Header'
+import { LoginForm } from 'Components/LoginForm'
 import {
     GlobalStyle,
     StyledAddTask,
@@ -12,7 +14,7 @@ import {
     StyledTodos,
 } from './style'
 import { Delete } from './delete'
-import { Header } from '../Header'
+
 import { GlobalLazyImageStyle } from '../LazyImage/style'
 
 type Todo = {
@@ -171,7 +173,7 @@ const Layout = () => {
                 </StyledTodos>
             )}
 
-            {!user.id && <button onClick={loginWithGoogle}>Google</button>}
+            {!user.id && <LoginForm onLogin={loginWithGoogle} />}
         </StyledLayout>
     )
 }
