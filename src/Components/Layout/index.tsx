@@ -38,7 +38,6 @@ const Layout = () => {
             const result = await firebase.auth().signInWithPopup(provider)
 
             // const token = result.credential.accessToken
-            // The signed-in user info.
             const id = result.user?.uid || ''
             const email = result.user?.email || ''
             const avatar = result.user?.photoURL || ''
@@ -158,8 +157,9 @@ const Layout = () => {
                         onKeyPress={keyHandle}
                         placeholder="Add task..."
                     />
+
                     <TodoList
-                        pressDelay={100}
+                        pressDelay={200}
                         todos={todos}
                         toggleDone={toggleDone}
                         deleteTodo={deleteTodo}
