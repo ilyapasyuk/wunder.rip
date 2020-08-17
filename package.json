@@ -12,10 +12,13 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/styled-components": "^5.1.1",
+    "array-move": "^3.0.1",
     "firebase": "^7.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-lazy-image-loader": "^0.1.1",
     "react-scripts": "3.4.1",
+    "react-sortable-hoc": "^1.11.0",
     "styled-components": "^5.1.1",
     "typescript": "~3.9.7"
   },

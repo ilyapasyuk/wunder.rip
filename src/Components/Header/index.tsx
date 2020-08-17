@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import LazyImage from 'Components/LazyImage'
+import LazyImage from 'react-lazy-image-loader'
 
 import {
     StyledHeader,
@@ -26,7 +26,7 @@ const Header = ({ avatar, email, fullName, onLogout }: Props) => {
             Wunder Rip
             {avatar && (
                 <StyledAvatar onClick={() => setShowMenu(true)}>
-                    <LazyImage src={avatar} alt="avatar" height={30} width={30} />
+                    <LazyImage src={avatar} alt="avatar" height={30} width={30} borderRadius={4} />
 
                     {isShowMenu && (
                         <StyledDropdown>

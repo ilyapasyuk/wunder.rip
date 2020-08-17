@@ -7,11 +7,9 @@ import { LIGHT_THEME } from 'Components/Layout/theme'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ThemeProvider theme={LIGHT_THEME}>
-            <Layout />
-        </ThemeProvider>
-    </React.StrictMode>,
+    <ThemeProvider theme={LIGHT_THEME}>
+        <Layout />
+    </ThemeProvider>,
     document.getElementById('wunderTodo'),
 )
 

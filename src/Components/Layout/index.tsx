@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import arrayMove from 'array-move'
 
 import firebase, { databaseRef } from 'Service/firebase'
+
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
-import {
-    GlobalStyle,
-    StyledAddTask,
-    StyledCheckbox,
-    StyledLayout,
-    StyledTaskName,
-    StyledTodo,
-    StyledDeleteButton,
-    StyledTodos,
-} from './style'
-import { Delete } from './delete'
+import { TodoList } from 'Components/TodoList'
 
-import { GlobalLazyImageStyle } from '../LazyImage/style'
+import { GlobalStyle, StyledAddTask, StyledLayout, StyledTodos } from './style'
 
 type Todo = {
     task: string
@@ -68,12 +60,14 @@ const Layout = () => {
 
     const addTodo = (todo: string) => {
         const timestamp = +new Date()
+
         const value: Todo = {
             task: todo.slice(0, 100),
             done: false,
             useruid: user.id,
             createdAt: timestamp,
         }
+
         databaseRef.child(`todos/${user.id}`).push(value)
         setCurrentTodo('')
     }
@@ -92,6 +86,7 @@ const Layout = () => {
             done: !todo.done,
             useruid: user.id,
             createdAt: todo.createdAt,
+            id: todo.id,
         }
 
         databaseRef.update({ [`todos/${user.id}/${todo.id}/`]: value })
@@ -105,17 +100,15 @@ const Layout = () => {
         if (user.id) {
             databaseRef.child(`todos/${user.id}`).on('value', snapshot => {
                 let items = snapshot.val() || []
-                const prepareTodos: Todo[] = Object.keys(items)
-                    .map(i => {
-                        return {
-                            id: i,
-                            createdAt: items[i].createdAt,
-                            task: items[i].task,
-                            done: items[i].done,
-                            useruid: items[i].useruid,
-                        }
-                    })
-                    .sort((a, b) => b.createdAt - a.createdAt)
+                const prepareTodos: Todo[] = Object.keys(items).map(i => {
+                    return {
+                        id: i,
+                        createdAt: items[i].createdAt,
+                        task: items[i].task,
+                        done: items[i].done,
+                        useruid: items[i].useruid,
+                    }
+                })
                 setTodos(prepareTodos)
             })
         }
@@ -135,10 +128,20 @@ const Layout = () => {
         setUser(INITIAL_USER)
     }
 
+    interface sortEnd {
+        oldIndex: number
+        newIndex: number
+    }
+
+    const onSortEnd = ({ oldIndex, newIndex }: sortEnd) => {
+        const newList = arrayMove(todos, oldIndex, newIndex)
+
+        databaseRef.update({ [`todos/${user.id}/`]: newList })
+    }
+
     return (
         <StyledLayout>
             <GlobalStyle />
-            <GlobalLazyImageStyle />
 
             <Header
                 avatar={user.avatar}
@@ -155,21 +158,13 @@ const Layout = () => {
                         onKeyPress={keyHandle}
                         placeholder="Add task..."
                     />
-
-                    {todos.map(todo => {
-                        return (
-                            <StyledTodo key={todo.id}>
-                                <StyledCheckbox
-                                    isCompleted={todo.done}
-                                    onClick={() => toggleDone(todo)}
-                                />
-                                <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
-                                <StyledDeleteButton onClick={() => deleteTodo(todo)}>
-                                    <Delete />
-                                </StyledDeleteButton>
-                            </StyledTodo>
-                        )
-                    })}
+                    <TodoList
+                        pressDelay={100}
+                        todos={todos}
+                        toggleDone={toggleDone}
+                        deleteTodo={deleteTodo}
+                        onSortEnd={onSortEnd}
+                    />
                 </StyledTodos>
             )}
 
