@@ -1,6 +1,6 @@
 import React from 'react'
 import { SortableElement } from 'react-sortable-hoc'
-import { StyledCheckbox, StyledDeleteButton, StyledTaskName, StyledTodo } from '../Layout/style'
+import { StyledCheckbox, StyledDeleteButton, StyledTaskName, StyledTodo } from './style'
 import { Delete } from '../Layout/delete'
 
 export type Todo = {
