@@ -26,11 +26,6 @@ type User = {
 
 const INITIAL_USER: User = { id: '', email: '', avatar: '', fullName: '' }
 
-export enum PROVIDER {
-    FACEBOOK = 'facebook',
-    GOOGLE = 'google',
-}
-
 const Layout = () => {
     const [todos, setTodos] = useState<Todo[]>([])
     const [user, setUser] = useState<User>(INITIAL_USER)
@@ -42,6 +37,7 @@ const Layout = () => {
         try {
             const result = await firebase.auth().signInWithPopup(provider)
 
+            // const token = result.credential.accessToken
             const id = result.user?.uid || ''
             const email = result.user?.email || ''
             const avatar = result.user?.photoURL || ''
@@ -50,31 +46,6 @@ const Layout = () => {
             const preparedUser = { id, avatar, email, fullName }
             window.localStorage.setItem('user', JSON.stringify(preparedUser))
             setUser(preparedUser)
-        } catch (error) {
-            // Handle Errors here.
-            var errorCode = error.code
-            var errorMessage = error.message
-            // The email of the user's account used.
-            var email = error.email
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential
-        }
-    }
-
-    const loginWithGithub = async () => {
-        const provider = new firebase.auth.GithubAuthProvider()
-
-        try {
-            let result = await firebase.auth().signInWithPopup(provider)
-            console.log('result', result)
-            // const id = result.user?.uid || ''
-            // const email = result.user?.email || ''
-            // const avatar = result.user?.photoURL || ''
-            // const fullName = result.user?.displayName || ''
-
-            // const preparedUser = { id, avatar, email, fullName }
-            // window.localStorage.setItem('user', JSON.stringify(preparedUser))
-            // setUser(preparedUser)
         } catch (error) {
             // Handle Errors here.
             var errorCode = error.code
@@ -197,9 +168,7 @@ const Layout = () => {
                 </StyledTodos>
             )}
 
-            {!user.id && (
-                <LoginForm onGoogleLogin={loginWithGoogle} onGithubLogin={loginWithGithub} />
-            )}
+            {!user.id && <LoginForm onLogin={loginWithGoogle} />}
         </StyledLayout>
     )
 }

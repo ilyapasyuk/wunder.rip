@@ -1,17 +1,15 @@
 import React from 'react'
 
-import { StyledButton, StyledLoginForm } from './style'
+import { StyledLoginForm, StyledButton } from './style'
 
 interface Props {
-    onGithubLogin: () => void
-    onGoogleLogin: () => void
+    onLogin: () => void
 }
 
-const LoginForm = ({ onGoogleLogin, onGithubLogin }: Props) => {
+const LoginForm = ({ onLogin }: Props) => {
     return (
         <StyledLoginForm>
-            <StyledButton onClick={() => onGoogleLogin()}>Google</StyledButton>
-            <StyledButton onClick={() => onGithubLogin()}>Github</StyledButton>
+            <StyledButton onClick={onLogin}>Google</StyledButton>
         </StyledLoginForm>
     )
 }
