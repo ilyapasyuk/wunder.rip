@@ -36,11 +36,18 @@ const Layout = () => {
     const [user, setUser] = useState<User>(INITIAL_USER)
     const [currentTodo, setCurrentTodo] = useState<string>('')
 
-    const loginWithGoogle = async () => {
-        const provider = new firebase.auth.GoogleAuthProvider()
+    const getProvider = (provider: PROVIDER) => {
+        switch (provider) {
+            case PROVIDER.GOOGLE:
+                return new firebase.auth.GoogleAuthProvider()
+            case PROVIDER.FACEBOOK:
+                return new firebase.auth.GithubAuthProvider()
+        }
+    }
 
+    const login = async (provider: PROVIDER) => {
         try {
-            const result = await firebase.auth().signInWithPopup(provider)
+            const result = await firebase.auth().signInWithPopup(getProvider(provider))
 
             const id = result.user?.uid || ''
             const email = result.user?.email || ''
@@ -50,31 +57,6 @@ const Layout = () => {
             const preparedUser = { id, avatar, email, fullName }
             window.localStorage.setItem('user', JSON.stringify(preparedUser))
             setUser(preparedUser)
-        } catch (error) {
-            // Handle Errors here.
-            var errorCode = error.code
-            var errorMessage = error.message
-            // The email of the user's account used.
-            var email = error.email
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential
-        }
-    }
-
-    const loginWithGithub = async () => {
-        const provider = new firebase.auth.GithubAuthProvider()
-
-        try {
-            let result = await firebase.auth().signInWithPopup(provider)
-            console.log('result', result)
-            // const id = result.user?.uid || ''
-            // const email = result.user?.email || ''
-            // const avatar = result.user?.photoURL || ''
-            // const fullName = result.user?.displayName || ''
-
-            // const preparedUser = { id, avatar, email, fullName }
-            // window.localStorage.setItem('user', JSON.stringify(preparedUser))
-            // setUser(preparedUser)
         } catch (error) {
             // Handle Errors here.
             var errorCode = error.code
@@ -197,9 +179,7 @@ const Layout = () => {
                 </StyledTodos>
             )}
 
-            {!user.id && (
-                <LoginForm onGoogleLogin={loginWithGoogle} onGithubLogin={loginWithGithub} />
-            )}
+            {!user.id && <LoginForm onLogin={login} />}
         </StyledLayout>
     )
 }

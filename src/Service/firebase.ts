@@ -13,5 +13,6 @@ const config = {
 }
 
 firebase.initializeApp(config)
+firebase.analytics()
 export const databaseRef = firebase.database().ref()
 export default firebase
