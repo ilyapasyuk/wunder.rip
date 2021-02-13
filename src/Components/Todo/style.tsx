@@ -12,11 +12,15 @@ const StyledTodo = styled.div`
     z-index: 9;
     overflow: hidden;
     border: 1px solid #ededed;
-    user-select: none;
     -webkit-text-size-adjust: 100%;
     margin-bottom: 8px;
     box-shadow: 0 1px 3px rgba(50, 50, 50, 0.08);
     border-radius: 4px;
+    cursor: grab;
+
+    &:hover {
+        background: aliceblue;
+    }
 `
 
 interface StyledCheckboxProps {
@@ -46,7 +50,6 @@ const StyledCheckbox = styled.span`
 const StyledTaskName = styled.div`
     color: ${props => props.theme.taskName};
     text-decoration: ${({ isCompleted }: StyledCheckboxProps) => isCompleted && 'line-through'};
-    pointer-events: none;
     position: absolute;
     left: 0;
     top: 0;

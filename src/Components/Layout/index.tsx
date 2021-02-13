@@ -8,16 +8,9 @@ import { LoginForm } from 'Components/LoginForm'
 import { TodoList } from 'Components/TodoList'
 
 import { GlobalStyle, StyledAddTask, StyledLayout, StyledTodos } from './style'
+import { Todo } from '../Todo'
 
-type Todo = {
-    task: string
-    done: boolean
-    useruid: string
-    id?: string
-    createdAt?: number
-}
-
-type User = {
+export type User = {
     id: string
     avatar: string
     email: string
@@ -117,8 +110,10 @@ const Layout = () => {
                         task: items[i].task,
                         done: items[i].done,
                         useruid: items[i].useruid,
+                        note: items[i].note,
                     }
                 })
+
                 setTodos(prepareTodos)
             })
         }
@@ -175,6 +170,7 @@ const Layout = () => {
                         toggleDone={toggleDone}
                         deleteTodo={deleteTodo}
                         onSortEnd={onSortEnd}
+                        user={user}
                     />
                 </StyledTodos>
             )}

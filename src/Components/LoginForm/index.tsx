@@ -11,7 +11,6 @@ const LoginForm = ({ onLogin }: Props) => {
     return (
         <StyledLoginForm>
             <StyledButton onClick={() => onLogin(PROVIDER.GOOGLE)}>Google</StyledButton>
-            <StyledButton onClick={() => onLogin(PROVIDER.GOOGLE)}>Github</StyledButton>
         </StyledLoginForm>
     )
 }

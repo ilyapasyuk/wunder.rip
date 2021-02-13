@@ -9,19 +9,23 @@ export type Todo = {
     useruid: string
     id?: string
     createdAt?: number
+    note?: string
 }
 
 interface TodoProps {
     todo: Todo
     toggleDone: (todo: Todo) => void
     deleteTodo: (todo: Todo) => void
+    onSelect: (todo: Todo) => void
 }
 
-const TodoItem = SortableElement(({ todo, toggleDone, deleteTodo }: TodoProps) => {
+const TodoItem = SortableElement(({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
     return (
         <StyledTodo>
             <StyledCheckbox isCompleted={todo.done} onClick={() => toggleDone(todo)} />
-            <StyledTaskName isCompleted={todo.done}>{todo.task}</StyledTaskName>
+            <StyledTaskName isCompleted={todo.done} onClick={() => onSelect(todo)}>
+                {todo.task}
+            </StyledTaskName>
             <StyledDeleteButton onClick={() => deleteTodo(todo)}>
                 <Delete />
             </StyledDeleteButton>
