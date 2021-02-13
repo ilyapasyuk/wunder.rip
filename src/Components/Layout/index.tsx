@@ -90,7 +90,6 @@ const Layout = () => {
         const value: Todo = {
             ...todo,
             done: !todo.done,
-            useruid: user.id,
         }
 
         if (todo.id) {

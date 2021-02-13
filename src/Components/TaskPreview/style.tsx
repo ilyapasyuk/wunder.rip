@@ -14,4 +14,13 @@ const StyledTaskPreview = styled.div`
     border-left: 1px solid #ededed;
 `
 
-export { StyledTaskPreview }
+const StyledTodoListFiles = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 8px 8px;
+    grid-template-areas: '. .';
+    margin-bottom: 16px;
+`
+
+export { StyledTaskPreview, StyledTodoListFiles }

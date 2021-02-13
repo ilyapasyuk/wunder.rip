@@ -13,7 +13,9 @@ interface Props {
 }
 
 const TodoList = SortableContainer(({ todos, toggleDone, deleteTodo, user }: Props) => {
-    const [selectedTask, setSelectedTask] = useState<Todo | undefined>(undefined)
+    const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(undefined)
+
+    const selectedTask = todos.find(todo => todo.id === selectedTaskId)
 
     return (
         <StyledTodoList>
@@ -24,14 +26,14 @@ const TodoList = SortableContainer(({ todos, toggleDone, deleteTodo, user }: Pro
                     toggleDone={toggleDone}
                     deleteTodo={deleteTodo}
                     index={index}
-                    onSelect={todo => setSelectedTask(todo)}
+                    onSelect={todo => setSelectedTaskId(todo.id)}
                 />
             ))}
 
             {selectedTask?.id && (
                 <TaskPreview
                     todo={selectedTask}
-                    onClose={() => setSelectedTask(undefined)}
+                    onClose={() => setSelectedTaskId(undefined)}
                     user={user}
                 />
             )}

@@ -1,12 +1,13 @@
 import React from 'react'
-import { Todo } from '../Todo'
-import { StyledTaskPreview } from './style'
 import LazyImage from 'react-lazy-image-loader'
 
 import { getUpdateTaskRoute } from 'Service/routes'
 import { databaseRef } from 'Service/firebase'
-import { User } from '../Layout'
-import { ImageUploader } from '../ImageUploader'
+import { User } from 'Components/Layout'
+import { Todo } from 'Components/Todo'
+import { ImageUploader } from 'Components/ImageUploader'
+
+import { StyledTaskPreview, StyledTodoListFiles } from './style'
 
 interface TaskPreviewProps {
     todo: Todo
@@ -24,6 +25,8 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
             return databaseRef.update(updates)
         }
     }
+
+    const isShowFiles = Boolean(todo.files?.length) && todo.files[0] !== ''
 
     return (
         <StyledTaskPreview>
@@ -43,17 +46,19 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
                     onChange={({ target }) => updateTask({ ...todo, note: target.value })}
                 />
             </p>
-            {Boolean(todo.files?.length) &&
-                todo.files?.map(file => (
-                    <LazyImage
-                        src={`${file}?alt=media`}
-                        alt="avatar"
-                        height={60}
-                        width={60}
-                        borderRadius={4}
-                        key={`${file}?alt=media`}
-                    />
-                ))}
+            {isShowFiles && (
+                <StyledTodoListFiles>
+                    {todo.files?.map(file => (
+                        <LazyImage
+                            src={`${file}?alt=media`}
+                            alt="avatar"
+                            height={100}
+                            borderRadius={4}
+                            key={`${file}?alt=media`}
+                        />
+                    ))}
+                </StyledTodoListFiles>
+            )}
             {todo.id && (
                 <ImageUploader
                     userId={user.id}
