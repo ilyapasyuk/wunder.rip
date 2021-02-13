@@ -2,6 +2,7 @@ import React from 'react'
 import { Todo } from '../Todo'
 import { StyledTaskPreview } from './style'
 
+import { getUpdateTaskRoute } from 'Service/routes'
 import { databaseRef } from 'Service/firebase'
 import { User } from '../Layout'
 
@@ -21,11 +22,13 @@ const TaskPreview = ({
     note,
 }: TaskPreviewProps) => {
     const updateTask = (todo: Todo) => {
-        const updates = {
-            [`todos/${user.id}/${todo.id}`]: todo,
-        }
+        if (todo.id) {
+            const updates = {
+                [getUpdateTaskRoute(user.id, todo.id)]: todo,
+            }
 
-        return databaseRef.update(updates)
+            return databaseRef.update(updates)
+        }
     }
 
     return (
