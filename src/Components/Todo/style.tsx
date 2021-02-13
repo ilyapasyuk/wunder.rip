@@ -30,6 +30,7 @@ interface StyledCheckboxProps {
 const StyledCheckbox = styled.span`
     padding-left: 8px;
     padding-right: 8px;
+    z-index: 1;
 
     input {
         display: none;
