@@ -11,8 +11,6 @@ import { TodoList } from 'Components/TodoList'
 import { GlobalStyle, StyledAddTask, StyledLayout, StyledTodos } from './style'
 import { Todo } from '../Todo'
 
-console.log(process.env)
-
 export type User = {
     id: string
     avatar: string
