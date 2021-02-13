@@ -30,14 +30,9 @@ const TodoList = SortableContainer(({ todos, toggleDone, deleteTodo, user }: Pro
 
             {selectedTask?.id && (
                 <TaskPreview
-                    done={selectedTask.done}
-                    task={selectedTask.task}
-                    useruid={selectedTask.useruid}
-                    id={selectedTask.id}
-                    createdAt={selectedTask.createdAt}
+                    todo={selectedTask}
                     onClose={() => setSelectedTask(undefined)}
                     user={user}
-                    note={selectedTask.note}
                 />
             )}
         </StyledTodoList>

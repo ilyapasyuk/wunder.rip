@@ -70,6 +70,8 @@ const Layout = () => {
             done: false,
             useruid: user.id,
             createdAt: timestamp,
+            files: [''],
+            note: '',
         }
 
         databaseRef.child(getCreateTaskRoute(user.id)).push(value)
@@ -86,11 +88,9 @@ const Layout = () => {
 
     const toggleDone = (todo: Todo) => {
         const value: Todo = {
-            task: todo.task,
+            ...todo,
             done: !todo.done,
             useruid: user.id,
-            createdAt: todo.createdAt,
-            id: todo.id,
         }
 
         if (todo.id) {
@@ -116,6 +116,7 @@ const Layout = () => {
                         done: items[i].done,
                         useruid: items[i].useruid,
                         note: items[i].note,
+                        files: items[i].files,
                     }
                 })
 
@@ -145,6 +146,8 @@ const Layout = () => {
 
     const onSortEnd = ({ oldIndex, newIndex }: sortEnd) => {
         const newList = arrayMove(todos, oldIndex, newIndex)
+
+        console.log('newList', newList)
 
         databaseRef.update({ [`todos/${user.id}/`]: newList })
     }

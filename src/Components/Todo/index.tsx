@@ -9,7 +9,8 @@ export type Todo = {
     useruid: string
     id?: string
     createdAt?: number
-    note?: string
+    note: string
+    files: string[]
 }
 
 interface TodoProps {
