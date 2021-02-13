@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import arrayMove from 'array-move'
 
 import firebase, { databaseRef } from 'Service/firebase'
+import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'Service/routes'
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
@@ -71,7 +72,7 @@ const Layout = () => {
             createdAt: timestamp,
         }
 
-        databaseRef.child(`todos/${user.id}`).push(value)
+        databaseRef.child(getCreateTaskRoute(user.id)).push(value)
         setCurrentTodo('')
     }
 
@@ -92,16 +93,20 @@ const Layout = () => {
             id: todo.id,
         }
 
-        databaseRef.update({ [`todos/${user.id}/${todo.id}/`]: value })
+        if (todo.id) {
+            databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: value })
+        }
     }
 
     const deleteTodo = (todo: Todo) => {
-        databaseRef.update({ [`todos/${user.id}/${todo.id}/`]: null })
+        if (todo.id) {
+            databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: null })
+        }
     }
 
     useEffect(() => {
         if (user.id) {
-            databaseRef.child(`todos/${user.id}`).on('value', snapshot => {
+            databaseRef.child(getUserRoute(user.id)).on('value', snapshot => {
                 let items = snapshot.val() || []
                 const prepareTodos: Todo[] = Object.keys(items).map(i => {
                     return {
