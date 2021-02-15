@@ -3,7 +3,7 @@ import arrayMove from 'array-move'
 
 import firebase, { databaseRef } from 'Service/firebase'
 import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'Service/routes'
-import { prepareTaskForUpdate } from 'Service/task'
+import { prepareTaskForUpdate, updateTask } from 'Service/task'
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
@@ -87,14 +87,14 @@ const Layout = () => {
         }
     }
 
-    const toggleDone = (todo: Todo) => {
+    const toggleDone = async (todo: Todo) => {
         const value: Todo = {
             ...todo,
             done: !todo.done,
         }
 
         if (todo.id) {
-            databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: value })
+            await updateTask(value, user.id)
         }
     }
 
