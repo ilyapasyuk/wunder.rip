@@ -70,7 +70,7 @@ const Layout = () => {
             done: false,
             useruid: user.id,
             createdAt: timestamp,
-            files: [''],
+            files: [],
             note: '',
         }
 

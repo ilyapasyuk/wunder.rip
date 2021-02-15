@@ -26,7 +26,14 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
         }
     }
 
-    const isShowFiles = Boolean(todo.files?.length) && todo.files[0] !== ''
+    const deleteFile = async (file: any, todo: Todo) => {
+        const newTodo: Todo = {
+            ...todo,
+            files: todo.files.filter(todoFileUrl => todoFileUrl !== file),
+        }
+
+        await updateTask(newTodo)
+    }
 
     return (
         <StyledTaskPreview>
@@ -46,16 +53,24 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
                     onChange={({ target }) => updateTask({ ...todo, note: target.value })}
                 />
             </p>
-            {isShowFiles && (
+            {Boolean(todo.files?.length) && (
                 <StyledTodoListFiles>
                     {todo.files?.map(file => (
-                        <LazyImage
-                            src={`${file}?alt=media`}
-                            alt="avatar"
-                            height={100}
-                            borderRadius={4}
-                            key={`${file}?alt=media`}
-                        />
+                        <div key={`${file}?alt=media`}>
+                            <button onClick={() => deleteFile(file, todo)}>delete</button>
+                            <div
+                                onClick={() => {
+                                    window.open(`${file}?alt=media`, '_blank')
+                                }}
+                            >
+                                <LazyImage
+                                    src={`${file}?alt=media`}
+                                    alt="avatar"
+                                    height={100}
+                                    borderRadius={4}
+                                />
+                            </div>
+                        </div>
                     ))}
                 </StyledTodoListFiles>
             )}
@@ -64,9 +79,11 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
                     userId={user.id}
                     todoId={todo.id}
                     onFileUploaded={fileUrl => {
+                        const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
+
                         updateTask({
                             ...todo,
-                            files: [...todo.files, fileUrl],
+                            files,
                         })
                     }}
                 />
