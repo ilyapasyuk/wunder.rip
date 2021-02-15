@@ -3,6 +3,7 @@ import arrayMove from 'array-move'
 
 import firebase, { databaseRef } from 'Service/firebase'
 import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'Service/routes'
+import { prepareTaskForUpdate } from 'Service/task'
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
@@ -146,9 +147,9 @@ const Layout = () => {
     const onSortEnd = ({ oldIndex, newIndex }: sortEnd) => {
         const newList = arrayMove(todos, oldIndex, newIndex)
 
-        console.log('newList', newList)
+        const preparedNewList = newList.map(task => prepareTaskForUpdate(task))
 
-        databaseRef.update({ [`todos/${user.id}/`]: newList })
+        databaseRef.update({ [getUserRoute(user.id)]: preparedNewList })
     }
 
     return (

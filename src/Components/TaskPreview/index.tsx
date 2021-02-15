@@ -1,8 +1,8 @@
 import React from 'react'
 import LazyImage from 'react-lazy-image-loader'
 
-import { getUpdateTaskRoute } from 'Service/routes'
-import { databaseRef } from 'Service/firebase'
+import { updateTask } from 'Service/task'
+
 import { User } from 'Components/Layout'
 import { Todo } from 'Components/Todo'
 import { ImageUploader } from 'Components/ImageUploader'
@@ -16,23 +16,13 @@ interface TaskPreviewProps {
 }
 
 const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
-    const updateTask = (todo: Todo) => {
-        if (todo.id) {
-            const updates = {
-                [getUpdateTaskRoute(user.id, todo.id)]: todo,
-            }
-
-            return databaseRef.update(updates)
-        }
-    }
-
     const deleteFile = async (file: any, todo: Todo) => {
         const newTodo: Todo = {
             ...todo,
-            files: todo.files.filter(todoFileUrl => todoFileUrl !== file),
+            files: todo?.files?.filter(todoFileUrl => todoFileUrl !== file),
         }
 
-        await updateTask(newTodo)
+        await updateTask(newTodo, user.id)
     }
 
     return (
@@ -43,14 +33,14 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
                     type="text"
                     placeholder="Name"
                     value={todo.task}
-                    onChange={({ target }) => updateTask({ ...todo, task: target.value })}
+                    onChange={({ target }) => updateTask({ ...todo, task: target.value }, user.id)}
                 />
             </p>
             <p>
                 <textarea
                     placeholder="Note"
                     value={todo.note}
-                    onChange={({ target }) => updateTask({ ...todo, note: target.value })}
+                    onChange={({ target }) => updateTask({ ...todo, note: target.value }, user.id)}
                 />
             </p>
             {Boolean(todo.files?.length) && (
@@ -81,10 +71,13 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
                     onFileUploaded={fileUrl => {
                         const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
-                        updateTask({
-                            ...todo,
-                            files,
-                        })
+                        updateTask(
+                            {
+                                ...todo,
+                                files,
+                            },
+                            user.id,
+                        )
                     }}
                 />
             )}

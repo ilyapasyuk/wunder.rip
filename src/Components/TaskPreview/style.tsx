@@ -6,7 +6,7 @@ const StyledTaskPreview = styled.div`
     top: 0;
     right: 0;
     bottom: 0;
-    min-width: 300px;
+    min-width: 400px;
     max-width: 600px;
     z-index: 99999;
     padding: 16px;
