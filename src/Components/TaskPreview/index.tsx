@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import LazyImage from 'react-lazy-image-loader'
 
 import { updateTask } from 'Service/task'
+import { useOnClickOutside } from 'Service/useClickOutside'
 
 import { User } from 'Components/Layout'
 import { Todo } from 'Components/Todo'
@@ -16,6 +17,8 @@ interface TaskPreviewProps {
 }
 
 const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
+    const taskPreviewRef = useRef(null)
+
     const deleteFile = async (file: any, todo: Todo) => {
         const newTodo: Todo = {
             ...todo,
@@ -25,8 +28,10 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
         await updateTask(newTodo, user.id)
     }
 
+    useOnClickOutside(taskPreviewRef, onClose)
+
     return (
-        <StyledTaskPreview>
+        <StyledTaskPreview ref={taskPreviewRef}>
             <button onClick={onClose}>Close</button> <h2>{todo.task}</h2>
             <p>
                 <input
