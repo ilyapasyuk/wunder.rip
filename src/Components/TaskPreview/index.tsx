@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import LazyImage from 'react-lazy-image-loader'
+import { DeleteForever, Visibility } from '@material-ui/icons'
 
 import { updateTask } from 'Service/task'
 import { useOnClickOutside } from 'Service/useClickOutside'
@@ -8,7 +9,14 @@ import { User } from 'Components/Layout'
 import { Todo } from 'Components/Todo'
 import { ImageUploader } from 'Components/ImageUploader'
 
-import { StyledTaskPreview, StyledTodoListFiles } from './style'
+import {
+    StyledTaskPreview,
+    StyledTodoListFiles,
+    StyledTodoListFile,
+    StyledTodoListFileDelete,
+    StyledTodoListFilePreview,
+    StyledTodoListTaskName,
+} from './style'
 
 interface TaskPreviewProps {
     todo: Todo
@@ -32,40 +40,43 @@ const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
 
     return (
         <StyledTaskPreview ref={taskPreviewRef}>
-            <button onClick={onClose}>Close</button> <h2>{todo.task}</h2>
-            <p>
+            <button onClick={onClose}>Close</button>
+            <StyledTodoListTaskName>
                 <input
                     type="text"
                     placeholder="Name"
                     value={todo.task}
                     onChange={({ target }) => updateTask({ ...todo, task: target.value }, user.id)}
                 />
-            </p>
-            <p>
+            </StyledTodoListTaskName>
+            <StyledTodoListTaskName>
                 <textarea
                     placeholder="Note"
                     value={todo.note}
                     onChange={({ target }) => updateTask({ ...todo, note: target.value }, user.id)}
                 />
-            </p>
+            </StyledTodoListTaskName>
             {Boolean(todo.files?.length) && (
                 <StyledTodoListFiles>
                     {todo.files?.map(file => (
-                        <div key={`${file}?alt=media`}>
-                            <button onClick={() => deleteFile(file, todo)}>delete</button>
-                            <div
+                        <StyledTodoListFile key={`${file}?alt=media`}>
+                            <StyledTodoListFileDelete onClick={() => deleteFile(file, todo)}>
+                                <DeleteForever />
+                            </StyledTodoListFileDelete>
+                            <StyledTodoListFilePreview
                                 onClick={() => {
                                     window.open(`${file}?alt=media`, '_blank')
                                 }}
                             >
-                                <LazyImage
-                                    src={`${file}?alt=media`}
-                                    alt="avatar"
-                                    height={100}
-                                    borderRadius={4}
-                                />
-                            </div>
-                        </div>
+                                <Visibility />
+                            </StyledTodoListFilePreview>
+                            <LazyImage
+                                src={`${file}?alt=media`}
+                                alt="avatar"
+                                height={100}
+                                borderRadius={4}
+                            />
+                        </StyledTodoListFile>
                     ))}
                 </StyledTodoListFiles>
             )}
