@@ -3,10 +3,9 @@ import { SortableElement } from 'react-sortable-hoc'
 import { StyledCheckbox, StyledDeleteButton, StyledTaskName, StyledTodo } from './style'
 import { Delete } from '../Layout/delete'
 
-export type Todo = {
+export type TodoType = {
     task: string
     done: boolean
-    useruid: string
     id?: string
     createdAt: number
     note: string
@@ -14,10 +13,10 @@ export type Todo = {
 }
 
 interface TodoProps {
-    todo: Todo
-    toggleDone: (todo: Todo) => void
-    deleteTodo: (todo: Todo) => void
-    onSelect: (todo: Todo) => void
+    todo: TodoType
+    toggleDone: (todo: TodoType) => void
+    deleteTodo: (todo: TodoType) => void
+    onSelect: (todo: TodoType) => void
 }
 
 const TodoItem = SortableElement(({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {

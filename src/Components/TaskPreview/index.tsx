@@ -6,7 +6,7 @@ import { updateTask } from 'Service/task'
 import { useOnClickOutside } from 'Service/useClickOutside'
 
 import { User } from 'Components/Layout'
-import { Todo } from 'Components/Todo'
+import { TodoType } from 'Components/Todo'
 import { ImageUploader } from 'Components/ImageUploader'
 
 import {
@@ -19,7 +19,7 @@ import {
 } from './style'
 
 interface TaskPreviewProps {
-    todo: Todo
+    todo: TodoType
     onClose: () => void
     user: User
 }
@@ -27,8 +27,8 @@ interface TaskPreviewProps {
 const TaskPreview = ({ todo, onClose, user }: TaskPreviewProps) => {
     const taskPreviewRef = useRef(null)
 
-    const deleteFile = async (file: any, todo: Todo) => {
-        const newTodo: Todo = {
+    const deleteFile = async (file: any, todo: TodoType) => {
+        const newTodo: TodoType = {
             ...todo,
             files: todo?.files?.filter(todoFileUrl => todoFileUrl !== file),
         }

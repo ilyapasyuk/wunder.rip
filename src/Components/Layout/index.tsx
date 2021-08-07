@@ -8,9 +8,9 @@ import { prepareTaskForUpdate, updateTask } from 'Service/task'
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
 import { TodoList } from 'Components/TodoList'
+import { TodoType } from 'Components/Todo'
 
 import { GlobalStyle, StyledAddTask, StyledLayout, StyledTodos } from './style'
-import { Todo } from '../Todo'
 
 export type User = {
     id: string
@@ -27,7 +27,7 @@ export enum PROVIDER {
 }
 
 const Layout = () => {
-    const [todos, setTodos] = useState<Todo[]>([])
+    const [todos, setTodos] = useState<TodoType[]>([])
     const [user, setUser] = useState<User>(INITIAL_USER)
     const [currentTodo, setCurrentTodo] = useState<string>('')
 
@@ -40,30 +40,29 @@ const Layout = () => {
         }
     }
 
-    const login = async (provider: PROVIDER) => {
+    const login = async (provider: PROVIDER): Promise<void> => {
         try {
             const result = await firebase.auth().signInWithPopup(getProvider(provider))
 
-            const id = result.user?.uid || ''
-            const email = result.user?.email || ''
-            const avatar = result.user?.photoURL || ''
-            const fullName = result.user?.displayName || ''
+            const id: string = result.user?.uid || ''
+            const email: string = result.user?.email || ''
+            const avatar: string = result.user?.photoURL || ''
+            const fullName: string = result.user?.displayName || ''
 
-            const preparedUser = { id, avatar, email, fullName }
-            window.localStorage.setItem('user', JSON.stringify(preparedUser))
+            const preparedUser: User = { id, avatar, email, fullName }
+            await window.localStorage.setItem('user', JSON.stringify(preparedUser))
             setUser(preparedUser)
         } catch (error) {
-            console.error('Login rror:', error)
+            console.error('Login error:', error)
         }
     }
 
-    const addTodo = (todo: string) => {
+    const addTodo = async (todo: string): Promise<void> => {
         const timestamp = +new Date()
 
-        const value: Todo = {
+        const value: TodoType = {
             task: todo.slice(0, 100),
             done: false,
-            useruid: user.id,
             createdAt: timestamp,
             files: [],
             note: '',
@@ -81,8 +80,8 @@ const Layout = () => {
         }
     }
 
-    const toggleDone = async (todo: Todo) => {
-        const value: Todo = {
+    const toggleDone = async (todo: TodoType) => {
+        const value: TodoType = {
             ...todo,
             done: !todo.done,
         }
@@ -92,7 +91,7 @@ const Layout = () => {
         }
     }
 
-    const deleteTodo = async (todo: Todo) => {
+    const deleteTodo = async (todo: TodoType) => {
         if (todo.id) {
             await databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: null })
         }
@@ -102,19 +101,17 @@ const Layout = () => {
         if (user.id) {
             databaseRef.child(getUserRoute(user.id)).on('value', snapshot => {
                 let items = snapshot.val() || []
-                const prepareTodos: Todo[] = Object.keys(items)
-                    .map(i => {
-                        return {
-                            id: i,
-                            createdAt: items[i].createdAt,
-                            task: items[i].task,
-                            done: items[i].done,
-                            useruid: items[i].useruid,
-                            note: items[i].note,
-                            files: items[i].files,
-                        }
-                    })
-                    .reverse()
+                const prepareTodos: TodoType[] = Object.keys(items).map(i => {
+                    return {
+                        id: i,
+                        createdAt: items[i].createdAt,
+                        task: items[i].task,
+                        done: items[i].done,
+                        useruid: items[i].useruid,
+                        note: items[i].note,
+                        files: items[i].files,
+                    }
+                })
 
                 setTodos(prepareTodos)
             })
@@ -123,15 +120,15 @@ const Layout = () => {
 
     useEffect(() => {
         const userFromLocalStorage: string = window.localStorage.getItem('user') || ''
-        const user = userFromLocalStorage ? JSON.parse(userFromLocalStorage) : INITIAL_USER
+        const user: User = userFromLocalStorage ? JSON.parse(userFromLocalStorage) : INITIAL_USER
 
         if (user) {
             setUser(user)
         }
     }, [])
 
-    const onLogout = () => {
-        window.localStorage.removeItem('user')
+    const onLogout = async (): Promise<void> => {
+        await window.localStorage.removeItem('user')
         setUser(INITIAL_USER)
     }
 
@@ -140,7 +137,7 @@ const Layout = () => {
         newIndex: number
     }
 
-    const onSortEnd = async ({ oldIndex, newIndex }: sortEnd) => {
+    const onSortEnd = async ({ oldIndex, newIndex }: sortEnd): Promise<void> => {
         const newList = arrayMove(todos, oldIndex, newIndex)
 
         const preparedNewList = newList.map(task => prepareTaskForUpdate(task))

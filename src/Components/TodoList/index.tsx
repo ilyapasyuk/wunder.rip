@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { SortableContainer } from 'react-sortable-hoc'
-import { TodoItem, Todo } from '../Todo'
+import { TodoItem, TodoType } from '../Todo'
 import { TaskPreview } from '../TaskPreview'
 import { StyledTodoList } from './style'
 import { User } from '../Layout'
 
 interface Props {
-    todos: Todo[]
-    toggleDone: (todo: Todo) => void
-    deleteTodo: (todo: Todo) => void
+    todos: TodoType[]
+    toggleDone: (todo: TodoType) => void
+    deleteTodo: (todo: TodoType) => void
     user: User
 }
 

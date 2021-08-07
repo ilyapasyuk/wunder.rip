@@ -1,8 +1,8 @@
-import { Todo } from 'Components/Todo'
+import { TodoType } from 'Components/Todo'
 import { getUpdateTaskRoute } from './routes'
 import { databaseRef } from './firebase'
 
-const prepareTaskForUpdate = (todo: Todo) => {
+const prepareTaskForUpdate = (todo: TodoType) => {
     let newTask = {}
 
     for (const key in todo) {
@@ -16,7 +16,7 @@ const prepareTaskForUpdate = (todo: Todo) => {
     return newTask
 }
 
-const updateTask = (todo: Todo, userId: string) => {
+const updateTask = (todo: TodoType, userId: string) => {
     const newTask = prepareTaskForUpdate(todo)
     if (todo.id) {
         const updates = {
