@@ -8,8 +8,8 @@ export type Todo = {
     done: boolean
     useruid: string
     id?: string
-    createdAt?: number
-    note?: string
+    createdAt: number
+    note: string
     files?: string[]
 }
 

@@ -53,13 +53,7 @@ const Layout = () => {
             window.localStorage.setItem('user', JSON.stringify(preparedUser))
             setUser(preparedUser)
         } catch (error) {
-            // Handle Errors here.
-            var errorCode = error.code
-            var errorMessage = error.message
-            // The email of the user's account used.
-            var email = error.email
-            // The firebase.auth.AuthCredential type that was used.
-            var credential = error.credential
+            console.error('Login rror:', error)
         }
     }
 
@@ -98,9 +92,9 @@ const Layout = () => {
         }
     }
 
-    const deleteTodo = (todo: Todo) => {
+    const deleteTodo = async (todo: Todo) => {
         if (todo.id) {
-            databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: null })
+            await databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: null })
         }
     }
 
@@ -108,17 +102,19 @@ const Layout = () => {
         if (user.id) {
             databaseRef.child(getUserRoute(user.id)).on('value', snapshot => {
                 let items = snapshot.val() || []
-                const prepareTodos: Todo[] = Object.keys(items).map(i => {
-                    return {
-                        id: i,
-                        createdAt: items[i].createdAt,
-                        task: items[i].task,
-                        done: items[i].done,
-                        useruid: items[i].useruid,
-                        note: items[i].note,
-                        files: items[i].files,
-                    }
-                })
+                const prepareTodos: Todo[] = Object.keys(items)
+                    .map(i => {
+                        return {
+                            id: i,
+                            createdAt: items[i].createdAt,
+                            task: items[i].task,
+                            done: items[i].done,
+                            useruid: items[i].useruid,
+                            note: items[i].note,
+                            files: items[i].files,
+                        }
+                    })
+                    .reverse()
 
                 setTodos(prepareTodos)
             })
@@ -144,12 +140,12 @@ const Layout = () => {
         newIndex: number
     }
 
-    const onSortEnd = ({ oldIndex, newIndex }: sortEnd) => {
+    const onSortEnd = async ({ oldIndex, newIndex }: sortEnd) => {
         const newList = arrayMove(todos, oldIndex, newIndex)
 
         const preparedNewList = newList.map(task => prepareTaskForUpdate(task))
 
-        databaseRef.update({ [getUserRoute(user.id)]: preparedNewList })
+        await databaseRef.update({ [getUserRoute(user.id)]: preparedNewList })
     }
 
     return (
