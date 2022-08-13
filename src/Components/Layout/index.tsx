@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import arrayMove from 'array-move'
 
 import firebase, { databaseRef } from 'Service/firebase'
 import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'Service/routes'
-import { prepareTaskForUpdate, updateTask } from 'Service/task'
+import { updateTask } from 'Service/task'
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
@@ -72,11 +71,11 @@ const Layout = () => {
         setCurrentTodo('')
     }
 
-    const keyHandle = (e: any) => {
+    const keyHandle = async (e: any) => {
         if (e.charCode === 13 && Boolean(e.target.value.length)) {
             const text = e.target.value
             setCurrentTodo('')
-            addTodo(text)
+            await addTodo(text)
         }
     }
 
@@ -101,17 +100,19 @@ const Layout = () => {
         if (user.id) {
             databaseRef.child(getUserRoute(user.id)).on('value', snapshot => {
                 let items = snapshot.val() || []
-                const prepareTodos: TodoType[] = Object.keys(items).map(i => {
-                    return {
-                        id: i,
-                        createdAt: items[i].createdAt,
-                        task: items[i].task,
-                        done: items[i].done,
-                        useruid: items[i].useruid,
-                        note: items[i].note,
-                        files: items[i].files,
-                    }
-                })
+                const prepareTodos: TodoType[] = Object.keys(items)
+                    .map(i => {
+                        return {
+                            id: i,
+                            createdAt: items[i].createdAt,
+                            task: items[i].task,
+                            done: items[i].done,
+                            useruid: items[i].useruid,
+                            note: items[i].note,
+                            files: items[i].files,
+                        }
+                    })
+                    .sort((a, b) => b.createdAt - a.createdAt)
 
                 setTodos(prepareTodos)
             })
@@ -137,14 +138,6 @@ const Layout = () => {
         newIndex: number
     }
 
-    const onSortEnd = async ({ oldIndex, newIndex }: sortEnd): Promise<void> => {
-        const newList = arrayMove(todos, oldIndex, newIndex)
-
-        const preparedNewList = newList.map(task => prepareTaskForUpdate(task))
-
-        await databaseRef.update({ [getUserRoute(user.id)]: preparedNewList })
-    }
-
     return (
         <StyledLayout>
             <GlobalStyle />
@@ -166,11 +159,9 @@ const Layout = () => {
                     />
 
                     <TodoList
-                        pressDelay={200}
                         todos={todos}
                         toggleDone={toggleDone}
                         deleteTodo={deleteTodo}
-                        onSortEnd={onSortEnd}
                         user={user}
                     />
                 </StyledTodos>

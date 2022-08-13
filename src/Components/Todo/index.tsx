@@ -1,5 +1,4 @@
 import React from 'react'
-import { SortableElement } from 'react-sortable-hoc'
 import { StyledCheckbox, StyledDeleteButton, StyledTaskName, StyledTodo } from './style'
 import { Delete } from '../Layout/delete'
 
@@ -19,7 +18,7 @@ interface TodoProps {
     onSelect: (todo: TodoType) => void
 }
 
-const TodoItem = SortableElement(({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
+const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
     return (
         <StyledTodo>
             <StyledCheckbox isCompleted={todo.done} onClick={() => toggleDone(todo)} />
@@ -31,6 +30,6 @@ const TodoItem = SortableElement(({ todo, toggleDone, deleteTodo, onSelect }: To
             </StyledDeleteButton>
         </StyledTodo>
     )
-})
+}
 
 export { TodoItem }

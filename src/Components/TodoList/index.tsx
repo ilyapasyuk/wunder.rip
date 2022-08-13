@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { SortableContainer } from 'react-sortable-hoc'
 import { TodoItem, TodoType } from '../Todo'
 import { TaskPreview } from '../TaskPreview'
 import { StyledTodoList } from './style'
@@ -12,7 +11,7 @@ interface Props {
     user: User
 }
 
-const TodoList = SortableContainer(({ todos, toggleDone, deleteTodo, user }: Props) => {
+const TodoList = ({ todos, toggleDone, deleteTodo, user }: Props) => {
     const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(undefined)
 
     const selectedTask = todos.find(todo => todo.id === selectedTaskId)
@@ -25,7 +24,6 @@ const TodoList = SortableContainer(({ todos, toggleDone, deleteTodo, user }: Pro
                     todo={todo}
                     toggleDone={toggleDone}
                     deleteTodo={deleteTodo}
-                    index={index}
                     onSelect={todo => setSelectedTaskId(todo.id)}
                 />
             ))}
@@ -39,6 +37,6 @@ const TodoList = SortableContainer(({ todos, toggleDone, deleteTodo, user }: Pro
             )}
         </StyledTodoList>
     )
-})
+}
 
 export { TodoList }

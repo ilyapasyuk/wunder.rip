@@ -7,7 +7,7 @@ const prepareTaskForUpdate = (todo: TodoType) => {
 
     for (const key in todo) {
         // @ts-ignore
-        if (todo[key] != undefined) {
+        if (todo[key] !== undefined) {
             // @ts-ignore
             newTask[key] = todo[key]
         }
