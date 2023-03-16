@@ -37,7 +37,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
                 </div>
                 <div className="px-3 py-3">
                     <XMarkIcon
-                        className="h-6 w-6 cursor-pointer text-gray-700 hover:bg-gray-100 rounded-md"
+                        className="h-6 w-6 cursor-pointer text-gray-500 hover:bg-gray-100 rounded-md"
                         aria-hidden="true"
                         onClick={() => deleteTodo(todo)}
                     />
