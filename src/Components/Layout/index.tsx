@@ -9,8 +9,6 @@ import { LoginForm } from 'Components/LoginForm'
 import { TodoList } from 'Components/TodoList'
 import { TodoType } from 'Components/Todo'
 
-import { GlobalStyle, StyledAddTask, StyledLayout, StyledTodos } from './style'
-
 export type User = {
     id: string
     avatar: string
@@ -133,15 +131,8 @@ const Layout = () => {
         setUser(INITIAL_USER)
     }
 
-    interface sortEnd {
-        oldIndex: number
-        newIndex: number
-    }
-
     return (
-        <StyledLayout>
-            <GlobalStyle />
-
+        <div className="bg-gray-100 h-full">
             <Header
                 avatar={user.avatar}
                 email={user.email}
@@ -150,12 +141,14 @@ const Layout = () => {
             />
 
             {user.id && (
-                <StyledTodos>
-                    <StyledAddTask
+                <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
+                    <input
+                        type="text"
                         value={currentTodo}
                         onChange={e => setCurrentTodo(e.target.value)}
                         onKeyPress={keyHandle}
-                        placeholder="Add task..."
+                        placeholder="New task..."
+                        className="bg-white shadow rounded-lg mb-4 w-full px-4 py-4"
                     />
 
                     <TodoList
@@ -164,11 +157,11 @@ const Layout = () => {
                         deleteTodo={deleteTodo}
                         user={user}
                     />
-                </StyledTodos>
+                </div>
             )}
 
             {!user.id && <LoginForm onLogin={login} />}
-        </StyledLayout>
+        </div>
     )
 }
 

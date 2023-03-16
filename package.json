@@ -3,24 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "@testing-library/jest-dom": "^5.11.1",
-    "@testing-library/react": "^10.4.7",
-    "@testing-library/user-event": "^12.0.15",
-    "@types/firebase": "^3.2.1",
-    "@types/jest": "^26.0.7",
-    "@types/node": "^14.0.26",
-    "@types/react": "^16.9.43",
-    "@types/react-dom": "^16.9.8",
-    "@types/styled-components": "^5.1.1",
+    "@headlessui/react": "^1.7.13",
+    "@heroicons/react": "^2.0.16",
     "array-move": "^3.0.1",
     "firebase": "^7.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-lazy-image-loader": "^0.1.1",
-    "react-scripts": "3.4.1",
-    "styled-components": "^5.1.1",
+    "react-scripts": "5.0.1",
     "typescript": "~3.9.7"
   },
   "scripts": {
@@ -45,7 +34,12 @@
     ]
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@types/styled-components": "^5.1.1",
     "prettier": "^2.0.5",
+    "tailwindcss": "^3.2.7",
     "vercel": "^21.2.3"
   }
 }

@@ -1,7 +1,7 @@
+import { Transition } from '@headlessui/react'
 import React, { useState } from 'react'
 import { TodoItem, TodoType } from '../Todo'
 import { TaskPreview } from '../TaskPreview'
-import { StyledTodoList } from './style'
 import { User } from '../Layout'
 
 interface Props {
@@ -17,8 +17,8 @@ const TodoList = ({ todos, toggleDone, deleteTodo, user }: Props) => {
     const selectedTask = todos.find(todo => todo.id === selectedTaskId)
 
     return (
-        <StyledTodoList>
-            {todos.map((todo, index) => (
+        <div>
+            {todos.map(todo => (
                 <TodoItem
                     key={todo.id}
                     todo={todo}
@@ -28,14 +28,13 @@ const TodoList = ({ todos, toggleDone, deleteTodo, user }: Props) => {
                 />
             ))}
 
-            {selectedTask?.id && (
-                <TaskPreview
-                    todo={selectedTask}
-                    onClose={() => setSelectedTaskId(undefined)}
-                    user={user}
-                />
-            )}
-        </StyledTodoList>
+            <TaskPreview
+                isShow={!!selectedTaskId}
+                todo={selectedTask}
+                onClose={() => setSelectedTaskId(undefined)}
+                user={user}
+            />
+        </div>
     )
 }
 
