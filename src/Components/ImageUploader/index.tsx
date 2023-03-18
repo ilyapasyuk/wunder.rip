@@ -1,38 +1,25 @@
 import React, { useState } from 'react'
 
-import { storageRef } from 'service/firebase'
+import { uploadImage } from 'service/image'
 
 interface ImageUploaderProps {
-  userId: string
-  todoId: string
-  onFileUploaded: (fileUrl: string) => void
+  onFileUploaded: (cloudinaryId: string) => void
 }
 
-const ImageUploader = ({ userId, todoId, onFileUploaded }: ImageUploaderProps) => {
+const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
   const [isLoading, setLoading] = useState<boolean>(false)
 
-  const uploadFile = async (
-    file: File | undefined,
-    userId: string,
-    todoId: string,
-  ): Promise<void> => {
+  const uploadFile = async (file: File | undefined): Promise<void> => {
     if (!file) {
       return
     }
 
     try {
       setLoading(true)
-      const fileName = `${file.name}`
-      const storiesRef = storageRef.child(`/files/${userId}/${todoId}/${fileName}`)
-
-      const snapshot = await storiesRef.put(file)
-      const fullUrl = await snapshot.ref.getDownloadURL()
-
-      const url = new URL(fullUrl)
-      const preparedUrl = `${url.origin}${url.pathname}`
-      // ?alt=media postfix for direct route
-      console.log('preparedUrl', preparedUrl)
-      onFileUploaded(preparedUrl)
+      const { cloudinaryId } = await uploadImage(file, 'wunderrip_task')
+      if (cloudinaryId) {
+        onFileUploaded(cloudinaryId)
+      }
     } catch (error) {
       console.error(error)
     } finally {
@@ -51,7 +38,7 @@ const ImageUploader = ({ userId, todoId, onFileUploaded }: ImageUploaderProps) =
           name="img"
           accept="image/*"
           title="Upload"
-          onChange={({ target }) => uploadFile(target?.files?.[0], userId, todoId)}
+          onChange={({ target }) => uploadFile(target?.files?.[0])}
         />
       )}
     </>

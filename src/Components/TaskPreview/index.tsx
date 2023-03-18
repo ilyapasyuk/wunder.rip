@@ -1,8 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { EyeIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { XMarkIcon } from '@heroicons/react/20/solid'
 import React, { Fragment } from 'react'
 
 import { IUser } from 'service/auth'
+import { getCloudinaryImage } from 'service/image'
 import { updateTask } from 'service/task'
 
 import { ImageUploader } from 'Components/ImageUploader'
@@ -105,9 +106,9 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                             />
                           </div>
                           {Boolean(todo.files?.length) && (
-                            <div>
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-4 mb-8">
                               {todo.files?.map(file => (
-                                <div key={`${file}?alt=media`} className="mb-4">
+                                <div key={`${file}?alt=media`} className="relative">
                                   <div className="text-right">
                                     <button
                                       className="hover:bg-gray-100 rounded-md p-1"
@@ -116,16 +117,22 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                                       <XMarkIcon className="w-6 h-6 text-gray-700" />
                                     </button>
                                   </div>
-                                  <div className="relative rounded-md overflow-hidden">
-                                    <div
-                                      className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer flex justify-center items-center"
+                                  <div className="relative group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
+                                    <img
+                                      className="object-cover pointer-events-none group-hover:opacity-75"
+                                      src={`${getCloudinaryImage(file, 240, 160, false, true)}`}
+                                      alt="avatar"
+                                      height={100}
+                                    />
+                                    <button
+                                      type="button"
+                                      className="absolute inset-0 focus:outline-none"
                                       onClick={() => {
-                                        window.open(`${file}?alt=media`, '_blank')
+                                        window.open(`${getCloudinaryImage(file)}`, '_blank')
                                       }}
                                     >
-                                      <EyeIcon className="w-10 h-10 text-gray-700" />
-                                    </div>
-                                    <img src={`${file}?alt=media`} alt="avatar" height={100} />
+                                      <span className="sr-only">View details</span>
+                                    </button>
                                   </div>
                                 </div>
                               ))}
@@ -133,8 +140,6 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                           )}
                           {todo.id && (
                             <ImageUploader
-                              userId={user.id}
-                              todoId={todo.id}
                               onFileUploaded={fileUrl => {
                                 const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
