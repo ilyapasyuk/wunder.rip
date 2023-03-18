@@ -1,4 +1,3 @@
-import { Transition } from '@headlessui/react'
 import React, { useState } from 'react'
 import { TodoItem, TodoType } from '../Todo'
 import { TaskPreview } from '../TaskPreview'
@@ -9,22 +8,25 @@ interface Props {
     toggleDone: (todo: TodoType) => void
     deleteTodo: (todo: TodoType) => void
     user: User
+    moveItem: (dragIndex: number, hoverIndex: number) => void
 }
 
-const TodoList = ({ todos, toggleDone, deleteTodo, user }: Props) => {
+const TodoList = ({ todos, toggleDone, deleteTodo, user, moveItem }: Props) => {
     const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(undefined)
 
     const selectedTask = todos.find(todo => todo.id === selectedTaskId)
 
     return (
         <div>
-            {todos.map(todo => (
+            {todos.map((todo, index) => (
                 <TodoItem
                     key={todo.id}
                     todo={todo}
                     toggleDone={toggleDone}
                     deleteTodo={deleteTodo}
                     onSelect={todo => setSelectedTaskId(todo.id)}
+                    moveItem={moveItem}
+                    index={index}
                 />
             ))}
 

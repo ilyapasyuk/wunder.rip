@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import firebase, { databaseRef } from 'Service/firebase'
 import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'Service/routes'
-import { updateTask } from 'Service/task'
+import { updateAllTask, updateTask } from 'Service/task'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
@@ -58,11 +60,12 @@ const Layout = () => {
         const timestamp = +new Date()
 
         const value: TodoType = {
-            task: todo.slice(0, 100),
+            task: todo.slice(0, 100).trim(),
             done: false,
             createdAt: timestamp,
             files: [],
             note: '',
+            order: 0,
         }
 
         databaseRef.child(getCreateTaskRoute(user.id)).push(value)
@@ -108,10 +111,11 @@ const Layout = () => {
                             useruid: items[i].useruid,
                             note: items[i].note,
                             files: items[i].files,
+                            order: items[i].order || 0,
                         }
                     })
-                    .sort((a, b) => b.createdAt - a.createdAt)
-
+                    .sort((a, b) => a.order - b.order)
+                console.log('prepareTodos', prepareTodos)
                 setTodos(prepareTodos)
             })
         }
@@ -129,6 +133,26 @@ const Layout = () => {
     const onLogout = async (): Promise<void> => {
         await window.localStorage.removeItem('user')
         setUser(INITIAL_USER)
+    }
+
+    const reorderTasks = async (dragIndex: number, hoverIndex: number) => {
+        const dragItem = todos[dragIndex]
+        const newItems = [...todos]
+        newItems.splice(dragIndex, 1)
+        newItems.splice(hoverIndex, 0, dragItem)
+
+        newItems.forEach((item, index) => {
+            item.order = index
+        })
+
+        await updateAllTask(newItems, user.id)
+
+        // newItems.forEach((item, index) => {
+        //     console.log(item.task, item.order)
+        // })
+
+        // await updateTask(updatedItem, user.id)
+        // setTodos(newItems)
     }
 
     return (
@@ -151,12 +175,15 @@ const Layout = () => {
                         className="bg-white shadow rounded-lg mb-4 w-full px-4 py-4"
                     />
 
-                    <TodoList
-                        todos={todos}
-                        toggleDone={toggleDone}
-                        deleteTodo={deleteTodo}
-                        user={user}
-                    />
+                    <DndProvider backend={HTML5Backend}>
+                        <TodoList
+                            todos={todos}
+                            toggleDone={toggleDone}
+                            deleteTodo={deleteTodo}
+                            user={user}
+                            moveItem={reorderTasks}
+                        />
+                    </DndProvider>
                 </div>
             )}
 

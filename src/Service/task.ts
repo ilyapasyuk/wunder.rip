@@ -27,4 +27,17 @@ const updateTask = (todo: TodoType, userId: string) => {
     }
 }
 
-export { prepareTaskForUpdate, updateTask }
+const updateAllTask = (todos: TodoType[], userId: string) => {
+    const updates = {}
+    todos.forEach(todo => {
+        const newTask = prepareTaskForUpdate(todo)
+        if (todo.id) {
+            // @ts-ignore
+            updates[getUpdateTaskRoute(userId, todo.id)] = newTask
+        }
+    })
+
+    return databaseRef.update(updates)
+}
+
+export { prepareTaskForUpdate, updateTask, updateAllTask }
