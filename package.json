@@ -1,18 +1,17 @@
 {
-  "name": "my-app",
+  "name": "wunderrip",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
-    "array-move": "^3.0.1",
     "firebase": "^7.17.1",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "typescript": "~3.9.7"
+    "typescript": "5.0.2"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
@@ -36,10 +35,11 @@
     ]
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/firebase": "^3.2.1",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "prettier": "^2.0.5",
+    "prettier": "^2.8.4",
     "tailwindcss": "^3.2.7",
     "vercel": "^21.2.3"
   }

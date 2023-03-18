@@ -1,10 +1,18 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import './index.css'
+import * as ReactDOMClient from 'react-dom/client'
 
 import { Layout } from 'Components/Layout'
+
+import './index.css'
 import * as serviceWorker from './serviceWorker'
 
-ReactDOM.render(<Layout />, document.getElementById('wunderTodo'))
+const container = document.getElementById('wunderTodo')
+
+let root = null
+
+if (container) {
+  root = ReactDOMClient.createRoot(container)
+  root.render(<Layout />)
+}
 
 serviceWorker.unregister()
