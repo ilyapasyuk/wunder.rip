@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/20/solid'
+import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 
@@ -23,6 +23,8 @@ interface TodoProps {
 }
 
 const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: TodoProps) => {
+  const hasFiles = todo.files && todo.files.length > 0
+  const hasNote = todo.note && todo.note.length > 0
   const ref = useRef(null)
 
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -109,9 +111,11 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
                   {todo.task}
                 </div>
               </div>
-              <div className="px-3 py-3">
+              <div className="px-3 py-3 inline-flex items-center">
+                {hasNote && <ListBulletIcon className="h-4 w-4 text-black rounded-md" />}
+                {hasFiles && <PhotoIcon className="h-4 w-4 text-emerald-600 rounded-md ml-1" />}
                 <XMarkIcon
-                  className="h-6 w-6 cursor-pointer text-gray-500 hover:bg-gray-100 rounded-md"
+                  className="h-6 w-6 cursor-pointer text-gray-500 hover:bg-gray-100 rounded-md ml-3"
                   aria-hidden="true"
                   onClick={() => deleteTodo(todo)}
                 />
