@@ -6,6 +6,7 @@
 .pnp.js
 .idea
 build/
+dist/
 
 # testing
 /coverage
