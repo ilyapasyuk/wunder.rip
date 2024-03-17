@@ -3,15 +3,9 @@ import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 
-export type ITodo = {
-  task: string
-  done: boolean
-  id?: string
-  createdAt: number
-  note: string
-  files?: string[]
-  order?: number
-}
+import { ITodo } from 'service/task'
+
+import { Checkbox } from 'Components/Checkbox'
 
 interface TodoProps {
   todo: ITodo
@@ -59,12 +53,8 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
   const opacity = isDragging ? 0.4 : 1
 
   const isActive = isOver && canDrop
-  let backgroundColor = ''
-  if (isActive) {
-    backgroundColor = ''
-  } else if (canDrop) {
-    backgroundColor = ''
-  }
+
+  let backgroundColor = isActive ? 'bg-gray-100' : ''
 
   const todoClassName = todo.done ? 'line-through text-gray-500' : 'text-gray-900'
 
@@ -81,33 +71,24 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
       >
         <div className="relative my-4 bg-gray-200 shadow rounded-lg h-10"></div>
       </Transition>
-      {/*<Transition*/}
-      {/*    show={!isDragging}*/}
-      {/*    enter="transition-opacity duration-300"*/}
-      {/*    enterFrom="opacity-0"*/}
-      {/*    enterTo="opacity-100"*/}
-      {/*    leave="transition-opacity transition-all duration-300"*/}
-      {/*    leaveFrom="opacity-100"*/}
-      {/*    leaveTo="opacity-0"*/}
-      {/*>*/}
+
       {!isDragging && (
-        <div className="py-2">
+        <>
           <div
             className="bg-white shadow rounded-lg"
             style={{ opacity, cursor: 'grab', backgroundColor }}
           >
             <div className="flex align-center justify-between">
-              <div className="flex align-center flex-1">
-                <div className="px-3 py-3">
-                  <input
-                    type="checkbox"
+              <div className="flex flex-1 items-center">
+                <div className="px-3">
+                  <Checkbox
                     checked={todo.done}
                     onChange={() => {
                       toggleDone(todo)
                     }}
                   />
                 </div>
-                <div onClick={() => onSelect(todo)} className={`w-full px-2 py-3 ${todoClassName}`}>
+                <div onClick={() => onSelect(todo)} className={`w-full py-2  ${todoClassName}`}>
                   {todo.task}
                 </div>
               </div>
@@ -122,7 +103,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/*</Transition>*/}

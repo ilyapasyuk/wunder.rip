@@ -1,4 +1,4 @@
-const cloudinaryAppName = 'dpihljzyg'
+const cloudinaryAppName = import.meta.env.VITE_CLOUDINARY_ORG_ID
 
 const uploadImage = async (
   file: File | Blob | string,

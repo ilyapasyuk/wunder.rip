@@ -1,7 +1,6 @@
 {
   "name": "wunderrip",
-  "version": "0.1.0",
-  "private": true,
+  "version": "2.0.1",
   "dependencies": {
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
@@ -11,6 +10,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "sonner": "^1.4.3",
     "typescript": "5.0.2",
     "vite": "^5.1.6",
     "vite-tsconfig-paths": "^4.3.2"
@@ -19,9 +19,6 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -36,6 +33,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/firebase": "^3.2.1",
     "@types/node": "^20.11.28",
