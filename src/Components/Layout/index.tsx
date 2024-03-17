@@ -104,7 +104,6 @@ const Layout = () => {
             }
           })
           .sort((a, b) => a.order - b.order)
-        console.log('prepareTodos', prepareTodos)
         setTodos(prepareTodos)
       })
     }
