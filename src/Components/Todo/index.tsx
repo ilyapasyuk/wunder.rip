@@ -3,17 +3,9 @@ import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 
-import { Checkbox } from '../Checkbox'
+import { ITodo } from 'service/task'
 
-export type ITodo = {
-  task: string
-  done: boolean
-  id?: string
-  createdAt: number
-  note: string
-  files?: string[]
-  order?: number
-}
+import { Checkbox } from 'Components/Checkbox'
 
 interface TodoProps {
   todo: ITodo

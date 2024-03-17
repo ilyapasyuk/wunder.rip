@@ -5,12 +5,11 @@ import { Toaster, toast } from 'sonner'
 
 import { INITIAL_USER, IUser, PROVIDER, logOut, signIn } from 'service/auth'
 import { databaseRef } from 'service/firebase'
-import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'service/routes'
-import { updateAllTask, updateTask } from 'service/task'
+import { getUserRoute } from 'service/routes'
+import { ITodo, createTodo, deleteTodo, updateAllTask, updateTask } from 'service/task'
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
-import { ITodo } from 'Components/Todo'
 import { TodoList } from 'Components/TodoList'
 
 const Layout = () => {
@@ -27,18 +26,7 @@ const Layout = () => {
   }
 
   const addTodo = async (todo: string): Promise<void> => {
-    const timestamp = +new Date()
-
-    const value: ITodo = {
-      task: todo.slice(0, 100).trim(),
-      done: false,
-      createdAt: timestamp,
-      files: [],
-      note: '',
-      order: 0,
-    }
-
-    databaseRef.child(getCreateTaskRoute(user.id)).push(value)
+    await createTodo(todo, user.id)
     setCurrentTodo('')
   }
 
@@ -61,10 +49,8 @@ const Layout = () => {
     }
   }
 
-  const deleteTodo = async (todo: ITodo) => {
-    if (todo.id) {
-      await databaseRef.update({ [getUpdateTaskRoute(user.id, todo.id)]: null })
-    }
+  const deleteTodoHandler = async (todo: ITodo) => {
+    await deleteTodo(todo, user.id)
   }
 
   useEffect(() => {
@@ -142,7 +128,7 @@ const Layout = () => {
             <TodoList
               todos={todos}
               toggleDone={toggleDone}
-              deleteTodo={deleteTodo}
+              deleteTodo={deleteTodoHandler}
               user={user}
               moveItem={reorderTasks}
             />
