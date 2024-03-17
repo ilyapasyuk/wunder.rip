@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Toaster, toast } from 'sonner'
 
-import { IUser, PROVIDER } from 'service/auth'
-import firebase, { databaseRef } from 'service/firebase'
+import { INITIAL_USER, IUser, PROVIDER, logOut, signIn } from 'service/auth'
+import { databaseRef } from 'service/firebase'
 import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'service/routes'
 import { updateAllTask, updateTask } from 'service/task'
 
@@ -12,36 +13,16 @@ import { LoginForm } from 'Components/LoginForm'
 import { ITodo } from 'Components/Todo'
 import { TodoList } from 'Components/TodoList'
 
-const INITIAL_USER: IUser = { id: '', email: '', avatar: '', fullName: '' }
-
 const Layout = () => {
   const [todos, setTodos] = useState<ITodo[]>([])
   const [user, setUser] = useState<IUser>(INITIAL_USER)
   const [currentTodo, setCurrentTodo] = useState<string>('')
 
-  const getProvider = (provider: PROVIDER) => {
-    switch (provider) {
-      case PROVIDER.GOOGLE:
-        return new firebase.auth.GoogleAuthProvider()
-      case PROVIDER.FACEBOOK:
-        return new firebase.auth.GithubAuthProvider()
-    }
-  }
-
   const login = async (provider: PROVIDER): Promise<void> => {
-    try {
-      const result = await firebase.auth().signInWithPopup(getProvider(provider))
-
-      const id: string = result.user?.uid || ''
-      const email: string = result.user?.email || ''
-      const avatar: string = result.user?.photoURL || ''
-      const fullName: string = result.user?.displayName || ''
-
-      const preparedUser: IUser = { id, avatar, email, fullName }
-      await window.localStorage.setItem('user', JSON.stringify(preparedUser))
-      setUser(preparedUser)
-    } catch (error) {
-      console.error('Login error:', error)
+    const { user } = await signIn(provider)
+    if (user) {
+      toast.success('Login success')
+      setUser(user)
     }
   }
 
@@ -119,7 +100,7 @@ const Layout = () => {
   }, [])
 
   const onLogout = async (): Promise<void> => {
-    await window.localStorage.removeItem('user')
+    await logOut()
     setUser(INITIAL_USER)
   }
 
@@ -134,13 +115,6 @@ const Layout = () => {
     })
 
     await updateAllTask(newItems, user.id)
-
-    // newItems.forEach((item, index) => {
-    //     console.log(item.task, item.order)
-    // })
-
-    // await updateTask(updatedItem, user.id)
-    // setTodos(newItems)
   }
 
   return (
@@ -177,6 +151,7 @@ const Layout = () => {
       )}
 
       {!user.id && <LoginForm onLogin={login} />}
+      <Toaster />
     </div>
   )
 }
