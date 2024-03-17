@@ -4,7 +4,6 @@ import * as ReactDOMClient from 'react-dom/client'
 import { Layout } from 'Components/Layout'
 
 import './index.css'
-import * as serviceWorker from './serviceWorker'
 
 const container = document.getElementById('wunderTodo')
 
@@ -14,5 +13,3 @@ if (container) {
   root = ReactDOMClient.createRoot(container)
   root.render(<Layout />)
 }
-
-serviceWorker.unregister()
