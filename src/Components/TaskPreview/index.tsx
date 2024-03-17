@@ -4,10 +4,9 @@ import React, { Fragment } from 'react'
 
 import { IUser } from 'service/auth'
 import { getCloudinaryImage } from 'service/image'
-import { updateTask } from 'service/task'
+import { ITodo, updateTask } from 'service/task'
 
 import { ImageUploader } from 'Components/ImageUploader'
-import { ITodo } from 'Components/Todo'
 
 interface TaskPreviewProps {
   todo: ITodo | undefined
