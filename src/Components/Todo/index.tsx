@@ -3,6 +3,8 @@ import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { useRef } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
 
+import { Checkbox } from '../Checkbox'
+
 export type ITodo = {
   task: string
   done: boolean
@@ -97,17 +99,16 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
             style={{ opacity, cursor: 'grab', backgroundColor }}
           >
             <div className="flex align-center justify-between">
-              <div className="flex align-center flex-1">
-                <div className="px-3 py-3">
-                  <input
-                    type="checkbox"
+              <div className="flex flex-1 items-center">
+                <div className="px-3">
+                  <Checkbox
                     checked={todo.done}
                     onChange={() => {
                       toggleDone(todo)
                     }}
                   />
                 </div>
-                <div onClick={() => onSelect(todo)} className={`w-full px-2 py-3 ${todoClassName}`}>
+                <div onClick={() => onSelect(todo)} className={`w-full py-2  ${todoClassName}`}>
                   {todo.task}
                 </div>
               </div>
