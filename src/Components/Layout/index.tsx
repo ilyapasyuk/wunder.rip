@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import React, { lazy, useEffect, useState } from 'react'
 import { Toaster, toast } from 'sonner'
 
 import { INITIAL_USER, IUser, PROVIDER, logOut, signIn } from 'service/auth'
@@ -10,9 +8,9 @@ import { ITodo, createTodo, deleteTodo, updateAllTask, updateTask } from 'servic
 
 import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
-import { TodoList } from 'Components/TodoList'
 
-import { TaskPreview } from '../TaskPreview'
+const TaskPreview = lazy(() => import('Components/TaskPreview'))
+const TodoList = lazy(() => import('Components/TodoList'))
 
 const Layout = () => {
   const [todos, setTodos] = useState<ITodo[]>([])
@@ -130,15 +128,13 @@ const Layout = () => {
               className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
             />
 
-            <DndProvider backend={HTML5Backend}>
-              <TodoList
-                onSelect={id => setSelectedTaskId(id)}
-                todos={todos}
-                toggleDone={toggleDone}
-                deleteTodo={deleteTodoHandler}
-                moveItem={reorderTasks}
-              />
-            </DndProvider>
+            <TodoList
+              onSelect={id => setSelectedTaskId(id)}
+              todos={todos}
+              toggleDone={toggleDone}
+              deleteTodo={deleteTodoHandler}
+              moveItem={reorderTasks}
+            />
           </div>
 
           <TaskPreview

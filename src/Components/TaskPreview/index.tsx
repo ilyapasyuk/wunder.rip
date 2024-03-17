@@ -166,4 +166,4 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
   )
 }
 
-export { TaskPreview }
+export default TaskPreview

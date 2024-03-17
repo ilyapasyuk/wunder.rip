@@ -1,4 +1,6 @@
 import React from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { ITodo } from 'service/task'
 
@@ -14,24 +16,26 @@ interface TodoListProps {
 
 const TodoList = ({ todos, toggleDone, deleteTodo, moveItem, onSelect }: TodoListProps) => {
   return (
-    <div className="flex flex-col gap-4">
-      {todos.map((todo, index) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          toggleDone={toggleDone}
-          deleteTodo={deleteTodo}
-          onSelect={todo => {
-            if (todo.id) {
-              onSelect(todo.id)
-            }
-          }}
-          moveItem={moveItem}
-          index={index}
-        />
-      ))}
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="flex flex-col gap-4">
+        {todos.map((todo, index) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            toggleDone={toggleDone}
+            deleteTodo={deleteTodo}
+            onSelect={todo => {
+              if (todo.id) {
+                onSelect(todo.id)
+              }
+            }}
+            moveItem={moveItem}
+            index={index}
+          />
+        ))}
+      </div>
+    </DndProvider>
   )
 }
 
-export { TodoList }
+export default TodoList
