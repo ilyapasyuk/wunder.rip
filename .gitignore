@@ -6,6 +6,7 @@
 .pnp.js
 .idea
 build/
+dist/
 
 # testing
 /coverage
@@ -25,3 +26,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .vercel
+.env*.local

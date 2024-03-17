@@ -29,7 +29,6 @@ const Layout = () => {
   }
 
   const login = async (provider: PROVIDER): Promise<void> => {
-    console.log('provider', provider)
     try {
       const result = await firebase.auth().signInWithPopup(getProvider(provider))
 
@@ -105,7 +104,6 @@ const Layout = () => {
             }
           })
           .sort((a, b) => a.order - b.order)
-        console.log('prepareTodos', prepareTodos)
         setTodos(prepareTodos)
       })
     }
