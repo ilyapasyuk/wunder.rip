@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 
 import { databaseRef } from 'service/firebase'
-import { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute } from 'service/routes'
+import { getCreateTaskRoute, getUpdateTaskRoute } from 'service/routes'
 
 export type ITodo = {
   task: string

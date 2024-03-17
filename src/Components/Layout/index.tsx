@@ -12,10 +12,15 @@ import { Header } from 'Components/Header'
 import { LoginForm } from 'Components/LoginForm'
 import { TodoList } from 'Components/TodoList'
 
+import { TaskPreview } from '../TaskPreview'
+
 const Layout = () => {
   const [todos, setTodos] = useState<ITodo[]>([])
   const [user, setUser] = useState<IUser>(INITIAL_USER)
   const [currentTodo, setCurrentTodo] = useState<string>('')
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null)
+
+  const selectedTask = todos.find(todo => todo.id === selectedTaskId)
 
   const login = async (provider: PROVIDER): Promise<void> => {
     const { user } = await signIn(provider)
@@ -113,27 +118,36 @@ const Layout = () => {
       />
 
       {user.id && (
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
-          <input
-            type="text"
-            value={currentTodo}
-            autoFocus
-            onChange={e => setCurrentTodo(e.target.value)}
-            onKeyPress={keyHandle}
-            placeholder="New task..."
-            className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
-          />
-
-          <DndProvider backend={HTML5Backend}>
-            <TodoList
-              todos={todos}
-              toggleDone={toggleDone}
-              deleteTodo={deleteTodoHandler}
-              user={user}
-              moveItem={reorderTasks}
+        <>
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
+            <input
+              type="text"
+              value={currentTodo}
+              autoFocus
+              onChange={e => setCurrentTodo(e.target.value)}
+              onKeyPress={keyHandle}
+              placeholder="New task..."
+              className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
             />
-          </DndProvider>
-        </div>
+
+            <DndProvider backend={HTML5Backend}>
+              <TodoList
+                onSelect={id => setSelectedTaskId(id)}
+                todos={todos}
+                toggleDone={toggleDone}
+                deleteTodo={deleteTodoHandler}
+                moveItem={reorderTasks}
+              />
+            </DndProvider>
+          </div>
+
+          <TaskPreview
+            isShow={!!selectedTaskId}
+            todo={selectedTask}
+            onClose={() => setSelectedTaskId(null)}
+            user={user}
+          />
+        </>
       )}
 
       {!user.id && <LoginForm onLogin={login} />}

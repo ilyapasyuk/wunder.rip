@@ -53,12 +53,8 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
   const opacity = isDragging ? 0.4 : 1
 
   const isActive = isOver && canDrop
-  let backgroundColor = ''
-  if (isActive) {
-    backgroundColor = ''
-  } else if (canDrop) {
-    backgroundColor = ''
-  }
+
+  let backgroundColor = isActive ? 'bg-gray-100' : ''
 
   const todoClassName = todo.done ? 'line-through text-gray-500' : 'text-gray-900'
 
@@ -75,17 +71,9 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
       >
         <div className="relative my-4 bg-gray-200 shadow rounded-lg h-10"></div>
       </Transition>
-      {/*<Transition*/}
-      {/*    show={!isDragging}*/}
-      {/*    enter="transition-opacity duration-300"*/}
-      {/*    enterFrom="opacity-0"*/}
-      {/*    enterTo="opacity-100"*/}
-      {/*    leave="transition-opacity transition-all duration-300"*/}
-      {/*    leaveFrom="opacity-100"*/}
-      {/*    leaveTo="opacity-0"*/}
-      {/*>*/}
+
       {!isDragging && (
-        <div className="py-2">
+        <>
           <div
             className="bg-white shadow rounded-lg"
             style={{ opacity, cursor: 'grab', backgroundColor }}
@@ -115,7 +103,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect, moveItem, index }: T
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/*</Transition>*/}
