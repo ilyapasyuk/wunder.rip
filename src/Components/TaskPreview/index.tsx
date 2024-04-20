@@ -2,27 +2,26 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import React, { Fragment } from 'react'
 
-import { IUser } from 'service/auth'
 import { getCloudinaryImage } from 'service/image'
-import { ITodo, updateTask } from 'service/task'
+import { ITodo } from 'service/task'
 
 import { ImageUploader } from 'Components/ImageUploader'
 
 interface TaskPreviewProps {
   todo: ITodo | undefined
   onClose: () => void
-  user: IUser
   isShow: boolean
+  onEdit: (todo: ITodo) => void
 }
 
-const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
+const TaskPreview = ({ todo, onClose, isShow, onEdit }: TaskPreviewProps) => {
   const deleteFile = async (file: any, todo: ITodo) => {
     const newTodo: ITodo = {
       ...todo,
       files: todo?.files?.filter(todoFileUrl => todoFileUrl !== file),
     }
 
-    await updateTask(newTodo, user.id)
+    onEdit(newTodo)
   }
 
   return (
@@ -88,9 +87,7 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                               type="text"
                               placeholder="Name"
                               value={todo.task}
-                              onChange={({ target }) =>
-                                updateTask({ ...todo, task: target.value }, user.id)
-                              }
+                              onChange={({ target }) => onEdit({ ...todo, task: target.value })}
                             />
                           </div>
                           <div>
@@ -99,9 +96,7 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                               rows={8}
                               placeholder="Note"
                               value={todo.note}
-                              onChange={({ target }) =>
-                                updateTask({ ...todo, note: target.value }, user.id)
-                              }
+                              onChange={({ target }) => onEdit({ ...todo, note: target.value })}
                             />
                           </div>
                           {Boolean(todo.files?.length) && (
@@ -142,13 +137,10 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                               onFileUploaded={fileUrl => {
                                 const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
-                                updateTask(
-                                  {
-                                    ...todo,
-                                    files,
-                                  },
-                                  user.id,
-                                )
+                                onEdit({
+                                  ...todo,
+                                  files,
+                                })
                               }}
                             />
                           )}

@@ -11,6 +11,7 @@ export type ITodo = {
   note: string
   files?: string[]
   order?: number
+  isPublic?: boolean
 }
 
 const createTodo = async (
@@ -30,6 +31,7 @@ const createTodo = async (
       files: [],
       note: '',
       order: 0,
+      isPublic: false,
     }
 
     const taskRef = await databaseRef.child(getCreateTaskRoute(userId)).push(value)

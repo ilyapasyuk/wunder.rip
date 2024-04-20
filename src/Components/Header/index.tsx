@@ -7,33 +7,33 @@ import {
 import React from 'react'
 import { Fragment } from 'react'
 
-interface HeaderProps {
-  avatar: string
-  email: string
-  fullName: string
+import { IUser } from 'service/auth'
+
+interface IHeaderProps {
+  user: IUser | null
   onLogout: () => void
 }
 
-const Header = ({ avatar, email, fullName, onLogout }: HeaderProps) => {
+const Header = ({ user, onLogout }: IHeaderProps) => {
   return (
     <div className="w-full relative bg-gray-800">
       <div className="h-14 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 flex items-center justify-between">
         <div className="text-white font-semibold">Wunder Rip</div>
         <div className="flex items-center">
-          {avatar && (
+          {user?.avatar && (
             <img
-              src={avatar}
+              src={user.avatar}
               width={50}
               alt="avatar"
               className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
             />
           )}
-          {email && (
+          {user && (
             <div className="text-right ml-4">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
                   <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                    {fullName}
+                    {user?.fullName}
                     <ChevronDownIcon
                       className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
                       aria-hidden="true"
@@ -59,7 +59,7 @@ const Header = ({ avatar, email, fullName, onLogout }: HeaderProps) => {
                             } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                           >
                             <Cog6ToothIcon className="mr-2 h-5 w-5" aria-hidden="true" />
-                            {email}
+                            {user?.email}
                           </button>
                         )}
                       </Menu.Item>
