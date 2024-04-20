@@ -9,6 +9,7 @@ import { TodoList } from 'Components/TodoList'
 
 import { Auth } from './Components/Auth'
 import { Layout } from './Components/Layout'
+import TaskPreview from './Components/TaskPreview'
 import './index.css'
 
 const container = document.getElementById('wunderTodo')
@@ -17,12 +18,10 @@ const router = createBrowserRouter([
   {
     path: ROUTE.ROOT,
     element: <TodoList />,
-    children: [
-      {
-        path: ROUTE.TASK_PAGE,
-        element: <TodoList />,
-      },
-    ],
+  },
+  {
+    path: ROUTE.TASK_PAGE,
+    element: <TaskPreview />,
   },
 ])
 

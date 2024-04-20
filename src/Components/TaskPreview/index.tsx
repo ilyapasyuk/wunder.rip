@@ -1,31 +1,54 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
+import { databaseRef } from 'service/firebase'
 import { getCloudinaryImage } from 'service/image'
-import { ITodo } from 'service/task'
+import { getUserRoute } from 'service/routes'
+import { ITodo, deleteTodo, updateTask } from 'service/task'
 
+import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
 
-interface TaskPreviewProps {
-  todo: ITodo | undefined
-  onClose: () => void
-  isShow: boolean
-  onEdit: (todo: ITodo) => void
-}
+const TaskPreview = () => {
+  const navigate = useNavigate()
+  let { id } = useParams()
+  const { state } = useContext(StoreContext)
+  const [todo, setTodo] = useState<ITodo | null>(null)
 
-const TaskPreview = ({ todo, onClose, isShow, onEdit }: TaskPreviewProps) => {
+  useEffect(() => {
+    if (state?.user?.id) {
+      databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`).on('value', snapshot => {
+        let item = snapshot.val() || null
+        setTodo(item)
+      })
+    }
+  }, [state.user])
+
   const deleteFile = async (file: any, todo: ITodo) => {
     const newTodo: ITodo = {
       ...todo,
       files: todo?.files?.filter(todoFileUrl => todoFileUrl !== file),
     }
 
-    onEdit(newTodo)
+    if (state?.user?.id) {
+      await deleteTodo(newTodo, state?.user?.id)
+    }
+  }
+
+  const editTask = async (todo: ITodo) => {
+    if (state?.user?.id) {
+      updateTask(todo, state?.user?.id)
+    }
+  }
+
+  const onClose = () => {
+    navigate(-1)
   }
 
   return (
-    <Transition.Root show={isShow} as={Fragment}>
+    <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
@@ -87,7 +110,12 @@ const TaskPreview = ({ todo, onClose, isShow, onEdit }: TaskPreviewProps) => {
                               type="text"
                               placeholder="Name"
                               value={todo.task}
-                              onChange={({ target }) => onEdit({ ...todo, task: target.value })}
+                              onChange={({ target }) =>
+                                editTask({
+                                  ...todo,
+                                  task: target.value,
+                                })
+                              }
                             />
                           </div>
                           <div>
@@ -96,7 +124,12 @@ const TaskPreview = ({ todo, onClose, isShow, onEdit }: TaskPreviewProps) => {
                               rows={8}
                               placeholder="Note"
                               value={todo.note}
-                              onChange={({ target }) => onEdit({ ...todo, note: target.value })}
+                              onChange={({ target }) =>
+                                editTask({
+                                  ...todo,
+                                  note: target.value,
+                                })
+                              }
                             />
                           </div>
                           {Boolean(todo.files?.length) && (
@@ -137,7 +170,7 @@ const TaskPreview = ({ todo, onClose, isShow, onEdit }: TaskPreviewProps) => {
                               onFileUploaded={fileUrl => {
                                 const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
-                                onEdit({
+                                editTask({
                                   ...todo,
                                   files,
                                 })

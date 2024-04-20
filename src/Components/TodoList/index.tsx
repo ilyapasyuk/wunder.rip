@@ -1,6 +1,7 @@
-import React, { lazy, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { useNavigate } from 'react-router-dom'
 
 import { databaseRef } from 'service/firebase'
 import { getUserRoute } from 'service/routes'
@@ -9,14 +10,11 @@ import { ITodo, createTodo, deleteTodo, updateAllTask, updateTask } from 'servic
 import { StoreContext } from 'Components/Context/store'
 import { TodoItem } from 'Components/Todo'
 
-const TaskPreview = lazy(() => import('Components/TaskPreview'))
-
 const TodoList = () => {
   const { state, dispatch } = useContext(StoreContext)
   const [todos, setTodos] = useState<ITodo[]>([])
   const [currentTodo, setCurrentTodo] = useState<string>('')
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null)
-  const selectedTask = todos.find(todo => todo.id === selectedTaskId)
+  const navigate = useNavigate()
 
   const addTodo = async (todo: string): Promise<void> => {
     if (state?.user?.id) {
@@ -41,12 +39,6 @@ const TodoList = () => {
 
     if (todo.id && state?.user?.id) {
       await updateTask(value, state?.user?.id)
-    }
-  }
-
-  const deleteTodoHandler = async (todo: ITodo) => {
-    if (state?.user?.id) {
-      await deleteTodo(todo, state?.user?.id)
     }
   }
 
@@ -116,7 +108,7 @@ const TodoList = () => {
                   }}
                   onSelect={todo => {
                     if (todo.id) {
-                      setSelectedTaskId(todo.id)
+                      navigate(`/t/${todo.id}`)
                     }
                   }}
                   moveItem={reorderTasks}
@@ -126,17 +118,6 @@ const TodoList = () => {
             </div>
           </DndProvider>
         </div>
-
-        <TaskPreview
-          isShow={!!selectedTaskId}
-          todo={selectedTask}
-          onClose={() => setSelectedTaskId(null)}
-          onEdit={todo => {
-            if (state?.user?.id) {
-              updateTask(todo, state?.user?.id)
-            }
-          }}
-        />
       </>
     </div>
   )

@@ -110,4 +110,6 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
   }
 }
 
+const getTodo = async (userId: string, todoId: string) => {}
+
 export { createTodo, prepareTaskForUpdate, updateTask, updateAllTask, deleteTodo }
