@@ -1,8 +1,9 @@
 import React, { Dispatch, ReactNode, createContext, useReducer } from 'react'
 
+import { IUser } from 'service/auth'
+
 import { reducer } from 'Components/Context/reducer'
 
-import { INITIAL_USER, IUser } from '../../service/auth'
 import { AppActions } from './actions'
 
 export interface IStore {
@@ -11,7 +12,7 @@ export interface IStore {
 }
 
 const DEFAULT_STORE: IStore = {
-  user: INITIAL_USER,
+  user: null,
   isShowAuthModal: false,
 }
 
