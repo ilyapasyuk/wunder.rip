@@ -14,8 +14,6 @@ export enum PROVIDER {
   GOOGLE = 'google',
 }
 
-const INITIAL_USER: IUser = { id: '', email: '', avatar: '', fullName: '' }
-
 const getProvider = (provider: PROVIDER) => {
   switch (provider) {
     case PROVIDER.GOOGLE:
@@ -58,4 +56,4 @@ const logOut = async (): Promise<void> => {
   return window.localStorage.removeItem('user')
 }
 
-export { INITIAL_USER, signIn, logOut }
+export { signIn, logOut }

@@ -7,4 +7,9 @@ const getUpdateTaskRoute = (userId: string, taskId: string): string =>
 const getUserRoute = (userId: string): string =>
   `${import.meta.env.VITE_APP_DB_TASK_NAME}/${userId}`
 
-export { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute }
+enum ROUTE {
+  ROOT = '/',
+  TASK_PAGE = '/t/:id',
+}
+
+export { getCreateTaskRoute, getUpdateTaskRoute, getUserRoute, ROUTE }

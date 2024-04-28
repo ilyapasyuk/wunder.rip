@@ -1,15 +1,46 @@
-import React from 'react'
-import * as ReactDOMClient from 'react-dom/client'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom/client'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-import { Layout } from 'Components/Layout'
+import { ROUTE } from 'service/routes'
 
+import { StoreProvider } from 'Components/Context/store'
+import { TodoList } from 'Components/TodoList'
+
+import { Auth } from './Components/Auth'
+import { Layout } from './Components/Layout'
+import TaskPreview from './Components/TaskPreview'
 import './index.css'
 
 const container = document.getElementById('wunderTodo')
 
-let root = null
+const router = createBrowserRouter([
+  {
+    path: ROUTE.ROOT,
+    element: <TodoList />,
+  },
+  {
+    path: ROUTE.TASK_PAGE,
+    element: (
+      <TaskPreview
+        onClose={() => {
+          router.navigate(ROUTE.ROOT)
+        }}
+      />
+    ),
+  },
+])
 
 if (container) {
-  root = ReactDOMClient.createRoot(container)
-  root.render(<Layout />)
+  ReactDOM.createRoot(container).render(
+    <React.StrictMode>
+      <StoreProvider>
+        <Layout>
+          <Auth>
+            <RouterProvider router={router} />
+          </Auth>
+        </Layout>
+      </StoreProvider>
+    </React.StrictMode>,
+  )
 }

@@ -1,32 +1,58 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import { IUser } from 'service/auth'
+import { databaseRef } from 'service/firebase'
 import { getCloudinaryImage } from 'service/image'
-import { ITodo, updateTask } from 'service/task'
+import { getUserRoute } from 'service/routes'
+import { ITodo, deleteTodo, updateTask } from 'service/task'
 
+import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
+import { QRCode } from 'Components/QrCode'
 
 interface TaskPreviewProps {
-  todo: ITodo | undefined
   onClose: () => void
-  user: IUser
-  isShow: boolean
 }
 
-const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
+const TaskPreview = ({ onClose }: TaskPreviewProps) => {
+  const navigate = useNavigate()
+  let { id } = useParams()
+  const { state } = useContext(StoreContext)
+  const [todo, setTodo] = useState<ITodo | null>(null)
+  const qrCodeText: string | null =
+    `${window.location.protocol}//${window.location.host}/t/${todo?.id}` || null
+  const qrCodeFileName: string = todo?.id ?? 'download'
+
+  useEffect(() => {
+    if (state?.user?.id) {
+      databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`).on('value', snapshot => {
+        let item = snapshot.val() || null
+        setTodo(item)
+      })
+    }
+  }, [state.user])
+
   const deleteFile = async (file: any, todo: ITodo) => {
     const newTodo: ITodo = {
       ...todo,
       files: todo?.files?.filter(todoFileUrl => todoFileUrl !== file),
     }
 
-    await updateTask(newTodo, user.id)
+    if (state?.user?.id) {
+      await deleteTodo(newTodo, state?.user?.id)
+    }
+  }
+
+  const editTask = async (todo: ITodo) => {
+    if (state?.user?.id) {
+      updateTask(todo, state?.user?.id)
+    }
   }
 
   return (
-    <Transition.Root show={isShow} as={Fragment}>
+    <Transition.Root show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
         <Transition.Child
           as={Fragment}
@@ -89,7 +115,10 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                               placeholder="Name"
                               value={todo.task}
                               onChange={({ target }) =>
-                                updateTask({ ...todo, task: target.value }, user.id)
+                                editTask({
+                                  ...todo,
+                                  task: target.value,
+                                })
                               }
                             />
                           </div>
@@ -100,7 +129,10 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                               placeholder="Note"
                               value={todo.note}
                               onChange={({ target }) =>
-                                updateTask({ ...todo, note: target.value }, user.id)
+                                editTask({
+                                  ...todo,
+                                  note: target.value,
+                                })
                               }
                             />
                           </div>
@@ -142,19 +174,17 @@ const TaskPreview = ({ todo, onClose, user, isShow }: TaskPreviewProps) => {
                               onFileUploaded={fileUrl => {
                                 const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
-                                updateTask(
-                                  {
-                                    ...todo,
-                                    files,
-                                  },
-                                  user.id,
-                                )
+                                editTask({
+                                  ...todo,
+                                  files,
+                                })
                               }}
                             />
                           )}
                         </div>
                       </div>
                     )}
+                    {qrCodeText && <QRCode text={qrCodeText} fileName={qrCodeFileName} />}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
