@@ -12,7 +12,11 @@ import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
 import { QRCode } from 'Components/QrCode'
 
-const TaskPreview = () => {
+interface TaskPreviewProps {
+  onClose: () => void
+}
+
+const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   const navigate = useNavigate()
   let { id } = useParams()
   const { state } = useContext(StoreContext)
@@ -45,10 +49,6 @@ const TaskPreview = () => {
     if (state?.user?.id) {
       updateTask(todo, state?.user?.id)
     }
-  }
-
-  const onClose = () => {
-    navigate(-1)
   }
 
   return (

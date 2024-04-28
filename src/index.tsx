@@ -21,7 +21,13 @@ const router = createBrowserRouter([
   },
   {
     path: ROUTE.TASK_PAGE,
-    element: <TaskPreview />,
+    element: (
+      <TaskPreview
+        onClose={() => {
+          router.navigate(ROUTE.ROOT)
+        }}
+      />
+    ),
   },
 ])
 
