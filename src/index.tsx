@@ -34,6 +34,7 @@ const router = createBrowserRouter([
 if (container) {
   ReactDOM.createRoot(container).render(
     <React.StrictMode>
+        <a href="http://localhost:4321/?target=https://pasyuk.com">go</a>
       <StoreProvider>
         <Layout>
           <Auth>
