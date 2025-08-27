@@ -25,7 +25,8 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.6 : 1,
+    // Hide original while dragging; DragOverlay will render the preview
+    opacity: isDragging ? 0 : 1,
     cursor: isDragging ? 'grabbing' : 'grab',
   }
 

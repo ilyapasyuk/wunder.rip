@@ -5,12 +5,15 @@ import {
   DndContext,
   closestCenter,
   DragEndEvent,
+  DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors,
+  DragOverlay,
 } from '@dnd-kit/core'
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import { ListBulletIcon, PhotoIcon } from '@heroicons/react/20/solid'
 
 import { databaseRef } from 'service/firebase'
 import { getUserRoute } from 'service/routes'
@@ -82,9 +85,13 @@ const TodoList = () => {
   )
 
   const ids = useMemo(() => todos.map(t => t.id || ''), [todos])
+  const [activeId, setActiveId] = useState<string | null>(null)
+  const [overlaySize, setOverlaySize] = useState<{ width: number; height: number } | null>(null)
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event
+    setActiveId(null)
+    setOverlaySize(null)
     if (!over || active.id === over.id) return
     const oldIndex = ids.indexOf(String(active.id))
     const newIndex = ids.indexOf(String(over.id))
@@ -94,6 +101,14 @@ const TodoList = () => {
     if (!state?.user?.id) return
     const updated = newItems.map((item, idx) => ({ ...item, order: idx }))
     await updateAllTask(updated, state.user.id)
+  }
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(String(event.active?.id ?? ''))
+    const rectAny: any = (event as any).active?.rect?.current?.initial || (event as any).active?.rect?.current
+    if (rectAny && typeof rectAny.width === 'number' && typeof rectAny.height === 'number') {
+      setOverlaySize({ width: rectAny.width, height: rectAny.height })
+    }
   }
 
   return (
@@ -114,6 +129,7 @@ const TodoList = () => {
             collisionDetection={closestCenter}
             sensors={sensors}
             modifiers={[restrictToVerticalAxis]}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
             <SortableContext items={ids} strategy={verticalListSortingStrategy}>
@@ -137,6 +153,39 @@ const TodoList = () => {
                 ))}
               </div>
             </SortableContext>
+            <DragOverlay adjustScale={false}>
+              {activeId ? (
+                (() => {
+                  const todo = todos.find(t => String(t.id) === String(activeId))
+                  if (!todo) return null
+                  return (
+                    <div
+                      className="bg-white shadow-lg rounded-lg"
+                      style={{ width: overlaySize?.width, height: overlaySize?.height }}
+                    >
+                      <div className="flex align-center justify-between">
+                        <div className="flex flex-1 items-center">
+                          <button className="px-3 py-3 text-gray-400">
+                            <ListBulletIcon className="h-5 w-5" />
+                          </button>
+                          <div className="px-1 w-full py-2 text-gray-900 truncate">
+                            {todo.task}
+                          </div>
+                        </div>
+                        <div className="px-3 py-3 inline-flex items-center">
+                          {Boolean(todo.note) && (
+                            <ListBulletIcon className="h-4 w-4 text-black rounded-md" />
+                          )}
+                          {Boolean(todo.files?.length) && (
+                            <PhotoIcon className="h-4 w-4 text-emerald-600 rounded-md ml-1" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })()
+              ) : null}
+            </DragOverlay>
           </DndContext>
         </div>
       </>
