@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useNavigate } from 'react-router-dom'
+import type { DataSnapshot } from 'firebase/database'
 
 import { databaseRef } from 'service/firebase'
 import { getUserRoute } from 'service/routes'
@@ -44,7 +45,7 @@ const TodoList = () => {
 
   useEffect(() => {
     if (state?.user?.id) {
-      databaseRef.child(getUserRoute(state?.user?.id)).on('value', snapshot => {
+      databaseRef.child(getUserRoute(state?.user?.id)).on('value', (snapshot: DataSnapshot) => {
         let items = snapshot.val() || []
         const prepareTodos: ITodo[] = Object.keys(items)
           .map(i => {
