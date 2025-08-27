@@ -1,6 +1,11 @@
 import { toast } from 'sonner'
 
-import firebase from './firebase'
+import { auth } from './firebase'
+import {
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth'
 
 export type IUser = {
   id: string
@@ -17,9 +22,9 @@ export enum PROVIDER {
 const getProvider = (provider: PROVIDER) => {
   switch (provider) {
     case PROVIDER.GOOGLE:
-      return new firebase.auth.GoogleAuthProvider()
+      return new GoogleAuthProvider()
     case PROVIDER.FACEBOOK:
-      return new firebase.auth.GithubAuthProvider()
+      return new GithubAuthProvider()
   }
 }
 
@@ -30,7 +35,7 @@ const signIn = async (
   error?: Error
 }> => {
   try {
-    const result = await firebase.auth().signInWithPopup(getProvider(provider))
+    const result = await signInWithPopup(auth, getProvider(provider)!)
 
     const id: string = result.user?.uid || ''
     const email: string = result.user?.email || ''

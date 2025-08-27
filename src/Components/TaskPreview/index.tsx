@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import type { DataSnapshot } from 'firebase/database'
 
 import { databaseRef } from 'service/firebase'
 import { getCloudinaryImage } from 'service/image'
@@ -27,7 +28,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
 
   useEffect(() => {
     if (state?.user?.id) {
-      databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`).on('value', snapshot => {
+      databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`).on('value', (snapshot: DataSnapshot) => {
         let item = snapshot.val() || null
         setTodo(item)
       })
