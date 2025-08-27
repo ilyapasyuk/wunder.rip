@@ -1,8 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { DataSnapshot } from 'firebase/database'
+import {
+  DndContext,
+  closestCenter,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 
 import { databaseRef } from 'service/firebase'
 import { getUserRoute } from 'service/routes'
@@ -67,18 +75,25 @@ const TodoList = () => {
     }
   }, [state.user])
 
-  const reorderTasks = async (dragIndex: number, hoverIndex: number) => {
-    const dragItem = todos[dragIndex]
-    const newItems = [...todos]
-    newItems.splice(dragIndex, 1)
-    newItems.splice(hoverIndex, 0, dragItem)
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
+  )
 
-    newItems.forEach((item, index) => {
-      item.order = index
-    })
-    if (state?.user?.id) {
-      await updateAllTask(newItems, state?.user?.id)
-    }
+  const ids = useMemo(() => todos.map(t => t.id || ''), [todos])
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+    const oldIndex = ids.indexOf(String(active.id))
+    const newIndex = ids.indexOf(String(over.id))
+    if (oldIndex === -1 || newIndex === -1) return
+    const newItems = arrayMove(todos, oldIndex, newIndex)
+    setTodos(newItems)
+    if (!state?.user?.id) return
+    const updated = newItems.map((item, idx) => ({ ...item, order: idx }))
+    await updateAllTask(updated, state.user.id)
   }
 
   return (
@@ -95,29 +110,34 @@ const TodoList = () => {
             className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
           />
 
-          <DndProvider backend={HTML5Backend}>
-            <div className="flex flex-col gap-4">
-              {todos.map((todo, index) => (
-                <TodoItem
-                  key={todo.id}
-                  todo={todo}
-                  toggleDone={toggleDone}
-                  deleteTodo={() => {
-                    if (state?.user?.id) {
-                      deleteTodo(todo, state?.user?.id)
-                    }
-                  }}
-                  onSelect={todo => {
-                    if (todo.id) {
-                      navigate(`/t/${todo.id}`)
-                    }
-                  }}
-                  moveItem={reorderTasks}
-                  index={index}
-                />
-              ))}
-            </div>
-          </DndProvider>
+          <DndContext
+            collisionDetection={closestCenter}
+            sensors={sensors}
+            modifiers={[restrictToVerticalAxis]}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+              <div className="flex flex-col gap-4">
+                {todos.map(todo => (
+                  <TodoItem
+                    key={todo.id}
+                    todo={todo}
+                    toggleDone={toggleDone}
+                    deleteTodo={() => {
+                      if (state?.user?.id) {
+                        deleteTodo(todo, state?.user?.id)
+                      }
+                    }}
+                    onSelect={todo => {
+                      if (todo.id) {
+                        navigate(`/t/${todo.id}`)
+                      }
+                    }}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         </div>
       </>
     </div>
