@@ -1,11 +1,7 @@
 import { toast } from 'sonner'
 
 import { auth } from './firebase'
-import {
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth'
+import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from 'firebase/auth'
 
 export type IUser = {
   id: string

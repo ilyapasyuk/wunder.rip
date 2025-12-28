@@ -1,39 +1,37 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import React, { Fragment, useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Fragment, useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import type { DataSnapshot } from 'firebase/database'
 
 import { databaseRef } from 'service/firebase'
 import { getCloudinaryImage } from 'service/image'
 import { getUserRoute } from 'service/routes'
-import { ITodo, deleteTodo, updateTask } from 'service/task'
+import { type ITodo, deleteTodo, updateTask } from 'service/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
-import { QRCode } from 'Components/QrCode'
+import React from 'react'
 
 interface TaskPreviewProps {
   onClose: () => void
 }
 
 const TaskPreview = ({ onClose }: TaskPreviewProps) => {
-  const navigate = useNavigate()
   let { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<ITodo | null>(null)
-  const qrCodeText: string | null =
-    `${window.location.protocol}//${window.location.host}/t/${todo?.id}` || null
-  const qrCodeFileName: string = todo?.id ?? 'download'
 
   useEffect(() => {
     if (state?.user?.id) {
-      databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`).on('value', (snapshot: DataSnapshot) => {
-        let item = snapshot.val() || null
-        setTodo(item)
-      })
+      databaseRef
+        .child(`${getUserRoute(state?.user?.id)}/${id}`)
+        .on('value', (snapshot: DataSnapshot) => {
+          const item = snapshot.val() || null
+          setTodo(item)
+        })
     }
-  }, [state.user])
+  }, [state.user, id])
 
   const deleteFile = async (file: any, todo: ITodo) => {
     const newTodo: ITodo = {
@@ -145,6 +143,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                                     <button
                                       className="hover:bg-gray-100 rounded-md p-1"
                                       onClick={() => deleteFile(file, todo)}
+                                      type="button"
                                     >
                                       <XMarkIcon className="w-6 h-6 text-gray-700" />
                                     </button>
@@ -185,7 +184,6 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                         </div>
                       </div>
                     )}
-                    {qrCodeText && <QRCode text={qrCodeText} fileName={qrCodeFileName} />}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

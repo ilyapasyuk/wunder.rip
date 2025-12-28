@@ -4,8 +4,8 @@ import type { DataSnapshot } from 'firebase/database'
 import {
   DndContext,
   closestCenter,
-  DragEndEvent,
-  DragStartEvent,
+  type DragEndEvent,
+  type DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors,
@@ -17,13 +17,13 @@ import { ListBulletIcon, PhotoIcon } from '@heroicons/react/20/solid'
 
 import { databaseRef } from 'service/firebase'
 import { getUserRoute } from 'service/routes'
-import { ITodo, createTodo, deleteTodo, updateAllTask, updateTask } from 'service/task'
+import { type ITodo, createTodo, deleteTodo, updateAllTask, updateTask } from 'service/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { TodoItem } from 'Components/Todo'
 
 const TodoList = () => {
-  const { state, dispatch } = useContext(StoreContext)
+  const { state } = useContext(StoreContext)
   const [todos, setTodos] = useState<ITodo[]>([])
   const [currentTodo, setCurrentTodo] = useState<string>('')
   const navigate = useNavigate()
@@ -35,7 +35,7 @@ const TodoList = () => {
     }
   }
 
-  const keyHandle = async (e: any) => {
+  const keyHandle = async e => {
     if (e.charCode === 13 && Boolean(e.target.value.length)) {
       const text = e.target.value
       setCurrentTodo('')
@@ -105,7 +105,8 @@ const TodoList = () => {
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(String(event.active?.id ?? ''))
-    const rectAny: any = (event as any).active?.rect?.current?.initial || (event as any).active?.rect?.current
+    const rectAny: any =
+      (event as any).active?.rect?.current?.initial || (event as any).active?.rect?.current
     if (rectAny && typeof rectAny.width === 'number' && typeof rectAny.height === 'number') {
       setOverlaySize({ width: rectAny.width, height: rectAny.height })
     }
@@ -113,49 +114,47 @@ const TodoList = () => {
 
   return (
     <div className="bg-gray-100 h-full">
-      <>
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
-          <input
-            type="text"
-            value={currentTodo}
-            autoFocus
-            onChange={e => setCurrentTodo(e.target.value)}
-            onKeyPress={keyHandle}
-            placeholder="New task..."
-            className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
-          />
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
+        <input
+          type="text"
+          value={currentTodo}
+          onChange={e => setCurrentTodo(e.target.value)}
+          onKeyUp={keyHandle}
+          placeholder="New task..."
+          className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
+        />
 
-          <DndContext
-            collisionDetection={closestCenter}
-            sensors={sensors}
-            modifiers={[restrictToVerticalAxis]}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext items={ids} strategy={verticalListSortingStrategy}>
-              <div className="flex flex-col gap-4">
-                {todos.map(todo => (
-                  <TodoItem
-                    key={todo.id}
-                    todo={todo}
-                    toggleDone={toggleDone}
-                    deleteTodo={() => {
-                      if (state?.user?.id) {
-                        deleteTodo(todo, state?.user?.id)
-                      }
-                    }}
-                    onSelect={todo => {
-                      if (todo.id) {
-                        navigate(`/t/${todo.id}`)
-                      }
-                    }}
-                  />
-                ))}
-              </div>
-            </SortableContext>
-            <DragOverlay adjustScale={false}>
-              {activeId ? (
-                (() => {
+        <DndContext
+          collisionDetection={closestCenter}
+          sensors={sensors}
+          modifiers={[restrictToVerticalAxis]}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+            <div className="flex flex-col gap-4">
+              {todos.map(todo => (
+                <TodoItem
+                  key={todo.id}
+                  todo={todo}
+                  toggleDone={toggleDone}
+                  deleteTodo={() => {
+                    if (state?.user?.id) {
+                      deleteTodo(todo, state?.user?.id)
+                    }
+                  }}
+                  onSelect={todo => {
+                    if (todo.id) {
+                      navigate(`/t/${todo.id}`)
+                    }
+                  }}
+                />
+              ))}
+            </div>
+          </SortableContext>
+          <DragOverlay adjustScale={false}>
+            {activeId
+              ? (() => {
                   const todo = todos.find(t => String(t.id) === String(activeId))
                   if (!todo) return null
                   return (
@@ -165,12 +164,10 @@ const TodoList = () => {
                     >
                       <div className="flex align-center justify-between">
                         <div className="flex flex-1 items-center">
-                          <button className="px-3 py-3 text-gray-400">
+                          <button className="px-3 py-3 text-gray-400" type="button">
                             <ListBulletIcon className="h-5 w-5" />
                           </button>
-                          <div className="px-1 w-full py-2 text-gray-900 truncate">
-                            {todo.task}
-                          </div>
+                          <div className="px-1 w-full py-2 text-gray-900 truncate">{todo.task}</div>
                         </div>
                         <div className="px-3 py-3 inline-flex items-center">
                           {Boolean(todo.note) && (
@@ -184,11 +181,10 @@ const TodoList = () => {
                     </div>
                   )
                 })()
-              ) : null}
-            </DragOverlay>
-          </DndContext>
-        </div>
-      </>
+              : null}
+          </DragOverlay>
+        </DndContext>
+      </div>
     </div>
   )
 }

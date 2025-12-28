@@ -1,5 +1,5 @@
-import { ACTION_TYPE, AppActions } from './actions'
-import { IStore } from './store'
+import { ACTION_TYPE, type AppActions } from './actions'
+import type { IStore } from './store'
 
 const reducer = (currentStore: IStore, action: AppActions): IStore => {
   switch (action.type) {

@@ -1,10 +1,10 @@
 import React, { Dispatch, ReactNode, createContext, useReducer } from 'react'
 
-import { IUser } from 'service/auth'
+import type { IUser } from 'service/auth'
 
 import { reducer } from 'Components/Context/reducer'
 
-import { AppActions } from './actions'
+import type { AppActions } from './actions'
 
 export interface IStore {
   user: IUser | null

@@ -1,15 +1,8 @@
-import { IUser } from 'service/auth'
+import type { IUser } from 'service/auth'
 
 export enum ACTION_TYPE {
   SET_USER = 'SET_USER',
   SET_AUTH_MODAL = 'SET_AUTH_MODAL',
-}
-
-export enum LOADING {
-  LOADING = 'LOADING',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
-  IDLE = 'IDLE',
 }
 
 export interface ISetUser {

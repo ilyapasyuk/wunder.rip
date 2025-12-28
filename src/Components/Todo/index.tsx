@@ -52,9 +52,13 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
               }}
             />
           </div>
-          <div onClick={() => onSelect(todo)} className={`w-full py-2 ${todoClassName}`}>
+          <button
+            onClick={() => onSelect(todo)}
+            className={`w-full py-2 ${todoClassName}`}
+            type="button"
+          >
             {todo.task}
-          </div>
+          </button>
         </div>
         <div className="px-3 py-3 inline-flex items-center">
           {hasNote && <ListBulletIcon className="h-4 w-4 text-black rounded-md" />}

@@ -22,7 +22,7 @@ const createTodo = async (
   error?: Error
 }> => {
   try {
-    const timestamp = +new Date()
+    const timestamp = Date.now()
 
     const value: ITodo = {
       task: todo.slice(0, 100).trim(),
@@ -109,7 +109,5 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
     }
   }
 }
-
-const getTodo = async (userId: string, todoId: string) => {}
 
 export { createTodo, prepareTaskForUpdate, updateTask, updateAllTask, deleteTodo }
