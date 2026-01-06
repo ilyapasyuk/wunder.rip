@@ -11,7 +11,6 @@ import { ITodo, deleteTodo, updateTask } from 'service/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
-import { QRCode } from 'Components/QrCode'
 
 interface TaskPreviewProps {
   onClose: () => void
@@ -22,9 +21,6 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   let { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<ITodo | null>(null)
-  const qrCodeText: string | null =
-    `${window.location.protocol}//${window.location.host}/t/${todo?.id}` || null
-  const qrCodeFileName: string = todo?.id ?? 'download'
 
   useEffect(() => {
     if (state?.user?.id) {
@@ -185,7 +181,6 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                         </div>
                       </div>
                     )}
-                    {qrCodeText && <QRCode text={qrCodeText} fileName={qrCodeFileName} />}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
