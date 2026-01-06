@@ -9,7 +9,7 @@ const Checkbox = ({ checked, onChange }: CheckboxProps) => {
   return (
     <input
       type="checkbox"
-      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+      className="h-4 w-4 rounded border-[#c3c6d4] text-[#0073ea] focus:ring-[#0073ea] focus:ring-2 focus:ring-offset-0 cursor-pointer"
       checked={checked}
       onChange={({ target }) => onChange(target.checked)}
     />

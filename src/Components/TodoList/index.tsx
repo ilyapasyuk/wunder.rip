@@ -112,9 +112,9 @@ const TodoList = () => {
   }
 
   return (
-    <div className="bg-gray-100 h-full">
+    <div className="bg-[#f6f7fb] h-full min-h-screen">
       <>
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           <input
             type="text"
             value={currentTodo}
@@ -122,7 +122,7 @@ const TodoList = () => {
             onChange={e => setCurrentTodo(e.target.value)}
             onKeyPress={keyHandle}
             placeholder="New task..."
-            className="block w-full rounded-md border-0 px-4 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 mb-6"
+            className="block w-full rounded-lg border-0 px-4 py-4 text-[#323338] bg-white shadow-sm ring-1 ring-inset ring-[#c3c6d4] placeholder:text-[#676879] focus:ring-2 focus:ring-inset focus:ring-[#0073ea] sm:text-base leading-6 mb-6 transition-all"
           />
 
           <DndContext
@@ -133,7 +133,7 @@ const TodoList = () => {
             onDragEnd={handleDragEnd}
           >
             <SortableContext items={ids} strategy={verticalListSortingStrategy}>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
                 {todos.map(todo => (
                   <TodoItem
                     key={todo.id}
@@ -160,24 +160,24 @@ const TodoList = () => {
                   if (!todo) return null
                   return (
                     <div
-                      className="bg-white shadow-lg rounded-lg"
+                      className="bg-white shadow-lg rounded-lg border border-[#c3c6d4]"
                       style={{ width: overlaySize?.width, height: overlaySize?.height }}
                     >
                       <div className="flex align-center justify-between">
                         <div className="flex flex-1 items-center">
-                          <button className="px-3 py-3 text-gray-400">
+                          <button className="px-3 py-3 text-[#676879]">
                             <ListBulletIcon className="h-5 w-5" />
                           </button>
-                          <div className="px-1 w-full py-2 text-gray-900 truncate">
+                          <div className="px-1 w-full py-2 text-[#323338] truncate">
                             {todo.task}
                           </div>
                         </div>
                         <div className="px-3 py-3 inline-flex items-center">
                           {Boolean(todo.note) && (
-                            <ListBulletIcon className="h-4 w-4 text-black rounded-md" />
+                            <ListBulletIcon className="h-4 w-4 text-[#323338] rounded-md" />
                           )}
                           {Boolean(todo.files?.length) && (
-                            <PhotoIcon className="h-4 w-4 text-emerald-600 rounded-md ml-1" />
+                            <PhotoIcon className="h-4 w-4 text-[#00854d] rounded-md ml-1" />
                           )}
                         </div>
                       </div>

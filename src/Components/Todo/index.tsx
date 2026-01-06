@@ -30,14 +30,14 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
     cursor: isDragging ? 'grabbing' : 'grab',
   }
 
-  const todoClassName = todo.done ? 'line-through text-gray-500' : 'text-gray-900'
+  const todoClassName = todo.done ? 'line-through text-[#676879]' : 'text-[#323338]'
 
   return (
-    <div ref={setNodeRef} style={style} className="bg-white shadow rounded-lg">
+    <div ref={setNodeRef} style={style} className="bg-white shadow-sm rounded-lg border border-[#c3c6d4] hover:shadow-md transition-shadow">
       <div className="flex align-center justify-between">
         <div className="flex flex-1 items-center">
           <button
-            className="px-3 py-3 text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing"
+            className="px-3 py-3 text-[#676879] hover:text-[#323338] cursor-grab active:cursor-grabbing transition-colors"
             aria-label="Drag"
             {...attributes}
             {...listeners}
@@ -52,15 +52,15 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
               }}
             />
           </div>
-          <div onClick={() => onSelect(todo)} className={`w-full py-2 ${todoClassName}`}>
+          <div onClick={() => onSelect(todo)} className={`w-full py-2 cursor-pointer ${todoClassName}`}>
             {todo.task}
           </div>
         </div>
         <div className="px-3 py-3 inline-flex items-center">
-          {hasNote && <ListBulletIcon className="h-4 w-4 text-black rounded-md" />}
-          {hasFiles && <PhotoIcon className="h-4 w-4 text-emerald-600 rounded-md ml-1" />}
+          {hasNote && <ListBulletIcon className="h-4 w-4 text-[#323338] rounded-md" />}
+          {hasFiles && <PhotoIcon className="h-4 w-4 text-[#00854d] rounded-md ml-1" />}
           <XMarkIcon
-            className="h-6 w-6 cursor-pointer text-gray-500 hover:bg-gray-100 rounded-md ml-3"
+            className="h-6 w-6 cursor-pointer text-[#676879] hover:bg-[rgba(103,104,121,0.1)] hover:text-[#323338] rounded-md ml-3 p-1 transition-colors"
             aria-hidden="true"
             onClick={() => deleteTodo(todo)}
           />
