@@ -1,6 +1,6 @@
 import { toast } from 'sonner'
 
-import { auth } from './firebase'
+import { auth } from 'Service/firebase'
 import {
   GoogleAuthProvider,
   GithubAuthProvider,

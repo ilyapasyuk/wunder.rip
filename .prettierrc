@@ -8,7 +8,7 @@
   "bracketSpacing": true,
   "jsxBracketSameLine": false,
   "arrowParens": "avoid",
-  "importOrder": ["^service/(.*)$", "^Containers/(.*)$", "^Components/(.*)$", "^types/(.*)$", "^constants/(.*)$", "^[./]"],
+  "importOrder": ["^Service/(.*)$", "^Containers/(.*)$", "^Components/(.*)$", "^types/(.*)$", "^constants/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }
