@@ -1,5 +1,5 @@
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import type { DataSnapshot } from 'firebase/database'
 
@@ -20,11 +20,54 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   let { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<ITodo | null>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   const handleClose = () => {
     navigate('/')
     onClose()
   }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose()
+      }
+
+      if (e.key === 'Tab' && panelRef.current) {
+        const focusableElements = panelRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'
+        )
+        const firstElement = focusableElements[0]
+        const lastElement = focusableElements[focusableElements.length - 1]
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement || !panelRef.current.contains(document.activeElement)) {
+            e.preventDefault()
+            lastElement?.focus()
+          }
+        } else {
+          if (document.activeElement === lastElement || !panelRef.current.contains(document.activeElement)) {
+            e.preventDefault()
+            firstElement?.focus()
+          }
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (todo && panelRef.current) {
+      const firstFocusable = panelRef.current.querySelector<HTMLElement>(
+        'input, button, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      firstFocusable?.focus()
+    }
+  }, [todo])
 
   useEffect(() => {
     if (state?.user?.id && id) {
@@ -69,12 +112,19 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
       {/* Mobile overlay */}
       <div className="fixed inset-0 bg-overlay z-40 md:hidden" onClick={handleClose} />
       {/* Panel */}
-      <div className="fixed inset-0 md:relative md:inset-auto w-full md:w-96 md:max-w-md border-l border-border dark:border-border-dark bg-surface dark:bg-surface-dark shadow-xl z-50 md:z-auto">
+      <div
+        ref={panelRef}
+        className="fixed inset-0 md:relative md:inset-auto w-full md:w-96 md:max-w-md border-l border-border dark:border-border-dark bg-surface dark:bg-surface-dark shadow-xl z-50 md:z-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="task-preview-title"
+      >
         <div className="flex h-full flex-col overflow-y-scroll">
           <div className="relative px-4 sm:px-6 pt-6 pb-4 border-b border-border dark:border-border-dark">
             <div className="flex items-center justify-between gap-2">
               {todo ? (
                 <input
+                  id="task-preview-title"
                   className="flex-1 text-lg font-medium leading-6 text-text-primary dark:text-text-dark-primary bg-transparent border-0 outline-none placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-0"
                   type="text"
                   placeholder="Task name"
@@ -87,7 +137,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                   }
                 />
               ) : (
-                <div className="flex-1 text-lg font-medium leading-6 text-text-secondary dark:text-text-dark-secondary">
+                <div id="task-preview-title" className="flex-1 text-lg font-medium leading-6 text-text-secondary dark:text-text-dark-secondary">
                   Task Preview
                 </div>
               )}
@@ -106,7 +156,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
               <div>
                 <div>
                   <textarea
-                    className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
+                    className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-overlay-hover/30 dark:focus:bg-overlay-hover/20 sm:text-base leading-6 mb-6 transition-colors duration-200"
                     rows={8}
                     placeholder="Note"
                     value={todo.note}
