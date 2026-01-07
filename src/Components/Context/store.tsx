@@ -1,5 +1,5 @@
 import { reducer } from 'Components/Context/reducer'
-import React, { createContext, Dispatch, ReactNode, useReducer } from 'react'
+import { createContext, Dispatch, ReactNode, useReducer } from 'react'
 import { IUser } from 'services/auth'
 
 import { AppActions } from './actions'

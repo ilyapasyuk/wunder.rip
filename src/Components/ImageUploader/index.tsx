@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 /** biome-ignore-all lint/a11y/useKeyWithClickEvents: <explanation> */
-import React, { useRef, useState } from 'react'
+import { DragEvent, useRef, useState } from 'react'
 
 import { uploadImage } from 'services/image'
 
@@ -37,7 +37,7 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
     }
   }
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     if (!isLoading) {
@@ -45,13 +45,13 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
     }
   }
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     setIsDragOver(false)
   }
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
     setIsDragOver(false)

@@ -2,7 +2,7 @@ import { Checkbox } from 'Components/Checkbox'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import React from 'react'
+import { CSSProperties } from 'react'
 import { ITodo } from 'services/task'
 
 interface ITodoProps {
@@ -20,7 +20,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
     id: todo.id || '',
   })
 
-  const style: React.CSSProperties = {
+  const style: CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
     // Hide original while dragging; DragOverlay will render the preview

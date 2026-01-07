@@ -10,35 +10,35 @@
   @apply text-text-primary dark:text-text-dark-primary;
 }
 
-[data-sonner-toast][data-type='success'] {
+[data-sonner-toast][data-type="success"] {
   @apply border-success/30 dark:border-success-dark/30;
 }
 
-[data-sonner-toast][data-type='success'] [data-icon] {
+[data-sonner-toast][data-type="success"] [data-icon] {
   @apply text-success dark:text-success-dark;
 }
 
-[data-sonner-toast][data-type='error'] {
+[data-sonner-toast][data-type="error"] {
   @apply border-red-500/30 dark:border-red-500/30;
 }
 
-[data-sonner-toast][data-type='error'] [data-icon] {
+[data-sonner-toast][data-type="error"] [data-icon] {
   @apply text-red-500 dark:text-red-400;
 }
 
-[data-sonner-toast][data-type='info'] {
+[data-sonner-toast][data-type="info"] {
   @apply border-primary/30 dark:border-primary/30;
 }
 
-[data-sonner-toast][data-type='info'] [data-icon] {
+[data-sonner-toast][data-type="info"] [data-icon] {
   @apply text-primary dark:text-primary;
 }
 
-[data-sonner-toast][data-type='warning'] {
+[data-sonner-toast][data-type="warning"] {
   @apply border-yellow-500/30 dark:border-yellow-500/30;
 }
 
-[data-sonner-toast][data-type='warning'] [data-icon] {
+[data-sonner-toast][data-type="warning"] [data-icon] {
   @apply text-yellow-500 dark:text-yellow-400;
 }
 
@@ -104,34 +104,34 @@
   background-color: #2d2e3a !important;
 }
 
-[data-sonner-toast][data-type='success'] {
+[data-sonner-toast][data-type="success"] {
   background-color: #ffffff !important;
 }
 
-.dark [data-sonner-toast][data-type='success'] {
+.dark [data-sonner-toast][data-type="success"] {
   background-color: #2d2e3a !important;
 }
 
-[data-sonner-toast][data-type='error'] {
+[data-sonner-toast][data-type="error"] {
   background-color: #ffffff !important;
 }
 
-.dark [data-sonner-toast][data-type='error'] {
+.dark [data-sonner-toast][data-type="error"] {
   background-color: #2d2e3a !important;
 }
 
-[data-sonner-toast][data-type='info'] {
+[data-sonner-toast][data-type="info"] {
   background-color: #ffffff !important;
 }
 
-.dark [data-sonner-toast][data-type='info'] {
+.dark [data-sonner-toast][data-type="info"] {
   background-color: #2d2e3a !important;
 }
 
-[data-sonner-toast][data-type='warning'] {
+[data-sonner-toast][data-type="warning"] {
   background-color: #ffffff !important;
 }
 
-.dark [data-sonner-toast][data-type='warning'] {
+.dark [data-sonner-toast][data-type="warning"] {
   background-color: #2d2e3a !important;
 }

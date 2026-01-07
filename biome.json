@@ -28,6 +28,7 @@
     }
   },
   "javascript": {
+    "globals": ["React"],
     "formatter": {
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",

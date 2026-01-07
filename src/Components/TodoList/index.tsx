@@ -15,7 +15,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { KeyboardEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { databaseRef } from 'services/firebase'
 import { getUserRoute } from 'services/routes'
@@ -34,7 +34,7 @@ const TodoList = () => {
     }
   }
 
-  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.charCode === 13 && Boolean((e.target as HTMLInputElement).value.length)) {
       const text = (e.target as HTMLInputElement).value
       setCurrentTodo('')

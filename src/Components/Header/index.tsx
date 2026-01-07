@@ -6,7 +6,7 @@ import {
   MoonIcon,
   SunIcon,
 } from '@heroicons/react/20/solid'
-import React, { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { IUser } from 'services/auth'
 import { getCurrentTheme, toggleTheme } from 'services/theme'
