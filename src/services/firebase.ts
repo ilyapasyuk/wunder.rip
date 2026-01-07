@@ -1,16 +1,16 @@
-import { initializeApp, type FirebaseApp } from 'firebase/app'
-import {
-  getDatabase,
-  ref as dbRef,
-  child as dbChild,
-  onValue,
-  update as dbUpdate,
-  push as dbPush,
-  type DataSnapshot,
-  type Unsubscribe,
-  type DatabaseReference,
-} from 'firebase/database'
+import { type FirebaseApp, initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import {
+  type DatabaseReference,
+  type DataSnapshot,
+  child as dbChild,
+  push as dbPush,
+  ref as dbRef,
+  update as dbUpdate,
+  getDatabase,
+  onValue,
+  type Unsubscribe,
+} from 'firebase/database'
 
 const config = {
   apiKey: 'AIzaSyAdqcW0V8x6bJVmPr4TY6cdh77rt3FV1oY',

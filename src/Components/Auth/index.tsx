@@ -1,11 +1,9 @@
-import React, { useContext, useEffect } from 'react'
-import { toast } from 'sonner'
-
-import { IUser, PROVIDER, signIn } from 'services/auth'
-
 import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'
 import { LoginForm } from 'Components/LoginForm'
+import React, { useContext, useEffect } from 'react'
+import { IUser, PROVIDER, signIn } from 'services/auth'
+import { toast } from 'sonner'
 
 interface IAuthProps {
   children: React.ReactNode

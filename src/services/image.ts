@@ -7,7 +7,8 @@ const uploadImage = async (
   preset: string,
 ): Promise<{ cloudinaryId: string | null }> => {
   if (!cloudinaryAppName) {
-    const message = 'Cloudinary configuration is missing. Please set VITE_CLOUDINARY_ORG_ID environment variable.'
+    const message =
+      'Cloudinary configuration is missing. Please set VITE_CLOUDINARY_ORG_ID environment variable.'
     console.error(message)
     toast.error('Image upload configuration error')
     return { cloudinaryId: null }
@@ -16,7 +17,7 @@ const uploadImage = async (
   const formData = new FormData()
   formData.append('file', file)
   formData.append('upload_preset', preset)
-  
+
   try {
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${cloudinaryAppName}/image/upload`,

@@ -1,15 +1,13 @@
+import { StoreContext } from 'Components/Context/store'
+import { ImageUploader } from 'Components/ImageUploader'
 import { XMarkIcon } from '@heroicons/react/20/solid'
+import type { DataSnapshot } from 'firebase/database'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { DataSnapshot } from 'firebase/database'
-
 import { databaseRef } from 'services/firebase'
 import { getCloudinaryImage } from 'services/image'
 import { getUserRoute } from 'services/routes'
 import { ITodo, updateTask } from 'services/task'
-
-import { StoreContext } from 'Components/Context/store'
-import { ImageUploader } from 'Components/ImageUploader'
 
 interface ITaskPreviewProps {
   onClose: () => void
@@ -17,7 +15,7 @@ interface ITaskPreviewProps {
 
 const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
   const navigate = useNavigate()
-  let { id } = useParams()
+  const { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<ITodo | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -73,14 +71,14 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
       )
       firstFocusable?.focus()
     }
-  }, [id])
+  }, [id, todo])
 
   useEffect(() => {
     if (state?.user?.id && id) {
       const ref = databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`)
       let wasLoaded = false
       const unsubscribe = ref.on('value', (snapshot: DataSnapshot) => {
-        let item = snapshot.val()
+        const item = snapshot.val()
         if (item) {
           setTodo({ ...item, id })
           wasLoaded = true
@@ -116,7 +114,11 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
   return (
     <>
       {/* Mobile overlay */}
-      <div className="fixed inset-0 bg-overlay z-40 md:hidden" onClick={handleClose} />
+      <button
+        className="fixed inset-0 bg-overlay z-40 md:hidden"
+        onClick={handleClose}
+        type="button"
+      />
       {/* Panel */}
       <div
         ref={panelRef}
@@ -186,6 +188,7 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
                             className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
                             onClick={() => handleDeleteFile(file, todo)}
                             aria-label="Delete image"
+                            type="button"
                           >
                             <XMarkIcon className="size-5 shrink-0" />
                           </button>

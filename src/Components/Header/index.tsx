@@ -3,11 +3,10 @@ import {
   ArrowRightOnRectangleIcon,
   ChevronDownIcon,
   Cog6ToothIcon,
-  SunIcon,
   MoonIcon,
+  SunIcon,
 } from '@heroicons/react/20/solid'
-import React, { useState, useEffect } from 'react'
-import { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 import { IUser } from 'services/auth'
 import { getCurrentTheme, toggleTheme } from 'services/theme'
@@ -46,6 +45,7 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
             onClick={handleToggleTheme}
             className="p-1.5 rounded-md text-white/80 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            type="button"
           >
             {isDark ? (
               <SunIcon className="size-5 shrink-0" />
@@ -87,6 +87,7 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                       <Menu.Item>
                         {({ active }) => (
                           <button
+                            type="button"
                             className={`${
                               active
                                 ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
@@ -106,6 +107,7 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                       <Menu.Item>
                         {({ active }) => (
                           <button
+                            type="button"
                             onClick={onLogout}
                             className={`${
                               active

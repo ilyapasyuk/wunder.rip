@@ -10,7 +10,7 @@
   <title>Wunder.rip</title>
   <script>
     // Ранняя инициализация темы для предотвращения мерцания
-    (function() {
+    (() => {
       const theme = localStorage.getItem('wunder-theme');
       const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const isDark = theme === 'dark' || (!theme && systemDark);

@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
-import { Toaster } from 'sonner'
-
-import { logOut } from 'services/auth'
-
 import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'
 import { Header } from 'Components/Header'
+import React, { useContext } from 'react'
+import { logOut } from 'services/auth'
+import { Toaster } from 'sonner'
 
 interface ILayoutProps {
   children?: React.ReactNode
