@@ -38,8 +38,14 @@
       "bracketSameLine": false
     }
   },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "overrides": [
     {
+      "includes": ["*.css", "**/*.css"],
       "formatter": {
         "enabled": true
       },
