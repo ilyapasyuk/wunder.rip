@@ -21,7 +21,7 @@ const createTodo = async (
   error?: Error
 }> => {
   try {
-    const timestamp = +new Date()
+    const timestamp = Date.now()
 
     const value: ITodo = {
       task: todo.slice(0, 100).trim(),

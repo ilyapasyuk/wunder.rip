@@ -58,7 +58,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
           </div>
           <button
             onClick={() => onSelect(todo)}
-            className={`w-full py-2 cursor-pointer ${todoClassName}`}
+            className={`w-full py-2 cursor-pointer text-left ${todoClassName}`}
             type="button"
           >
             {todo.task}
