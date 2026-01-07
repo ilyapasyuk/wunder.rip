@@ -30,7 +30,7 @@ const createTodo = async (
       createdAt: timestamp,
       files: [],
       note: '',
-      order: 0,
+      order: -timestamp,
       isPublic: false,
     }
 
