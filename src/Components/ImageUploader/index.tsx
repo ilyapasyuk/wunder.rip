@@ -1,17 +1,17 @@
 import React, { useRef, useState } from 'react'
 
-import { uploadImage } from 'service/image'
+import { uploadImage } from 'Service/image'
 
-interface ImageUploaderProps {
+interface IImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void
 }
 
-const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
+const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isDragOver, setIsDragOver] = useState<boolean>(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const uploadFile = async (file: File | undefined): Promise<void> => {
+  const handleUploadFile = async (file: File | undefined): Promise<void> => {
     if (!file) {
       return
     }
@@ -62,7 +62,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
     if (files && files.length > 0) {
       const file = files[0]
       if (file.type.startsWith('image/')) {
-        uploadFile(file)
+        handleUploadFile(file)
       }
     }
   }
@@ -109,7 +109,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
                   name="img"
                   accept="image/*"
                   title="Upload"
-                  onChange={({ target }) => uploadFile(target?.files?.[0])}
+                  onChange={({ target }) => handleUploadFile(target?.files?.[0])}
                   className="sr-only"
                 />
               </label>

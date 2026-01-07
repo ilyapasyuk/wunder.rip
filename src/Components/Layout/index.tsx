@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Toaster } from 'sonner'
 
-import { logOut } from 'service/auth'
+import { logOut } from 'Service/auth'
 
 import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'

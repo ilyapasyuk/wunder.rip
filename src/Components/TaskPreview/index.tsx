@@ -3,19 +3,19 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import type { DataSnapshot } from 'firebase/database'
 
-import { databaseRef } from 'service/firebase'
-import { getCloudinaryImage } from 'service/image'
-import { getUserRoute } from 'service/routes'
-import { ITodo, updateTask } from 'service/task'
+import { databaseRef } from 'Service/firebase'
+import { getCloudinaryImage } from 'Service/image'
+import { getUserRoute } from 'Service/routes'
+import { ITodo, updateTask } from 'Service/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
 
-interface TaskPreviewProps {
+interface ITaskPreviewProps {
   onClose: () => void
 }
 
-const TaskPreview = ({ onClose }: TaskPreviewProps) => {
+const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
   const navigate = useNavigate()
   let { id } = useParams()
   const { state } = useContext(StoreContext)
@@ -35,18 +35,24 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
 
       if (e.key === 'Tab' && panelRef.current) {
         const focusableElements = panelRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'
+          'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])',
         )
         const firstElement = focusableElements[0]
         const lastElement = focusableElements[focusableElements.length - 1]
 
         if (e.shiftKey) {
-          if (document.activeElement === firstElement || !panelRef.current.contains(document.activeElement)) {
+          if (
+            document.activeElement === firstElement ||
+            !panelRef.current.contains(document.activeElement)
+          ) {
             e.preventDefault()
             lastElement?.focus()
           }
         } else {
-          if (document.activeElement === lastElement || !panelRef.current.contains(document.activeElement)) {
+          if (
+            document.activeElement === lastElement ||
+            !panelRef.current.contains(document.activeElement)
+          ) {
             e.preventDefault()
             firstElement?.focus()
           }
@@ -63,7 +69,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   useEffect(() => {
     if (todo && panelRef.current && id) {
       const firstFocusable = panelRef.current.querySelector<HTMLElement>(
-        'input, button, textarea, [tabindex]:not([tabindex="-1"])'
+        'input, button, textarea, [tabindex]:not([tabindex="-1"])',
       )
       firstFocusable?.focus()
     }
@@ -90,10 +96,10 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
     }
   }, [state.user, id])
 
-  const deleteFile = async (file: any, todo: ITodo) => {
+  const handleDeleteFile = async (file: string, todo: ITodo) => {
     const newTodo: ITodo = {
       ...todo,
-      files: todo?.files?.filter(todoFileUrl => todoFileUrl !== file),
+      files: todo?.files?.filter(fileUrl => fileUrl !== file),
     }
 
     if (state?.user?.id) {
@@ -101,7 +107,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
     }
   }
 
-  const editTask = async (todo: ITodo) => {
+  const handleEditTask = async (todo: ITodo) => {
     if (state?.user?.id) {
       updateTask(todo, state?.user?.id)
     }
@@ -130,14 +136,17 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                   placeholder="Task name"
                   value={todo.task}
                   onChange={({ target }) =>
-                    editTask({
+                    handleEditTask({
                       ...todo,
                       task: target.value,
                     })
                   }
                 />
               ) : (
-                <div id="task-preview-title" className="flex-1 text-lg font-medium leading-6 text-text-secondary dark:text-text-dark-secondary">
+                <div
+                  id="task-preview-title"
+                  className="flex-1 text-lg font-medium leading-6 text-text-secondary dark:text-text-dark-secondary"
+                >
                   Task Preview
                 </div>
               )}
@@ -161,7 +170,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                     placeholder="Note"
                     value={todo.note}
                     onChange={({ target }) =>
-                      editTask({
+                      handleEditTask({
                         ...todo,
                         note: target.value,
                       })
@@ -175,7 +184,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                         <div className="text-right">
                           <button
                             className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
-                            onClick={() => deleteFile(file, todo)}
+                            onClick={() => handleDeleteFile(file, todo)}
                             aria-label="Delete image"
                           >
                             <XMarkIcon className="size-5 shrink-0" />
@@ -207,7 +216,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                     onFileUploaded={fileUrl => {
                       const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
-                      editTask({
+                      handleEditTask({
                         ...todo,
                         files,
                       })

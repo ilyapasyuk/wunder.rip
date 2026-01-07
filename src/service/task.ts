@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 
-import { databaseRef } from 'service/firebase'
-import { getCreateTaskRoute, getUpdateTaskRoute } from 'service/routes'
+import { databaseRef } from 'Service/firebase'
+import { getCreateTaskRoute, getUpdateTaskRoute } from 'Service/routes'
 
 export type ITodo = {
   task: string
@@ -74,7 +74,7 @@ const updateTask = (todo: ITodo, userId: string) => {
   }
 }
 
-const updateAllTask = (todos: ITodo[], userId: string) => {
+const updateAllTasks = (todos: ITodo[], userId: string) => {
   const updates = {}
   todos.forEach(todo => {
     const newTask = prepareTaskForUpdate(todo)
@@ -110,6 +110,4 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
   }
 }
 
-const getTodo = async (userId: string, todoId: string) => {}
-
-export { createTodo, prepareTaskForUpdate, updateTask, updateAllTask, deleteTodo }
+export { createTodo, prepareTaskForUpdate, updateTask, updateAllTasks, deleteTodo }

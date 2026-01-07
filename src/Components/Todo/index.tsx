@@ -3,18 +3,18 @@ import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { ITodo } from 'service/task'
+import { ITodo } from 'Service/task'
 
 import { Checkbox } from 'Components/Checkbox'
 
-interface TodoProps {
+interface ITodoProps {
   todo: ITodo
   toggleDone: (todo: ITodo) => void
   deleteTodo: (todo: ITodo) => void
   onSelect: (todo: ITodo) => void
 }
 
-const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
+const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
   const hasFiles = todo.files && todo.files.length > 0
   const hasNote = todo.note && todo.note.length > 0
 

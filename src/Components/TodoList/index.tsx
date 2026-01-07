@@ -15,9 +15,9 @@ import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-ki
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { ListBulletIcon, PhotoIcon } from '@heroicons/react/20/solid'
 
-import { databaseRef } from 'service/firebase'
-import { getUserRoute } from 'service/routes'
-import { ITodo, createTodo, deleteTodo, updateAllTask, updateTask } from 'service/task'
+import { databaseRef } from 'Service/firebase'
+import { getUserRoute } from 'Service/routes'
+import { ITodo, createTodo, deleteTodo, updateAllTasks, updateTask } from 'Service/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { TodoItem } from 'Components/Todo'
@@ -28,22 +28,22 @@ const TodoList = () => {
   const [currentTodo, setCurrentTodo] = useState<string>('')
   const navigate = useNavigate()
 
-  const addTodo = async (todo: string): Promise<void> => {
+  const handleAddTodo = async (todo: string): Promise<void> => {
     if (state?.user?.id) {
       await createTodo(todo, state?.user?.id)
       setCurrentTodo('')
     }
   }
 
-  const keyHandle = async (e: any) => {
-    if (e.charCode === 13 && Boolean(e.target.value.length)) {
-      const text = e.target.value
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.charCode === 13 && Boolean((e.target as HTMLInputElement).value.length)) {
+      const text = (e.target as HTMLInputElement).value
       setCurrentTodo('')
-      await addTodo(text)
+      await handleAddTodo(text)
     }
   }
 
-  const toggleDone = async (todo: ITodo) => {
+  const handleToggleDone = async (todo: ITodo) => {
     const value: ITodo = {
       ...todo,
       done: !todo.done,
@@ -99,15 +99,17 @@ const TodoList = () => {
     const newItems = arrayMove(todos, oldIndex, newIndex)
     setTodos(newItems)
     if (!state?.user?.id) return
-    const updated = newItems.map((item, idx) => ({ ...item, order: idx }))
-    await updateAllTask(updated, state.user.id)
+    const updatedTasks = newItems.map((item, idx) => ({ ...item, order: idx }))
+    await updateAllTasks(updatedTasks, state.user.id)
   }
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(String(event.active?.id ?? ''))
-    const rectAny: any = (event as any).active?.rect?.current?.initial || (event as any).active?.rect?.current
-    if (rectAny && typeof rectAny.width === 'number' && typeof rectAny.height === 'number') {
-      setOverlaySize({ width: rectAny.width, height: rectAny.height })
+    const elementRect = (event.active?.rect?.current?.initial || event.active?.rect?.current) as
+      | { width: number; height: number }
+      | undefined
+    if (elementRect && typeof elementRect.width === 'number' && typeof elementRect.height === 'number') {
+      setOverlaySize({ width: elementRect.width, height: elementRect.height })
     }
   }
 
@@ -120,7 +122,7 @@ const TodoList = () => {
             value={currentTodo}
             autoFocus
             onChange={e => setCurrentTodo(e.target.value)}
-            onKeyPress={keyHandle}
+            onKeyPress={handleKeyPress}
             placeholder="New task..."
             className="block w-full rounded-lg border-0 px-4 py-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark shadow-sm ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
           />
@@ -138,7 +140,7 @@ const TodoList = () => {
                   <TodoItem
                     key={todo.id}
                     todo={todo}
-                    toggleDone={toggleDone}
+                    toggleDone={handleToggleDone}
                     deleteTodo={() => {
                       if (state?.user?.id) {
                         deleteTodo(todo, state?.user?.id)
