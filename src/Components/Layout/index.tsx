@@ -20,7 +20,7 @@ const Layout = ({ children }: ILayoutProps) => {
   }
 
   return (
-    <div className="bg-[#f6f7fb] h-full min-h-screen">
+    <div className="bg-background dark:bg-background-dark h-full min-h-screen">
       <Header user={state.user} onLogout={onLogout} />
 
       {children}

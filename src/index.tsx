@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { ROUTE } from 'service/routes'
+import { applyTheme, getInitialTheme, watchSystemTheme } from 'service/theme'
 
 import { StoreProvider } from 'Components/Context/store'
 import { TodoList } from 'Components/TodoList'
@@ -13,6 +14,16 @@ import TaskPreview from './Components/TaskPreview'
 import './index.css'
 
 const container = document.getElementById('wunderTodo')
+
+// Инициализация темы перед рендером
+applyTheme(getInitialTheme())
+
+// Слушатель системной темы (только если пользователь не выбрал тему вручную)
+if (typeof window !== 'undefined') {
+  watchSystemTheme(() => {
+    // Обновление происходит автоматически через watchSystemTheme
+  })
+}
 
 const router = createBrowserRouter([
   {

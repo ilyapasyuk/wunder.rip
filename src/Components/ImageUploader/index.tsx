@@ -29,10 +29,10 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
 
   return (
     <>
-      <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+      <div className="mt-2 flex justify-center rounded-lg border border-dashed border-border dark:border-border-dark px-6 py-10">
         <div className="text-center">
           <svg
-            className="mx-auto h-12 w-12 text-gray-300"
+            className="mx-auto h-12 w-12 text-text-secondary dark:text-text-dark-secondary"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"
@@ -44,11 +44,11 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
             />
           </svg>
           {
-            <div className="mt-4 flex text-sm leading-6 text-gray-600">
+            <div className="mt-4 flex text-sm leading-6 text-text-secondary dark:text-text-dark-secondary">
               <label
                 aria-disabled={isLoading}
                 htmlFor="img"
-                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                className="relative cursor-pointer rounded-md bg-surface dark:bg-surface-dark font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primary-hover"
               >
                 <span>Upload a file</span>
                 <input
@@ -65,7 +65,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
               <p className="pl-1">or drag and drop</p>
             </div>
           }
-          <p className="text-xs leading-5 text-gray-600">
+          <p className="text-xs leading-5 text-text-secondary dark:text-text-dark-secondary">
             {isLoading ? 'Uploading...' : 'PNG, JPG, GIF up to 10MB'}
           </p>
         </div>

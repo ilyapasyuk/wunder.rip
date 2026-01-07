@@ -60,7 +60,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-[rgba(41,47,76,0.7)] transition-opacity" />
+          <div className="fixed inset-0 bg-overlay transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-hidden">
@@ -96,9 +96,9 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-surface dark:bg-surface-dark py-6 shadow-xl">
                     <div className="px-4 sm:px-6">
-                      <Dialog.Title className="text-lg font-medium leading-6 text-[#323338]">
+                      <Dialog.Title className="text-lg font-medium leading-6 text-text-primary dark:text-text-dark-primary">
                         Task Preview
                       </Dialog.Title>
                     </div>
@@ -107,7 +107,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                         <div>
                           <div>
                             <input
-                              className="block w-full rounded-lg border-0 py-3 px-4 text-[#323338] bg-white ring-1 ring-inset ring-[#c3c6d4] placeholder:text-[#676879] focus:ring-2 focus:ring-inset focus:ring-[#0073ea] sm:text-base leading-6 mb-6 transition-all"
+                              className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
                               type="text"
                               placeholder="Name"
                               value={todo.task}
@@ -121,7 +121,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                           </div>
                           <div>
                             <textarea
-                              className="block w-full rounded-lg border-0 py-3 px-4 text-[#323338] bg-white ring-1 ring-inset ring-[#c3c6d4] placeholder:text-[#676879] focus:ring-2 focus:ring-inset focus:ring-[#0073ea] sm:text-base leading-6 mb-6 transition-all"
+                              className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
                               rows={8}
                               placeholder="Note"
                               value={todo.note}
@@ -139,13 +139,13 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                                 <div key={`${file}?alt=media`} className="relative">
                                   <div className="text-right">
                                     <button
-                                      className="hover:bg-[rgba(103,104,121,0.1)] rounded-md p-1 transition-colors"
+                                      className="hover:bg-overlay-hover rounded-md p-1 transition-colors"
                                       onClick={() => deleteFile(file, todo)}
                                     >
-                                      <XMarkIcon className="w-6 h-6 text-[#323338]" />
+                                      <XMarkIcon className="w-6 h-6 text-text-primary dark:text-text-dark-primary" />
                                     </button>
                                   </div>
-                                  <div className="relative group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-[#f6f7fb] focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-white focus-within:ring-[#0073ea] overflow-hidden">
+                                  <div className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden">
                                     <img
                                       className="object-cover pointer-events-none group-hover:opacity-75"
                                       src={`${getCloudinaryImage(file, 240, 160, false, true)}`}
