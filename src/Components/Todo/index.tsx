@@ -41,14 +41,14 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
       className="bg-surface dark:bg-surface-dark shadow-sm rounded-lg border border-border dark:border-border-dark hover:shadow-md transition-shadow"
     >
       <div className="flex align-center justify-between">
-        <div className="flex flex-1 items-center">
+        <div className="flex flex-1 items-center gap-1">
           <button
-            className="px-3 py-3 text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary cursor-grab active:cursor-grabbing transition-colors"
+            className="p-2 text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary cursor-grab active:cursor-grabbing transition-colors"
             aria-label="Drag"
             {...attributes}
             {...listeners}
           >
-            <ListBulletIcon className="h-5 w-5" />
+            <ListBulletIcon className="size-5 shrink-0" />
           </button>
           <div className="px-1">
             <Checkbox
@@ -62,18 +62,26 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoProps) => {
             {todo.task}
           </div>
         </div>
-        <div className="px-3 py-3 inline-flex items-center">
+        <div className="px-2 py-2 inline-flex items-center gap-2">
           {hasNote && (
-            <ListBulletIcon className="h-4 w-4 text-text-primary dark:text-text-dark-primary rounded-md" />
+            <ListBulletIcon
+              className="size-4 shrink-0 text-text-secondary dark:text-text-dark-secondary"
+              aria-label="Has note"
+            />
           )}
           {hasFiles && (
-            <PhotoIcon className="h-4 w-4 text-success dark:text-success-dark rounded-md ml-1" />
+            <PhotoIcon
+              className="size-4 shrink-0 text-success dark:text-success-dark"
+              aria-label="Has files"
+            />
           )}
-          <XMarkIcon
-            className="h-6 w-6 cursor-pointer text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary rounded-md ml-3 p-1 transition-colors"
-            aria-hidden="true"
+          <button
             onClick={() => deleteTodo(todo)}
-          />
+            className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+            aria-label="Delete task"
+          >
+            <XMarkIcon className="size-5 shrink-0" />
+          </button>
         </div>
       </div>
     </div>

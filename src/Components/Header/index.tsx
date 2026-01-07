@@ -41,16 +41,16 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
     <div className="w-full relative bg-header dark:bg-header-dark border-b border-border-light dark:border-border-dark">
       <div className="h-14 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <div className="text-white dark:text-text-dark-primary font-medium text-lg">Wunder Rip</div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={handleToggleTheme}
-            className="p-2 rounded-md text-white/70 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover transition-colors"
+            className="p-1.5 rounded-md text-white/80 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {isDark ? (
-              <SunIcon className="h-5 w-5" />
+              <SunIcon className="size-5 shrink-0" />
             ) : (
-              <MoonIcon className="h-5 w-5" />
+              <MoonIcon className="size-5 shrink-0" />
             )}
           </button>
           {user?.avatar && (
@@ -65,10 +65,10 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
             <div className="text-right ml-4">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <Menu.Button className="inline-flex w-full justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-white dark:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75 transition-colors">
+                  <Menu.Button className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-transparent px-4 py-2 text-sm font-medium text-white dark:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75 transition-colors">
                     {user?.fullName}
                     <ChevronDownIcon
-                      className="ml-2 -mr-1 h-5 w-5 text-white/70 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary"
+                      className="size-4 shrink-0 text-white/70 dark:text-text-dark-secondary"
                       aria-hidden="true"
                     />
                   </Menu.Button>
@@ -91,10 +91,10 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                               active
                                 ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
                                 : 'text-text-primary dark:text-text-dark-primary'
-                            } group flex w-full items-center rounded-md px-3 py-2 text-sm transition-colors`}
+                            } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors`}
                           >
                             <Cog6ToothIcon
-                              className="mr-2 h-5 w-5 text-text-secondary dark:text-text-dark-secondary"
+                              className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
                               aria-hidden="true"
                             />
                             {user?.email}
@@ -111,10 +111,10 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                               active
                                 ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
                                 : 'text-text-primary dark:text-text-dark-primary'
-                            } group flex w-full items-center rounded-md px-3 py-2 text-sm transition-colors`}
+                            } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors`}
                           >
                             <ArrowRightOnRectangleIcon
-                              className="mr-2 h-5 w-5 text-text-secondary dark:text-text-dark-secondary"
+                              className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
                               aria-hidden="true"
                             />
                             Log out

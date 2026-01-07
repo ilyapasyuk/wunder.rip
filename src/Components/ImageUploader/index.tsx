@@ -32,7 +32,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
       <div className="mt-2 flex justify-center rounded-lg border border-dashed border-border dark:border-border-dark px-6 py-10">
         <div className="text-center">
           <svg
-            className="mx-auto h-12 w-12 text-text-secondary dark:text-text-dark-secondary"
+            className="mx-auto size-12 shrink-0 text-text-secondary dark:text-text-dark-secondary"
             viewBox="0 0 24 24"
             fill="currentColor"
             aria-hidden="true"

@@ -88,11 +88,11 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                     <div className="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
                       <button
                         type="button"
-                        className="rounded-md text-white/70 hover:text-white focus:outline-none focus:ring-2 focus:ring-white transition-colors"
+                        className="rounded-md p-1.5 text-white/80 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white transition-colors"
                         onClick={onClose}
                       >
                         <span className="sr-only">Close panel</span>
-                        <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                        <XMarkIcon className="size-5 shrink-0" aria-hidden="true" />
                       </button>
                     </div>
                   </Transition.Child>
@@ -139,10 +139,11 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                                 <div key={`${file}?alt=media`} className="relative">
                                   <div className="text-right">
                                     <button
-                                      className="hover:bg-overlay-hover rounded-md p-1 transition-colors"
+                                      className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
                                       onClick={() => deleteFile(file, todo)}
+                                      aria-label="Delete image"
                                     >
-                                      <XMarkIcon className="w-6 h-6 text-text-primary dark:text-text-dark-primary" />
+                                      <XMarkIcon className="size-5 shrink-0" />
                                     </button>
                                   </div>
                                   <div className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden">

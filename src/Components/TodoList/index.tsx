@@ -164,20 +164,26 @@ const TodoList = () => {
                       style={{ width: overlaySize?.width, height: overlaySize?.height }}
                     >
                       <div className="flex align-center justify-between">
-                        <div className="flex flex-1 items-center">
-                          <button className="px-3 py-3 text-text-secondary dark:text-text-dark-secondary">
-                            <ListBulletIcon className="h-5 w-5" />
-                          </button>
+                        <div className="flex flex-1 items-center gap-1">
+                          <div className="p-2 text-text-secondary dark:text-text-dark-secondary">
+                            <ListBulletIcon className="size-5 shrink-0" />
+                          </div>
                           <div className="px-1 w-full py-2 text-text-primary dark:text-text-dark-primary truncate">
                             {todo.task}
                           </div>
                         </div>
-                        <div className="px-3 py-3 inline-flex items-center">
+                        <div className="px-2 py-2 inline-flex items-center gap-2">
                           {Boolean(todo.note) && (
-                            <ListBulletIcon className="h-4 w-4 text-text-primary dark:text-text-dark-primary rounded-md" />
+                            <ListBulletIcon
+                              className="size-4 shrink-0 text-text-secondary dark:text-text-dark-secondary"
+                              aria-label="Has note"
+                            />
                           )}
                           {Boolean(todo.files?.length) && (
-                            <PhotoIcon className="h-4 w-4 text-success dark:text-success-dark rounded-md ml-1" />
+                            <PhotoIcon
+                              className="size-4 shrink-0 text-success dark:text-success-dark"
+                              aria-label="Has files"
+                            />
                           )}
                         </div>
                       </div>
