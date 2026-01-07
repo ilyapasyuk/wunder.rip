@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface CheckboxProps {
   checked: boolean
   onChange: (value: boolean) => void

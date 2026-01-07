@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { PROVIDER } from 'services/auth'
 
 import { GoogleIcon } from './GoogleIcon'

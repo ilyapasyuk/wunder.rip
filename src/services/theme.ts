@@ -49,9 +49,9 @@ const getCurrentTheme = (): Theme => {
 
 const watchSystemTheme = (callback: (theme: Theme) => void): (() => void) => {
   if (typeof window === 'undefined') return () => {}
-  
+
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  
+
   const handleChange = (e: MediaQueryListEvent) => {
     // Обновляем только если пользователь не выбрал тему вручную
     if (!getStoredTheme()) {
@@ -60,17 +60,16 @@ const watchSystemTheme = (callback: (theme: Theme) => void): (() => void) => {
       callback(newTheme)
     }
   }
-  
+
   // Современный способ
   if (mediaQuery.addEventListener) {
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
   }
-  
+
   // Fallback для старых браузеров
   mediaQuery.addListener(handleChange)
   return () => mediaQuery.removeListener(handleChange)
 }
 
 export { getInitialTheme, setTheme, toggleTheme, getCurrentTheme, applyTheme, watchSystemTheme }
-

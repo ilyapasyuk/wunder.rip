@@ -1,11 +1,9 @@
-import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import React from 'react'
+import { Checkbox } from 'Components/Checkbox'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-
+import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { CSSProperties } from 'react'
 import { ITodo } from 'services/task'
-
-import { Checkbox } from 'Components/Checkbox'
 
 interface ITodoProps {
   todo: ITodo
@@ -22,7 +20,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
     id: todo.id || '',
   })
 
-  const style: React.CSSProperties = {
+  const style: CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
     // Hide original while dragging; DragOverlay will render the preview
@@ -58,12 +56,13 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
               }}
             />
           </div>
-          <div
+          <button
             onClick={() => onSelect(todo)}
-            className={`w-full py-2 cursor-pointer ${todoClassName}`}
+            className={`w-full py-2 cursor-pointer text-left ${todoClassName}`}
+            type="button"
           >
             {todo.task}
-          </div>
+          </button>
         </div>
         <div className="px-2 py-2 inline-flex items-center gap-2">
           {hasNote && (
@@ -82,6 +81,7 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
             onClick={() => deleteTodo(todo)}
             className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
             aria-label="Delete task"
+            type="button"
           >
             <XMarkIcon className="size-5 shrink-0" />
           </button>
