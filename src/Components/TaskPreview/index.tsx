@@ -6,7 +6,7 @@ import type { DataSnapshot } from 'firebase/database'
 import { databaseRef } from 'service/firebase'
 import { getCloudinaryImage } from 'service/image'
 import { getUserRoute } from 'service/routes'
-import { ITodo, deleteTodo, updateTask } from 'service/task'
+import { ITodo, updateTask } from 'service/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { ImageUploader } from 'Components/ImageUploader'
@@ -37,6 +37,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
           setTodo(null)
         }
       })
+
       return unsubscribe
     }
   }, [state.user, id])
@@ -48,7 +49,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
     }
 
     if (state?.user?.id) {
-      await deleteTodo(newTodo, state?.user?.id)
+      await updateTask(newTodo, state?.user?.id)
     }
   }
 

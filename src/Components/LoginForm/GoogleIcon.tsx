@@ -28,4 +28,3 @@ const GoogleIcon = ({ className = 'size-5' }: GoogleIconProps) => {
 }
 
 export { GoogleIcon }
-

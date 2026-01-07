@@ -26,7 +26,7 @@ const Layout = ({ children }: ILayoutProps) => {
       {children}
 
       <Toaster
-        position="top-right"
+        position="bottom-right"
         offset="16px"
         toastOptions={{
           duration: 4000,
