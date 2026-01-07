@@ -29,12 +29,17 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   useEffect(() => {
     if (state?.user?.id && id) {
       const ref = databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`)
+      let wasLoaded = false
       const unsubscribe = ref.on('value', (snapshot: DataSnapshot) => {
         let item = snapshot.val()
         if (item) {
           setTodo({ ...item, id })
+          wasLoaded = true
         } else {
           setTodo(null)
+          if (wasLoaded) {
+            handleClose()
+          }
         }
       })
 
