@@ -34,11 +34,10 @@ const Auth = ({ children }: IAuthProps) => {
   }, [])
 
   return (
-    <div className="bg-gray-100 h-full">
+    <>
       {isAuthorized && <>{children}</>}
-
       {!isAuthorized && <LoginForm onLogin={login} />}
-    </div>
+    </>
   )
 }
 
