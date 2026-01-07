@@ -1,4 +1,4 @@
-import { IUser } from 'service/auth'
+import { IUser } from 'services/auth'
 
 export enum ACTION_TYPE {
   SET_USER = 'SET_USER',

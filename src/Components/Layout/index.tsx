@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Toaster } from 'sonner'
 
-import { logOut } from 'service/auth'
+import { logOut } from 'services/auth'
 
 import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'
@@ -26,7 +26,7 @@ const Layout = ({ children }: ILayoutProps) => {
       {children}
 
       <Toaster
-        position="top-right"
+        position="bottom-right"
         offset="16px"
         toastOptions={{
           duration: 4000,
