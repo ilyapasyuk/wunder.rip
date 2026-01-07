@@ -23,13 +23,19 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   const [todo, setTodo] = useState<ITodo | null>(null)
 
   useEffect(() => {
-    if (state?.user?.id) {
-      databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`).on('value', (snapshot: DataSnapshot) => {
-        let item = snapshot.val() || null
-        setTodo(item)
+    if (state?.user?.id && id) {
+      const ref = databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`)
+      const unsubscribe = ref.on('value', (snapshot: DataSnapshot) => {
+        let item = snapshot.val()
+        if (item) {
+          setTodo({ ...item, id })
+        } else {
+          setTodo(null)
+        }
       })
+      return unsubscribe
     }
-  }, [state.user])
+  }, [state.user, id])
 
   const deleteFile = async (file: any, todo: ITodo) => {
     const newTodo: ITodo = {
