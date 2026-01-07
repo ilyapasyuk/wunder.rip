@@ -13,7 +13,7 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
-import { ListBulletIcon, PhotoIcon } from '@heroicons/react/20/solid'
+import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 
 import { databaseRef } from 'services/firebase'
 import { getUserRoute } from 'services/routes'
@@ -21,6 +21,7 @@ import { ITodo, createTodo, deleteTodo, updateAllTasks, updateTask } from 'servi
 
 import { StoreContext } from 'Components/Context/store'
 import { TodoItem } from 'Components/Todo'
+import { Checkbox } from 'Components/Checkbox'
 
 const TodoList = () => {
   const { state, dispatch } = useContext(StoreContext)
@@ -104,16 +105,27 @@ const TodoList = () => {
   }
 
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(String(event.active?.id ?? ''))
-    const elementRect = (event.active?.rect?.current?.initial || event.active?.rect?.current) as
-      | { width: number; height: number }
-      | undefined
-    if (
-      elementRect &&
-      typeof elementRect.width === 'number' &&
-      typeof elementRect.height === 'number'
-    ) {
-      setOverlaySize({ width: elementRect.width, height: elementRect.height })
+    const id = String(event.active?.id ?? '')
+    setActiveId(id)
+    
+    // Get element from event data (setNodeRef from useSortable)
+    const activeElement = event.active?.data?.current?.node as HTMLElement | undefined
+    if (activeElement) {
+      const rect = activeElement.getBoundingClientRect()
+      // Use exact dimensions including borders
+      setOverlaySize({ width: rect.width, height: rect.height })
+    } else {
+      // Fallback: use rect from event (may be less accurate)
+      const elementRect = (event.active?.rect?.current?.initial || event.active?.rect?.current) as
+        | { width: number; height: number }
+        | undefined
+      if (
+        elementRect &&
+        typeof elementRect.width === 'number' &&
+        typeof elementRect.height === 'number'
+      ) {
+        setOverlaySize({ width: elementRect.width, height: elementRect.height })
+      }
     }
   }
 
@@ -164,33 +176,61 @@ const TodoList = () => {
                 ? (() => {
                     const todo = todos.find(t => String(t.id) === String(activeId))
                     if (!todo) return null
+                    const hasFiles = todo.files && todo.files.length > 0
+                    const hasNote = todo.note && todo.note.length > 0
+                    const todoClassName = todo.done
+                      ? 'line-through text-text-secondary dark:text-text-dark-secondary'
+                      : 'text-text-primary dark:text-text-dark-primary'
                     return (
                       <div
-                        className="bg-surface dark:bg-surface-dark shadow-lg rounded-lg border border-border dark:border-border-dark"
-                        style={{ width: overlaySize?.width, height: overlaySize?.height }}
+                        className="bg-surface dark:bg-surface-dark shadow-sm rounded-lg border border-border dark:border-border-dark"
+                        style={{ 
+                          width: overlaySize?.width ? `${overlaySize.width}px` : undefined, 
+                          height: overlaySize?.height ? `${overlaySize.height}px` : undefined,
+                          boxSizing: 'border-box'
+                        }}
                       >
                         <div className="flex align-center justify-between">
                           <div className="flex flex-1 items-center gap-1">
-                            <div className="p-2 text-text-secondary dark:text-text-dark-secondary">
+                            <button
+                              className="p-2 text-text-secondary dark:text-text-dark-secondary cursor-grabbing"
+                              aria-label="Drag"
+                              tabIndex={-1}
+                            >
                               <ListBulletIcon className="size-5 shrink-0" />
+                            </button>
+                            <div className="px-1">
+                              <Checkbox
+                                checked={todo.done}
+                                onChange={() => {}}
+                              />
                             </div>
-                            <div className="px-1 w-full py-2 text-text-primary dark:text-text-dark-primary truncate">
+                            <div
+                              className={`w-full py-2 ${todoClassName}`}
+                            >
                               {todo.task}
                             </div>
                           </div>
                           <div className="px-2 py-2 inline-flex items-center gap-2">
-                            {Boolean(todo.note) && (
+                            {hasNote && (
                               <ListBulletIcon
                                 className="size-4 shrink-0 text-text-secondary dark:text-text-dark-secondary"
                                 aria-label="Has note"
                               />
                             )}
-                            {Boolean(todo.files?.length) && (
+                            {hasFiles && (
                               <PhotoIcon
                                 className="size-4 shrink-0 text-success dark:text-success-dark"
                                 aria-label="Has files"
                               />
                             )}
+                            <button
+                              className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary opacity-50"
+                              aria-label="Delete task"
+                              tabIndex={-1}
+                            >
+                              <XMarkIcon className="size-5 shrink-0" />
+                            </button>
                           </div>
                         </div>
                       </div>
