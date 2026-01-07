@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { uploadImage } from 'Service/image'
+import { uploadImage } from 'services/image'
 
 interface IImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void

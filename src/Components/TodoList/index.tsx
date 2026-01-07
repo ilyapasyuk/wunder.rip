@@ -15,9 +15,9 @@ import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-ki
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { ListBulletIcon, PhotoIcon } from '@heroicons/react/20/solid'
 
-import { databaseRef } from 'Service/firebase'
-import { getUserRoute } from 'Service/routes'
-import { ITodo, createTodo, deleteTodo, updateAllTasks, updateTask } from 'Service/task'
+import { databaseRef } from 'services/firebase'
+import { getUserRoute } from 'services/routes'
+import { ITodo, createTodo, deleteTodo, updateAllTasks, updateTask } from 'services/task'
 
 import { StoreContext } from 'Components/Context/store'
 import { TodoItem } from 'Components/Todo'
@@ -108,7 +108,11 @@ const TodoList = () => {
     const elementRect = (event.active?.rect?.current?.initial || event.active?.rect?.current) as
       | { width: number; height: number }
       | undefined
-    if (elementRect && typeof elementRect.width === 'number' && typeof elementRect.height === 'number') {
+    if (
+      elementRect &&
+      typeof elementRect.width === 'number' &&
+      typeof elementRect.height === 'number'
+    ) {
       setOverlaySize({ width: elementRect.width, height: elementRect.height })
     }
   }
@@ -156,43 +160,43 @@ const TodoList = () => {
               </div>
             </SortableContext>
             <DragOverlay adjustScale={false}>
-              {activeId ? (
-                (() => {
-                  const todo = todos.find(t => String(t.id) === String(activeId))
-                  if (!todo) return null
-                  return (
-                    <div
-                      className="bg-surface dark:bg-surface-dark shadow-lg rounded-lg border border-border dark:border-border-dark"
-                      style={{ width: overlaySize?.width, height: overlaySize?.height }}
-                    >
-                      <div className="flex align-center justify-between">
-                        <div className="flex flex-1 items-center gap-1">
-                          <div className="p-2 text-text-secondary dark:text-text-dark-secondary">
-                            <ListBulletIcon className="size-5 shrink-0" />
+              {activeId
+                ? (() => {
+                    const todo = todos.find(t => String(t.id) === String(activeId))
+                    if (!todo) return null
+                    return (
+                      <div
+                        className="bg-surface dark:bg-surface-dark shadow-lg rounded-lg border border-border dark:border-border-dark"
+                        style={{ width: overlaySize?.width, height: overlaySize?.height }}
+                      >
+                        <div className="flex align-center justify-between">
+                          <div className="flex flex-1 items-center gap-1">
+                            <div className="p-2 text-text-secondary dark:text-text-dark-secondary">
+                              <ListBulletIcon className="size-5 shrink-0" />
+                            </div>
+                            <div className="px-1 w-full py-2 text-text-primary dark:text-text-dark-primary truncate">
+                              {todo.task}
+                            </div>
                           </div>
-                          <div className="px-1 w-full py-2 text-text-primary dark:text-text-dark-primary truncate">
-                            {todo.task}
+                          <div className="px-2 py-2 inline-flex items-center gap-2">
+                            {Boolean(todo.note) && (
+                              <ListBulletIcon
+                                className="size-4 shrink-0 text-text-secondary dark:text-text-dark-secondary"
+                                aria-label="Has note"
+                              />
+                            )}
+                            {Boolean(todo.files?.length) && (
+                              <PhotoIcon
+                                className="size-4 shrink-0 text-success dark:text-success-dark"
+                                aria-label="Has files"
+                              />
+                            )}
                           </div>
-                        </div>
-                        <div className="px-2 py-2 inline-flex items-center gap-2">
-                          {Boolean(todo.note) && (
-                            <ListBulletIcon
-                              className="size-4 shrink-0 text-text-secondary dark:text-text-dark-secondary"
-                              aria-label="Has note"
-                            />
-                          )}
-                          {Boolean(todo.files?.length) && (
-                            <PhotoIcon
-                              className="size-4 shrink-0 text-success dark:text-success-dark"
-                              aria-label="Has files"
-                            />
-                          )}
                         </div>
                       </div>
-                    </div>
-                  )
-                })()
-              ) : null}
+                    )
+                  })()
+                : null}
             </DragOverlay>
           </DndContext>
         </div>

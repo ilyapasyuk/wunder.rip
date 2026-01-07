@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
 
-import { ROUTE } from 'Service/routes'
-import { applyTheme, getInitialTheme, watchSystemTheme } from 'Service/theme'
+import { ROUTE } from 'services/routes'
+import { applyTheme, getInitialTheme, watchSystemTheme } from 'services/theme'
 
 import { StoreProvider } from 'Components/Context/store'
 import { TodoList } from 'Components/TodoList'

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PROVIDER } from 'Service/auth'
+import { PROVIDER } from 'services/auth'
 
 import { GoogleIcon } from './GoogleIcon'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { ITodo } from 'Service/task'
+import { ITodo } from 'services/task'
 
 import { Checkbox } from 'Components/Checkbox'
 
@@ -58,7 +58,10 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
               }}
             />
           </div>
-          <div onClick={() => onSelect(todo)} className={`w-full py-2 cursor-pointer ${todoClassName}`}>
+          <div
+            onClick={() => onSelect(todo)}
+            className={`w-full py-2 cursor-pointer ${todoClassName}`}
+          >
             {todo.task}
           </div>
         </div>

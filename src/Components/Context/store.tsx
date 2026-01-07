@@ -1,6 +1,6 @@
 import React, { Dispatch, ReactNode, createContext, useReducer } from 'react'
 
-import { IUser } from 'Service/auth'
+import { IUser } from 'services/auth'
 
 import { reducer } from 'Components/Context/reducer'
 

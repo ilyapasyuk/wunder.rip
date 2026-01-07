@@ -9,8 +9,8 @@ import {
 import React, { useState, useEffect } from 'react'
 import { Fragment } from 'react'
 
-import { IUser } from 'Service/auth'
-import { getCurrentTheme, toggleTheme } from 'Service/theme'
+import { IUser } from 'services/auth'
+import { getCurrentTheme, toggleTheme } from 'services/theme'
 
 interface IHeaderProps {
   user: IUser | null

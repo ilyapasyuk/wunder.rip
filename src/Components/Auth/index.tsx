@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { toast } from 'sonner'
 
-import { IUser, PROVIDER, signIn } from 'Service/auth'
+import { IUser, PROVIDER, signIn } from 'services/auth'
 
 import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'
