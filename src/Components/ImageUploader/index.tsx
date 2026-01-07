@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { uploadImage } from 'service/image'
 
@@ -8,6 +8,8 @@ interface ImageUploaderProps {
 
 const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
   const [isLoading, setLoading] = useState<boolean>(false)
+  const [isDragOver, setIsDragOver] = useState<boolean>(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const uploadFile = async (file: File | undefined): Promise<void> => {
     if (!file) {
@@ -27,9 +29,57 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
     }
   }
 
+  const handleAreaClick = () => {
+    if (!isLoading && fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!isLoading) {
+      setIsDragOver(true)
+    }
+  }
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+
+    if (isLoading) {
+      return
+    }
+
+    const files = e.dataTransfer.files
+    if (files && files.length > 0) {
+      const file = files[0]
+      if (file.type.startsWith('image/')) {
+        uploadFile(file)
+      }
+    }
+  }
+
   return (
     <>
-      <div className="mt-2 flex justify-center rounded-lg border border-dashed border-border dark:border-border-dark px-6 py-10">
+      <div
+        onClick={handleAreaClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`mt-2 flex justify-center rounded-lg border border-dashed px-6 py-10 cursor-pointer transition-colors ${
+          isDragOver
+            ? 'border-primary bg-primary/5 dark:bg-primary/10'
+            : 'border-border dark:border-border-dark hover:bg-overlay-hover'
+        }`}
+      >
         <div className="text-center">
           <svg
             className="mx-auto size-12 shrink-0 text-text-secondary dark:text-text-dark-secondary"
@@ -52,6 +102,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
               >
                 <span>Upload a file</span>
                 <input
+                  ref={fileInputRef}
                   disabled={isLoading}
                   type="file"
                   id="img"

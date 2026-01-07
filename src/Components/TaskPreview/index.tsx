@@ -72,13 +72,28 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
       <div className="fixed inset-0 md:relative md:inset-auto w-full md:w-96 md:max-w-md border-l border-border dark:border-border-dark bg-surface dark:bg-surface-dark shadow-xl z-50 md:z-auto">
         <div className="flex h-full flex-col overflow-y-scroll">
           <div className="relative px-4 sm:px-6 pt-6 pb-4 border-b border-border dark:border-border-dark">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium leading-6 text-text-primary dark:text-text-dark-primary">
-                Task Preview
-              </h2>
+            <div className="flex items-center justify-between gap-2">
+              {todo ? (
+                <input
+                  className="flex-1 text-lg font-medium leading-6 text-text-primary dark:text-text-dark-primary bg-transparent border-0 outline-none placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-0"
+                  type="text"
+                  placeholder="Task name"
+                  value={todo.task}
+                  onChange={({ target }) =>
+                    editTask({
+                      ...todo,
+                      task: target.value,
+                    })
+                  }
+                />
+              ) : (
+                <div className="flex-1 text-lg font-medium leading-6 text-text-secondary dark:text-text-dark-secondary">
+                  Task Preview
+                </div>
+              )}
               <button
                 type="button"
-                className="rounded-md p-1.5 text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+                className="rounded-md p-1.5 text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary transition-colors shrink-0"
                 onClick={handleClose}
               >
                 <span className="sr-only">Close panel</span>
@@ -89,20 +104,6 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
           {todo && (
             <div className="flex-1 px-4 sm:px-6 py-6">
               <div>
-                <div>
-                  <input
-                    className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
-                    type="text"
-                    placeholder="Name"
-                    value={todo.task}
-                    onChange={({ target }) =>
-                      editTask({
-                        ...todo,
-                        task: target.value,
-                      })
-                    }
-                  />
-                </div>
                 <div>
                   <textarea
                     className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
