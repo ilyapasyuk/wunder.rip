@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
 
 import { ROUTE } from 'service/routes'
 import { applyTheme, getInitialTheme, watchSystemTheme } from 'service/theme'
@@ -28,17 +28,20 @@ if (typeof window !== 'undefined') {
 const router = createBrowserRouter([
   {
     path: ROUTE.ROOT,
-    element: <TodoList />,
-  },
-  {
-    path: ROUTE.TASK_PAGE,
     element: (
-      <TaskPreview
-        onClose={() => {
-          router.navigate(ROUTE.ROOT)
-        }}
-      />
+      <div className="flex flex-col md:flex-row">
+        <div className="flex-1 min-w-0">
+          <TodoList />
+        </div>
+        <Outlet />
+      </div>
     ),
+    children: [
+      {
+        path: 't/:id',
+        element: <TaskPreview onClose={() => {}} />,
+      },
+    ],
   },
 ])
 
