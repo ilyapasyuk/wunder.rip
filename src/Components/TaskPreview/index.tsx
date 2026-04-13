@@ -64,14 +64,6 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (todo && panelRef.current && id) {
-      const firstFocusable = panelRef.current.querySelector<HTMLElement>(
-        'input, button, textarea, [tabindex]:not([tabindex="-1"])',
-      )
-      firstFocusable?.focus()
-    }
-  }, [id, todo])
 
   useEffect(() => {
     if (state?.user?.id && id) {
