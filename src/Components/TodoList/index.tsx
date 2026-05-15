@@ -17,6 +17,7 @@ import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { trackTaskCompleted, trackTaskReordered } from 'services/analytics'
 import { databaseRef } from 'services/firebase'
 import { getUserRoute } from 'services/routes'
 import { createTodo, deleteTodo, ITodo, updateAllTasks, updateTask } from 'services/task'
@@ -50,6 +51,7 @@ const TodoList = () => {
 
     if (todo.id && state?.user?.id) {
       await updateTask(value, state?.user?.id)
+      trackTaskCompleted(!todo.done)
     }
   }
 
@@ -100,6 +102,7 @@ const TodoList = () => {
     if (!state?.user?.id) return
     const updatedTasks = newItems.map((item, idx) => ({ ...item, order: idx }))
     await updateAllTasks(updatedTasks, state.user.id)
+    trackTaskReordered()
   }
 
   const handleDragStart = (event: DragStartEvent) => {

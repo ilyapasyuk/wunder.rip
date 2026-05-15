@@ -1,4 +1,5 @@
 import { type FirebaseApp, initializeApp } from 'firebase/app'
+import { getAnalytics } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import {
   type DatabaseReference,
@@ -26,6 +27,7 @@ const config = {
 const app: FirebaseApp = initializeApp(config)
 const db = getDatabase(app)
 const auth = getAuth(app)
+const analytics = getAnalytics(app)
 
 type ChildRefShim = {
   on: (event: 'value', callback: (snapshot: DataSnapshot) => void) => Unsubscribe
@@ -48,4 +50,4 @@ export const databaseRef: DatabaseRefShim = {
   update: (updates: Record<string, unknown>) => dbUpdate(dbRef(db), updates),
 }
 
-export { app, auth }
+export { app, auth, analytics }

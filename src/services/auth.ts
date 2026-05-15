@@ -1,5 +1,6 @@
-import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
+import { trackLogin } from 'services/analytics'
 import { auth } from 'services/firebase'
 import { toast } from 'sonner'
 
@@ -40,6 +41,7 @@ const signIn = async (
 
     const preparedUser: IUser = { id, avatar, email, fullName }
     window.localStorage.setItem('user', JSON.stringify(preparedUser))
+    trackLogin(provider)
     return {
       user: preparedUser,
     }
@@ -54,7 +56,8 @@ const signIn = async (
 }
 
 const logOut = async (): Promise<void> => {
-  return window.localStorage.removeItem('user')
+  window.localStorage.removeItem('user')
+  return signOut(auth)
 }
 
 export { signIn, logOut }

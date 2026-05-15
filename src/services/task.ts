@@ -1,3 +1,4 @@
+import { trackTaskCreated, trackTaskDeleted } from 'services/analytics'
 import { databaseRef } from 'services/firebase'
 import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/routes'
 import { toast } from 'sonner'
@@ -35,6 +36,7 @@ const createTodo = async (
 
     const taskRef = await databaseRef.child(getCreateTaskRoute(userId)).push(value)
     toast.success('Task created')
+    trackTaskCreated()
     return {
       id: taskRef.key,
     }
@@ -91,6 +93,7 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
     try {
       await databaseRef.update({ [getUpdateTaskRoute(userId, todo.id)]: null })
       toast.success('Task deleted')
+      trackTaskDeleted()
     } catch (error) {
       const message = `Error deleting task: ${error}`
       console.error(message)

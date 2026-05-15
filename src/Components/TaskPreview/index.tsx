@@ -4,6 +4,7 @@ import { XMarkIcon } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { trackTaskViewed } from 'services/analytics'
 import { databaseRef } from 'services/firebase'
 import { getCloudinaryImage } from 'services/image'
 import { getUserRoute } from 'services/routes'
@@ -73,6 +74,7 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
         const item = snapshot.val()
         if (item) {
           setTodo({ ...item, id })
+          if (!wasLoaded) trackTaskViewed()
           wasLoaded = true
         } else {
           setTodo(null)
