@@ -19,18 +19,20 @@ import { KeyboardEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { trackTaskCompleted, trackTaskReordered } from 'services/analytics'
 import { databaseRef } from 'services/firebase'
-import { getUserRoute } from 'services/routes'
+import { IFolder } from 'services/folder'
+import { getFoldersRoute, getUserRoute } from 'services/routes'
 import { createTodo, deleteTodo, ITodo, updateAllTasks, updateTask } from 'services/task'
 
 const TodoList = () => {
   const { state } = useContext(StoreContext)
   const [todos, setTodos] = useState<ITodo[]>([])
+  const [folders, setFolders] = useState<IFolder[]>([])
   const [currentTodo, setCurrentTodo] = useState<string>('')
   const navigate = useNavigate()
 
   const handleAddTodo = async (todo: string): Promise<void> => {
     if (state?.user?.id) {
-      await createTodo(todo, state?.user?.id)
+      await createTodo(todo, state?.user?.id, state.currentFolderId)
       setCurrentTodo('')
     }
   }
@@ -71,6 +73,7 @@ const TodoList = () => {
               files: items[i].files,
               order: items[i].order || 0,
               isPublic: items[i]?.isPublic || false,
+              folderId: items[i]?.folderId ?? null,
             }
           })
           .sort((a, b) => a.order - b.order)
@@ -79,13 +82,43 @@ const TodoList = () => {
     }
   }, [state.user])
 
+  useEffect(() => {
+    if (!state?.user?.id) {
+      setFolders([])
+      return
+    }
+    const unsubscribe = databaseRef
+      .child(getFoldersRoute(state.user.id))
+      .on('value', (snapshot: DataSnapshot) => {
+        const items = snapshot.val() || {}
+        const prepared: IFolder[] = Object.keys(items).map(id => ({
+          id,
+          name: items[id].name,
+          createdAt: items[id].createdAt,
+          order: items[id].order || 0,
+        }))
+        setFolders(prepared)
+      })
+    return () => unsubscribe()
+  }, [state.user])
+
+  const visibleTodos = useMemo(
+    () => todos.filter(t => (t.folderId ?? null) === state.currentFolderId),
+    [todos, state.currentFolderId],
+  )
+
+  const currentFolderName = useMemo(() => {
+    if (!state.currentFolderId) return 'Inbox'
+    return folders.find(f => f.id === state.currentFolderId)?.name || 'Inbox'
+  }, [state.currentFolderId, folders])
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 },
     }),
   )
 
-  const ids = useMemo(() => todos.map(t => t.id || ''), [todos])
+  const ids = useMemo(() => visibleTodos.map(t => t.id || ''), [visibleTodos])
   const [activeId, setActiveId] = useState<string | null>(null)
   const [overlaySize, setOverlaySize] = useState<{ width: number; height: number } | null>(null)
 
@@ -97,11 +130,15 @@ const TodoList = () => {
     const oldIndex = ids.indexOf(String(active.id))
     const newIndex = ids.indexOf(String(over.id))
     if (oldIndex === -1 || newIndex === -1) return
-    const newItems = arrayMove(todos, oldIndex, newIndex)
-    setTodos(newItems)
+    const reorderedVisible = arrayMove(visibleTodos, oldIndex, newIndex)
+    const updatedVisible = reorderedVisible.map((item, idx) => ({ ...item, order: idx }))
+    const visibleIds = new Set(updatedVisible.map(t => t.id))
+    setTodos(prev => {
+      const others = prev.filter(t => !visibleIds.has(t.id))
+      return [...others, ...updatedVisible].sort((a, b) => (a.order || 0) - (b.order || 0))
+    })
     if (!state?.user?.id) return
-    const updatedTasks = newItems.map((item, idx) => ({ ...item, order: idx }))
-    await updateAllTasks(updatedTasks, state.user.id)
+    await updateAllTasks(updatedVisible, state.user.id)
     trackTaskReordered()
   }
 
@@ -133,6 +170,9 @@ const TodoList = () => {
   return (
     <div className="bg-background dark:bg-background-dark h-full min-h-screen">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-semibold text-text-primary dark:text-text-dark-primary mb-4">
+          {currentFolderName}
+        </h1>
         <input
           type="text"
           value={currentTodo}
@@ -151,7 +191,7 @@ const TodoList = () => {
         >
           <SortableContext items={ids} strategy={verticalListSortingStrategy}>
             <div className="flex flex-col gap-3">
-              {todos.map(todo => (
+              {visibleTodos.map(todo => (
                 <TodoItem
                   key={todo.id}
                   todo={todo}

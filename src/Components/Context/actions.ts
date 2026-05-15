@@ -3,6 +3,7 @@ import { IUser } from 'services/auth'
 export enum ACTION_TYPE {
   SET_USER = 'SET_USER',
   SET_AUTH_MODAL = 'SET_AUTH_MODAL',
+  SET_CURRENT_FOLDER = 'SET_CURRENT_FOLDER',
 }
 
 export enum LOADING {
@@ -26,4 +27,11 @@ export interface IAuthModal {
   }
 }
 
-export type AppActions = ISetUser | IAuthModal
+export interface ISetCurrentFolder {
+  type: ACTION_TYPE.SET_CURRENT_FOLDER
+  payload: {
+    folderId: string | null
+  }
+}
+
+export type AppActions = ISetUser | IAuthModal | ISetCurrentFolder

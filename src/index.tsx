@@ -1,4 +1,5 @@
 import { StoreProvider } from 'Components/Context/store'
+import { Sidebar } from 'Components/Sidebar'
 import { TodoList } from 'Components/TodoList'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
     path: ROUTE.ROOT,
     element: (
       <div className="flex flex-col md:flex-row">
+        <Sidebar />
         <div className="flex-1 min-w-0">
           <TodoList />
         </div>
