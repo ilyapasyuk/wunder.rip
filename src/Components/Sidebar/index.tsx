@@ -1,5 +1,7 @@
 import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'
+import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'Components/Workspace/droppable'
+import { useDroppable } from '@dnd-kit/core'
 import {
   CheckIcon,
   InboxIcon,
@@ -9,18 +11,48 @@ import {
   XMarkIcon,
 } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
-import { KeyboardEvent, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { KeyboardEvent, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { databaseRef } from 'services/firebase'
 import { createFolder, deleteFolder, IFolder, renameFolder } from 'services/folder'
-import { getFoldersRoute, getUserRoute } from 'services/routes'
+import { getFoldersRoute } from 'services/routes'
+import { ITodo } from 'services/task'
 
-type TaskCountInfo = { done: boolean; folderId?: string | null }
+interface ISidebarProps {
+  todos: ITodo[]
+}
 
-const Sidebar = () => {
+interface IDroppableRowProps {
+  id: string
+  isActive: boolean
+  isCurrentFolder: boolean
+  children: ReactNode
+}
+
+const DroppableRow = ({ id, isActive, isCurrentFolder, children }: IDroppableRowProps) => {
+  const { isOver, setNodeRef } = useDroppable({ id })
+  const itemBase =
+    'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors group'
+  const itemIdle = 'text-text-primary dark:text-text-dark-primary hover:bg-overlay-hover'
+  const itemActive =
+    'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
+  const dropTarget = 'ring-2 ring-inset ring-primary bg-primary-light/60 dark:bg-primary/30'
+  const showDropTarget = isOver && !isCurrentFolder
+  return (
+    <div
+      ref={setNodeRef}
+      className={`${itemBase} ${isActive ? itemActive : itemIdle} ${
+        showDropTarget ? dropTarget : ''
+      }`}
+    >
+      {children}
+    </div>
+  )
+}
+
+const Sidebar = ({ todos }: ISidebarProps) => {
   const { state, dispatch } = useContext(StoreContext)
   const [folders, setFolders] = useState<IFolder[]>([])
   const [foldersLoaded, setFoldersLoaded] = useState(false)
-  const [taskInfos, setTaskInfos] = useState<TaskCountInfo[]>([])
   const [newFolderName, setNewFolderName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
@@ -58,24 +90,6 @@ const Sidebar = () => {
   }, [foldersLoaded, folders, state.currentFolderId, dispatch])
 
   useEffect(() => {
-    if (!state?.user?.id) {
-      setTaskInfos([])
-      return
-    }
-    const unsubscribe = databaseRef
-      .child(getUserRoute(state.user.id))
-      .on('value', (snapshot: DataSnapshot) => {
-        const items = snapshot.val() || {}
-        const list: TaskCountInfo[] = Object.keys(items).map(id => ({
-          done: Boolean(items[id]?.done),
-          folderId: items[id]?.folderId ?? null,
-        }))
-        setTaskInfos(list)
-      })
-    return () => unsubscribe()
-  }, [state.user])
-
-  useEffect(() => {
     if (editingId && editInputRef.current) {
       editInputRef.current.focus()
       editInputRef.current.select()
@@ -84,13 +98,13 @@ const Sidebar = () => {
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { __inbox__: 0 }
-    for (const t of taskInfos) {
+    for (const t of todos) {
       if (t.done) continue
       const key = t.folderId || '__inbox__'
       map[key] = (map[key] || 0) + 1
     }
     return map
-  }, [taskInfos])
+  }, [todos])
 
   const handleCreate = async () => {
     const value = newFolderName.trim()
@@ -147,39 +161,41 @@ const Sidebar = () => {
     dispatch({ type: ACTION_TYPE.SET_CURRENT_FOLDER, payload: { folderId } })
   }
 
-  const itemBase =
-    'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors'
-  const itemIdle = 'text-text-primary dark:text-text-dark-primary hover:bg-overlay-hover'
-  const itemActive =
-    'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
-
   return (
     <aside className="w-full md:w-64 md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:min-h-[calc(100vh-3.5rem)]">
       <div className="px-3 py-4 flex flex-col gap-1">
-        <button
-          type="button"
-          onClick={() => setCurrent(null)}
-          className={`${itemBase} ${state.currentFolderId === null ? itemActive : itemIdle}`}
+        <DroppableRow
+          id={INBOX_DROPPABLE_ID}
+          isActive={state.currentFolderId === null}
+          isCurrentFolder={state.currentFolderId === null}
         >
-          <span className="flex items-center gap-2 min-w-0">
+          <button
+            type="button"
+            onClick={() => setCurrent(null)}
+            className="flex flex-1 items-center gap-2 min-w-0 text-left"
+          >
             <InboxIcon className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary" />
             <span className="truncate">Inbox</span>
-          </span>
-          {counts.__inbox__ > 0 && (
-            <span className="text-xs text-text-secondary dark:text-text-dark-secondary shrink-0">
-              {counts.__inbox__}
-            </span>
-          )}
-        </button>
+          </button>
+          <div className="flex items-center justify-end shrink-0 min-w-[3.5rem]">
+            {counts.__inbox__ > 0 && (
+              <span className="text-xs text-text-secondary dark:text-text-dark-secondary">
+                {counts.__inbox__}
+              </span>
+            )}
+          </div>
+        </DroppableRow>
 
         {folders.map(folder => {
           const isActive = state.currentFolderId === folder.id
           const isEditing = editingId === folder.id
           const count = folder.id ? counts[folder.id] || 0 : 0
           return (
-            <div
+            <DroppableRow
               key={folder.id}
-              className={`group ${itemBase} ${isActive ? itemActive : itemIdle}`}
+              id={`${FOLDER_DROPPABLE_PREFIX}${folder.id}`}
+              isActive={isActive}
+              isCurrentFolder={isActive}
             >
               {isEditing ? (
                 <>
@@ -212,9 +228,9 @@ const Sidebar = () => {
                   >
                     <span className="truncate">{folder.name}</span>
                   </button>
-                  <div className="flex items-center gap-1 shrink-0">
+                  <div className="flex items-center justify-end gap-1 shrink-0 min-w-[3.5rem]">
                     {count > 0 && (
-                      <span className="text-xs text-text-secondary dark:text-text-dark-secondary">
+                      <span className="text-xs text-text-secondary dark:text-text-dark-secondary group-hover:hidden">
                         {count}
                       </span>
                     )}
@@ -222,7 +238,7 @@ const Sidebar = () => {
                       type="button"
                       onClick={() => startEdit(folder)}
                       aria-label="Rename list"
-                      className="p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="hidden group-hover:inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary"
                     >
                       <PencilSquareIcon className="size-4 shrink-0" />
                     </button>
@@ -230,14 +246,14 @@ const Sidebar = () => {
                       type="button"
                       onClick={() => handleDelete(folder)}
                       aria-label="Delete list"
-                      className="p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="hidden group-hover:inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary"
                     >
                       <TrashIcon className="size-4 shrink-0" />
                     </button>
                   </div>
                 </>
               )}
-            </div>
+            </DroppableRow>
           )
         })}
 
