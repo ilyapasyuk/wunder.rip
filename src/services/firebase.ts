@@ -1,10 +1,11 @@
-import { type FirebaseApp, initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
+import { type FirebaseApp, initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import {
   type DatabaseReference,
   type DataSnapshot,
   child as dbChild,
+  get as dbGet,
   push as dbPush,
   ref as dbRef,
   update as dbUpdate,
@@ -32,6 +33,7 @@ const analytics = getAnalytics(app)
 type ChildRefShim = {
   on: (event: 'value', callback: (snapshot: DataSnapshot) => void) => Unsubscribe
   push: (value: unknown) => Promise<DatabaseReference>
+  once: (event: 'value') => Promise<DataSnapshot>
 }
 
 type DatabaseRefShim = {
@@ -45,6 +47,7 @@ export const databaseRef: DatabaseRefShim = {
     return {
       on: (_event, callback) => onValue(nodeRef, callback),
       push: async (value: unknown) => dbPush(nodeRef, value),
+      once: async _event => dbGet(nodeRef),
     }
   },
   update: (updates: Record<string, unknown>) => dbUpdate(dbRef(db), updates),

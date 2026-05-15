@@ -12,11 +12,13 @@ export type ITodo = {
   files?: string[]
   order?: number
   isPublic?: boolean
+  folderId?: string | null
 }
 
 const createTodo = async (
   todo: string,
   userId: string,
+  folderId?: string | null,
 ): Promise<{
   id?: string | null
   error?: Error
@@ -32,6 +34,7 @@ const createTodo = async (
       note: '',
       order: -timestamp,
       isPublic: false,
+      folderId: folderId || null,
     }
 
     const taskRef = await databaseRef.child(getCreateTaskRoute(userId)).push(value)
@@ -112,4 +115,18 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
   }
 }
 
-export { createTodo, prepareTaskForUpdate, updateTask, updateAllTasks, deleteTodo }
+const moveTodoToFolder = async (taskId: string, folderId: string | null, userId: string) => {
+  await databaseRef.update({
+    [`${getUpdateTaskRoute(userId, taskId)}/folderId`]: folderId,
+    [`${getUpdateTaskRoute(userId, taskId)}/order`]: -Date.now(),
+  })
+}
+
+export {
+  createTodo,
+  prepareTaskForUpdate,
+  updateTask,
+  updateAllTasks,
+  deleteTodo,
+  moveTodoToFolder,
+}

@@ -65,7 +65,6 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
     }
   }, [])
 
-
   useEffect(() => {
     if (state?.user?.id && id) {
       const ref = databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`)

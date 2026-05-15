@@ -1,8 +1,8 @@
 import { StoreProvider } from 'Components/Context/store'
-import { TodoList } from 'Components/TodoList'
+import { Workspace } from 'Components/Workspace'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ROUTE } from 'services/routes'
 import { applyTheme, getInitialTheme, watchSystemTheme } from 'services/theme'
 
@@ -26,14 +26,7 @@ if (typeof window !== 'undefined') {
 const router = createBrowserRouter([
   {
     path: ROUTE.ROOT,
-    element: (
-      <div className="flex flex-col md:flex-row">
-        <div className="flex-1 min-w-0">
-          <TodoList />
-        </div>
-        <Outlet />
-      </div>
-    ),
+    element: <Workspace />,
     children: [
       {
         path: 't/:id',

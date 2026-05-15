@@ -14,6 +14,12 @@ const trackTaskViewed = () => logEvent(analytics, 'task_viewed')
 
 const trackTaskReordered = () => logEvent(analytics, 'task_reordered')
 
+const trackFolderCreated = () => logEvent(analytics, 'folder_created')
+
+const trackFolderRenamed = () => logEvent(analytics, 'folder_renamed')
+
+const trackFolderDeleted = () => logEvent(analytics, 'folder_deleted')
+
 export {
   trackLogin,
   trackTaskCreated,
@@ -21,4 +27,7 @@ export {
   trackTaskDeleted,
   trackTaskViewed,
   trackTaskReordered,
+  trackFolderCreated,
+  trackFolderRenamed,
+  trackFolderDeleted,
 }
