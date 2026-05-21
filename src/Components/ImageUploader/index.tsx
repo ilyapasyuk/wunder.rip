@@ -2,6 +2,7 @@ import { CLOUDINARY_UPLOAD_PRESET } from 'config/cloudinary'
 import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
 
 import { uploadImage } from 'services/image'
+import { notify } from 'services/notify'
 
 interface ImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void
@@ -22,6 +23,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
       const { cloudinaryId } = await uploadImage(file, CLOUDINARY_UPLOAD_PRESET)
       if (cloudinaryId) {
         onFileUploaded(cloudinaryId)
+        notify.success('Image added')
       }
     } catch (error) {
       console.error(error)

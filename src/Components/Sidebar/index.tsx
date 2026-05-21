@@ -11,7 +11,6 @@ import {
 } from '@heroicons/react/20/solid'
 import { onValue, ref } from 'firebase/database'
 import {
-  CSSProperties,
   KeyboardEvent,
   ReactNode,
   PointerEvent as ReactPointerEvent,
@@ -92,6 +91,12 @@ const Sidebar = ({ todos }: SidebarProps) => {
       document.body.style.userSelect = ''
     }
   }, [isResizing])
+
+  // Expose the current sidebar width as a CSS variable on <html> so siblings
+  // (e.g. Header) can mirror the offset without having to thread state through.
+  useEffect(() => {
+    document.documentElement.style.setProperty('--sidebar-w', `${sidebarWidth}px`)
+  }, [sidebarWidth])
 
   const handleResizePointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -243,10 +248,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
   }
 
   return (
-    <aside
-      style={{ '--sidebar-w': `${sidebarWidth}px` } as CSSProperties}
-      className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:min-h-[calc(100vh-3.5rem)]"
-    >
+    <aside className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:min-h-[calc(100vh-3.5rem)]">
       <div className="px-3 py-4 flex flex-col gap-1">
         <DroppableRow
           id={INBOX_DROPPABLE_ID}

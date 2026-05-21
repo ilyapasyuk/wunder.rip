@@ -4,7 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { ReactNode, useContext, useEffect } from 'react'
 import { PROVIDER, signIn, User } from 'services/auth'
 import { auth } from 'services/firebase'
-import { toast } from 'sonner'
+import { notify } from 'services/notify'
 
 interface AuthProps {
   children: ReactNode
@@ -18,7 +18,7 @@ const Auth = ({ children }: AuthProps) => {
     const { user } = await signIn(provider)
 
     if (user) {
-      toast.success('Login success')
+      notify.success('Login success')
       // Store update happens via onAuthStateChanged below — single source of truth.
     }
   }

@@ -2,7 +2,7 @@ import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from
 
 import { trackLogin } from 'services/analytics'
 import { auth } from 'services/firebase'
-import { toast } from 'sonner'
+import { notify } from 'services/notify'
 
 export type User = {
   id: string
@@ -47,7 +47,7 @@ const signIn = async (
   } catch (error) {
     const errorMessage = `Login error: ${error}`
     console.error(errorMessage)
-    toast.error(errorMessage)
+    notify.error(errorMessage)
     return {
       error: new Error(errorMessage),
     }

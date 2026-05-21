@@ -3,7 +3,7 @@ import {
   CLOUDINARY_DELIVERY_BASE,
   CLOUDINARY_UPLOAD_ENDPOINT,
 } from 'config/cloudinary'
-import { toast } from 'sonner'
+import { notify } from 'services/notify'
 
 const uploadImage = async (
   file: File | Blob | string,
@@ -13,7 +13,7 @@ const uploadImage = async (
     const message =
       'Cloudinary configuration is missing. Please set VITE_CLOUDINARY_ORG_ID environment variable.'
     console.error(message)
-    toast.error('Image upload configuration error')
+    notify.error('Image upload configuration error')
     return { cloudinaryId: null }
   }
 
@@ -34,13 +34,13 @@ const uploadImage = async (
       const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
       const message = `Failed to upload image: ${errorData.error?.message || response.statusText}`
       console.error(message, errorData)
-      toast.error('Failed to upload image')
+      notify.error('Failed to upload image')
       return { cloudinaryId: null }
     }
   } catch (error) {
     const message = `Error uploading image: ${error}`
     console.error(message)
-    toast.error('Error uploading image')
+    notify.error('Error uploading image')
     return { cloudinaryId: null }
   }
 }

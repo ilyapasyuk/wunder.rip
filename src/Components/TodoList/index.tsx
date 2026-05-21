@@ -75,7 +75,7 @@ const TodoList = ({ todos: _todos, visibleTodos }: TodoListProps) => {
 
   return (
     <div className="bg-background dark:bg-background-dark h-full min-h-screen">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-semibold text-text-primary dark:text-text-dark-primary mb-4">
           {currentFolderName}
         </h1>

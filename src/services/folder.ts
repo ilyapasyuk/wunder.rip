@@ -2,13 +2,13 @@ import { get, push, ref, update } from 'firebase/database'
 
 import { trackFolderCreated, trackFolderDeleted, trackFolderRenamed } from 'services/analytics'
 import { db } from 'services/firebase'
+import { notify } from 'services/notify'
 import {
   getFoldersRoute,
   getUpdateFolderRoute,
   getUpdateTaskRoute,
   getUserRoute,
 } from 'services/routes'
-import { toast } from 'sonner'
 
 export type Folder = {
   id?: string
@@ -32,13 +32,13 @@ const createFolder = async (
       order: -timestamp,
     }
     const folderRef = await push(ref(db, getFoldersRoute(userId)), value)
-    toast.success('List created')
+    notify.success('List created')
     trackFolderCreated()
     return { id: folderRef.key }
   } catch (error) {
     const message = `Error creating list: ${error}`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
     return { error: new Error(message) }
   }
 }
@@ -52,11 +52,12 @@ const renameFolder = async (folderId: string, name: string, userId: string) => {
     await update(ref(db), {
       [`${getUpdateFolderRoute(userId, folderId)}/name`]: trimmed,
     })
+    notify.success('List renamed')
     trackFolderRenamed()
   } catch (error) {
     const message = `Error renaming list: ${error}`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
   }
 }
 
@@ -76,12 +77,12 @@ const deleteFolder = async (folderId: string, userId: string) => {
     }
 
     await update(ref(db), updates)
-    toast.success('List deleted')
+    notify.success('List deleted')
     trackFolderDeleted()
   } catch (error) {
     const message = `Error deleting list: ${error}`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
   }
 }
 

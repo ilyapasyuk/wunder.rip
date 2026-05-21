@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { trackTaskViewed } from 'services/analytics'
 import { db } from 'services/firebase'
 import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
+import { notify } from 'services/notify'
 import { getUserRoute } from 'services/routes'
 import { Todo, updateTask } from 'services/task'
 
@@ -15,17 +16,29 @@ interface TaskPreviewProps {
   onClose: () => void
 }
 
+const PANEL_TRANSITION_MS = 280
+
 const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   const navigate = useNavigate()
   const { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<Todo | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [isOpen, setIsOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
 
+  // Trigger enter transition on first paint.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setIsOpen(true))
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
   const handleClose = () => {
-    navigate('/')
-    onClose()
+    setIsOpen(false)
+    window.setTimeout(() => {
+      navigate('/')
+      onClose()
+    }, PANEL_TRANSITION_MS)
   }
 
   useEffect(() => {
@@ -97,6 +110,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
 
     if (state?.user?.id) {
       await updateTask(newTodo, state?.user?.id)
+      notify.success('Image removed')
     }
   }
 
@@ -108,16 +122,22 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Mobile-only backdrop — fades in/out, captures taps to close. */}
       <button
-        className="fixed inset-0 bg-overlay z-40 md:hidden"
-        onClick={handleClose}
         type="button"
+        aria-label="Close panel"
+        onClick={handleClose}
+        className={`fixed inset-0 z-40 bg-overlay md:hidden transition-opacity duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
       />
-      {/* Panel */}
+      {/* Panel — fixed overlay (not in flex flow), slides in from the right.
+          Sits below the header on desktop; covers the whole screen on mobile. */}
       <div
         ref={panelRef}
-        className="fixed inset-0 md:relative md:inset-auto w-full md:w-96 md:max-w-md border-l border-border dark:border-border-dark bg-surface dark:bg-surface-dark shadow-xl z-50 md:z-auto"
+        className={`fixed top-0 md:top-14 right-0 bottom-0 z-50 w-full md:w-[28rem] md:max-w-[min(28rem,calc(100vw-var(--sidebar-w)-2rem))] bg-surface dark:bg-surface-dark md:border-l border-border dark:border-border-dark shadow-2xl will-change-transform transition-transform duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="task-preview-title"

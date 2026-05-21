@@ -2,8 +2,8 @@ import { push, ref, update } from 'firebase/database'
 
 import { trackTaskCreated, trackTaskDeleted } from 'services/analytics'
 import { db } from 'services/firebase'
+import { notify } from 'services/notify'
 import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/routes'
-import { toast } from 'sonner'
 
 export type Todo = {
   task: string
@@ -40,7 +40,7 @@ const createTodo = async (
     }
 
     const taskRef = await push(ref(db, getCreateTaskRoute(userId)), value)
-    toast.success('Task created')
+    notify.success('Task created')
     trackTaskCreated()
     return {
       id: taskRef.key,
@@ -48,7 +48,7 @@ const createTodo = async (
   } catch (error) {
     const message = `Error creating task: ${error}`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
     return {
       error: new Error(message),
     }
@@ -80,12 +80,12 @@ const deleteTodo = async (todo: Todo, userId: string) => {
   if (todo.id) {
     try {
       await update(ref(db), { [getUpdateTaskRoute(userId, todo.id)]: null })
-      toast.success('Task deleted')
+      notify.success('Task deleted')
       trackTaskDeleted()
     } catch (error) {
       const message = `Error deleting task: ${error}`
       console.error(message)
-      toast.error(message)
+      notify.error(message)
       return {
         error: new Error(message),
       }
@@ -93,7 +93,7 @@ const deleteTodo = async (todo: Todo, userId: string) => {
   } else {
     const message = `Error deleting task: no id`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
     return {
       error: new Error(message),
     }
