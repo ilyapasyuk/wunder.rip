@@ -11,7 +11,17 @@ import {
   XMarkIcon,
 } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
-import { KeyboardEvent, ReactNode, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  CSSProperties,
+  KeyboardEvent,
+  PointerEvent as ReactPointerEvent,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { databaseRef } from 'services/firebase'
 import { createFolder, deleteFolder, IFolder, renameFolder } from 'services/folder'
 import { getFoldersRoute } from 'services/routes'
@@ -20,6 +30,11 @@ import { ITodo } from 'services/task'
 interface ISidebarProps {
   todos: ITodo[]
 }
+
+const SIDEBAR_WIDTH_KEY = 'sidebar:width'
+const SIDEBAR_MIN_WIDTH = 180
+const SIDEBAR_MAX_WIDTH = 360
+const SIDEBAR_DEFAULT_WIDTH = 256
 
 interface IDroppableRowProps {
   id: string
@@ -31,7 +46,7 @@ interface IDroppableRowProps {
 const DroppableRow = ({ id, isActive, isCurrentFolder, children }: IDroppableRowProps) => {
   const { isOver, setNodeRef } = useDroppable({ id })
   const itemBase =
-    'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors group'
+    'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors group min-h-10'
   const itemIdle = 'text-text-primary dark:text-text-dark-primary hover:bg-overlay-hover'
   const itemActive =
     'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
@@ -57,6 +72,48 @@ const Sidebar = ({ todos }: ISidebarProps) => {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
   const editInputRef = useRef<HTMLInputElement>(null)
+  const [sidebarWidth, setSidebarWidth] = useState<number>(SIDEBAR_DEFAULT_WIDTH)
+  const [isResizing, setIsResizing] = useState(false)
+
+  useEffect(() => {
+    const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY)
+    if (!saved) return
+    const parsed = parseInt(saved, 10)
+    if (!Number.isNaN(parsed) && parsed >= SIDEBAR_MIN_WIDTH && parsed <= SIDEBAR_MAX_WIDTH) {
+      setSidebarWidth(parsed)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isResizing) return
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+    return () => {
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+  }, [isResizing])
+
+  const handleResizePointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    setIsResizing(true)
+
+    const onMove = (ev: PointerEvent) => {
+      const next = Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, ev.clientX))
+      setSidebarWidth(next)
+    }
+
+    const onUp = (ev: PointerEvent) => {
+      setIsResizing(false)
+      const next = Math.min(SIDEBAR_MAX_WIDTH, Math.max(SIDEBAR_MIN_WIDTH, ev.clientX))
+      localStorage.setItem(SIDEBAR_WIDTH_KEY, String(next))
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+    }
+
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+  }
 
   useEffect(() => {
     if (!state?.user?.id) {
@@ -162,7 +219,10 @@ const Sidebar = ({ todos }: ISidebarProps) => {
   }
 
   return (
-    <aside className="w-full md:w-64 md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:min-h-[calc(100vh-3.5rem)]">
+    <aside
+      style={{ '--sidebar-w': `${sidebarWidth}px` } as CSSProperties}
+      className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:min-h-[calc(100vh-3.5rem)]"
+    >
       <div className="px-3 py-4 flex flex-col gap-1">
         <DroppableRow
           id={INBOX_DROPPABLE_ID}
@@ -206,7 +266,7 @@ const Sidebar = ({ todos }: ISidebarProps) => {
                     onChange={e => setEditingName(e.target.value)}
                     onKeyDown={handleEditKey}
                     onBlur={commitEdit}
-                    className="flex-1 min-w-0 bg-transparent border-0 outline-none focus:ring-0 text-sm text-text-primary dark:text-text-dark-primary"
+                    className="flex-1 min-w-0 h-6 leading-6 p-0 bg-transparent border-0 outline-none focus:ring-0 text-sm text-text-primary dark:text-text-dark-primary"
                     maxLength={60}
                   />
                   <button
@@ -228,28 +288,30 @@ const Sidebar = ({ todos }: ISidebarProps) => {
                   >
                     <span className="truncate">{folder.name}</span>
                   </button>
-                  <div className="flex items-center justify-end gap-1 shrink-0 min-w-[3.5rem]">
+                  <div className="relative flex items-center justify-end gap-1 shrink-0 min-w-[3.5rem] h-6">
                     {count > 0 && (
-                      <span className="text-xs text-text-secondary dark:text-text-dark-secondary group-hover:hidden">
+                      <span className="text-xs text-text-secondary dark:text-text-dark-secondary transition-opacity duration-150 ease-out group-hover:opacity-0">
                         {count}
                       </span>
                     )}
-                    <button
-                      type="button"
-                      onClick={() => startEdit(folder)}
-                      aria-label="Rename list"
-                      className="hidden group-hover:inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary"
-                    >
-                      <PencilSquareIcon className="size-4 shrink-0" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(folder)}
-                      aria-label="Delete list"
-                      className="hidden group-hover:inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary"
-                    >
-                      <TrashIcon className="size-4 shrink-0" />
-                    </button>
+                    <div className="absolute inset-y-0 right-0 flex items-center gap-1 opacity-0 translate-x-1 pointer-events-none transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto">
+                      <button
+                        type="button"
+                        onClick={() => startEdit(folder)}
+                        aria-label="Rename list"
+                        className="inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary transition-colors hover:text-text-primary dark:hover:text-text-dark-primary"
+                      >
+                        <PencilSquareIcon className="size-4 shrink-0" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(folder)}
+                        aria-label="Delete list"
+                        className="inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary transition-colors hover:text-text-primary dark:hover:text-text-dark-primary"
+                      >
+                        <TrashIcon className="size-4 shrink-0" />
+                      </button>
+                    </div>
                   </div>
                 </>
               )}
@@ -280,6 +342,15 @@ const Sidebar = ({ todos }: ISidebarProps) => {
           )}
         </div>
       </div>
+      <div
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize sidebar"
+        onPointerDown={handleResizePointerDown}
+        className={`hidden md:block absolute top-0 right-0 h-full w-1.5 -mr-px cursor-col-resize select-none transition-colors ${
+          isResizing ? 'bg-primary/40' : 'hover:bg-primary/30'
+        }`}
+      />
     </aside>
   )
 }
