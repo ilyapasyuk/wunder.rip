@@ -1,12 +1,13 @@
+import { CLOUDINARY_UPLOAD_PRESET } from 'config/cloudinary'
 import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
 
 import { uploadImage } from 'services/image'
 
-interface IImageUploaderProps {
+interface ImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void
 }
 
-const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
+const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isDragOver, setIsDragOver] = useState<boolean>(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -18,7 +19,7 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
 
     try {
       setLoading(true)
-      const { cloudinaryId } = await uploadImage(file, 'wunderrip_task')
+      const { cloudinaryId } = await uploadImage(file, CLOUDINARY_UPLOAD_PRESET)
       if (cloudinaryId) {
         onFileUploaded(cloudinaryId)
       }

@@ -1,4 +1,3 @@
-import { ACTION_TYPE } from 'Components/Context/actions'
 import { StoreContext } from 'Components/Context/store'
 import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'Components/Workspace/droppable'
 import { useDroppable } from '@dnd-kit/core'
@@ -10,7 +9,7 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
-import type { DataSnapshot } from 'firebase/database'
+import { onValue, ref } from 'firebase/database'
 import {
   CSSProperties,
   KeyboardEvent,
@@ -22,13 +21,13 @@ import {
   useRef,
   useState,
 } from 'react'
-import { databaseRef } from 'services/firebase'
-import { createFolder, deleteFolder, IFolder, renameFolder } from 'services/folder'
+import { db } from 'services/firebase'
+import { createFolder, deleteFolder, Folder, renameFolder } from 'services/folder'
 import { getFoldersRoute } from 'services/routes'
-import { ITodo } from 'services/task'
+import { Todo } from 'services/task'
 
-interface ISidebarProps {
-  todos: ITodo[]
+interface SidebarProps {
+  todos: Todo[]
 }
 
 const SIDEBAR_WIDTH_KEY = 'sidebar:width'
@@ -36,14 +35,14 @@ const SIDEBAR_MIN_WIDTH = 180
 const SIDEBAR_MAX_WIDTH = 360
 const SIDEBAR_DEFAULT_WIDTH = 256
 
-interface IDroppableRowProps {
+interface DroppableRowProps {
   id: string
   isActive: boolean
   isCurrentFolder: boolean
   children: ReactNode
 }
 
-const DroppableRow = ({ id, isActive, isCurrentFolder, children }: IDroppableRowProps) => {
+const DroppableRow = ({ id, isActive, isCurrentFolder, children }: DroppableRowProps) => {
   const { isOver, setNodeRef } = useDroppable({ id })
   const itemBase =
     'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors group min-h-10'
@@ -64,9 +63,9 @@ const DroppableRow = ({ id, isActive, isCurrentFolder, children }: IDroppableRow
   )
 }
 
-const Sidebar = ({ todos }: ISidebarProps) => {
+const Sidebar = ({ todos }: SidebarProps) => {
   const { state, dispatch } = useContext(StoreContext)
-  const [folders, setFolders] = useState<IFolder[]>([])
+  const [folders, setFolders] = useState<Folder[]>([])
   const [foldersLoaded, setFoldersLoaded] = useState(false)
   const [newFolderName, setNewFolderName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -148,28 +147,26 @@ const Sidebar = ({ todos }: ISidebarProps) => {
       setFoldersLoaded(false)
       return
     }
-    const unsubscribe = databaseRef
-      .child(getFoldersRoute(state.user.id))
-      .on('value', (snapshot: DataSnapshot) => {
-        const items = snapshot.val() || {}
-        const prepared: IFolder[] = Object.keys(items)
-          .map(id => ({
-            id,
-            name: items[id].name,
-            createdAt: items[id].createdAt,
-            order: items[id].order || 0,
-          }))
-          .sort((a, b) => (a.order || 0) - (b.order || 0))
-        setFolders(prepared)
-        setFoldersLoaded(true)
-      })
+    const unsubscribe = onValue(ref(db, getFoldersRoute(state.user.id)), snapshot => {
+      const items = snapshot.val() || {}
+      const prepared: Folder[] = Object.keys(items)
+        .map(id => ({
+          id,
+          name: items[id].name,
+          createdAt: items[id].createdAt,
+          order: items[id].order || 0,
+        }))
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
+      setFolders(prepared)
+      setFoldersLoaded(true)
+    })
     return () => unsubscribe()
   }, [state.user])
 
   useEffect(() => {
     if (!foldersLoaded || !state.currentFolderId) return
     if (!folders.some(f => f.id === state.currentFolderId)) {
-      dispatch({ type: ACTION_TYPE.SET_CURRENT_FOLDER, payload: { folderId: null } })
+      dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId: null } })
     }
   }, [foldersLoaded, folders, state.currentFolderId, dispatch])
 
@@ -205,7 +202,7 @@ const Sidebar = ({ todos }: ISidebarProps) => {
     }
   }
 
-  const startEdit = (folder: IFolder) => {
+  const startEdit = (folder: Folder) => {
     if (!folder.id) return
     setEditingId(folder.id)
     setEditingName(folder.name)
@@ -231,18 +228,18 @@ const Sidebar = ({ todos }: ISidebarProps) => {
     }
   }
 
-  const handleDelete = async (folder: IFolder) => {
+  const handleDelete = async (folder: Folder) => {
     if (!folder.id || !state?.user?.id) return
     const confirmed = window.confirm(`Delete list "${folder.name}"? Tasks will be moved to Inbox.`)
     if (!confirmed) return
     if (state.currentFolderId === folder.id) {
-      dispatch({ type: ACTION_TYPE.SET_CURRENT_FOLDER, payload: { folderId: null } })
+      dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId: null } })
     }
     await deleteFolder(folder.id, state.user.id)
   }
 
   const setCurrent = (folderId: string | null) => {
-    dispatch({ type: ACTION_TYPE.SET_CURRENT_FOLDER, payload: { folderId } })
+    dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId } })
   }
 
   return (

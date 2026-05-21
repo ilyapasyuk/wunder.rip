@@ -1,13 +1,13 @@
 import { reducer } from 'Components/Context/reducer'
 import { createContext, Dispatch, ReactNode, useReducer } from 'react'
-import { IUser } from 'services/auth'
+import { User } from 'services/auth'
 
-import { AppActions } from './actions'
+import { AppAction } from './actions'
 
 const CURRENT_FOLDER_STORAGE_KEY = 'wunder.currentFolderId'
 
-export interface IStore {
-  user: IUser | null
+export type Store = {
+  user: User | null
   isShowAuthModal: boolean
   currentFolderId: string | null
 }
@@ -22,20 +22,20 @@ const readInitialFolderId = (): string | null => {
   }
 }
 
-const DEFAULT_STORE: IStore = {
+const DEFAULT_STORE: Store = {
   user: null,
   isShowAuthModal: false,
   currentFolderId: readInitialFolderId(),
 }
 
-interface AppContext {
-  state: IStore
-  dispatch: Dispatch<AppActions>
+type AppContext = {
+  state: Store
+  dispatch: Dispatch<AppAction>
 }
 
 const StoreContext = createContext<AppContext>({} as AppContext)
 
-interface StoreProviderProps {
+type StoreProviderProps = {
   children: ReactNode
 }
 

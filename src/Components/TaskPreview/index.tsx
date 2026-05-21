@@ -2,24 +2,24 @@ import { StoreContext } from 'Components/Context/store'
 import { ImageLightbox } from 'Components/ImageLightbox'
 import { ImageUploader } from 'Components/ImageUploader'
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import type { DataSnapshot } from 'firebase/database'
+import { onValue, ref } from 'firebase/database'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { trackTaskViewed } from 'services/analytics'
-import { databaseRef } from 'services/firebase'
+import { db } from 'services/firebase'
 import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
 import { getUserRoute } from 'services/routes'
-import { ITodo, updateTask } from 'services/task'
+import { Todo, updateTask } from 'services/task'
 
-interface ITaskPreviewProps {
+interface TaskPreviewProps {
   onClose: () => void
 }
 
-const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
+const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   const navigate = useNavigate()
   const { id } = useParams()
   const { state } = useContext(StoreContext)
-  const [todo, setTodo] = useState<ITodo | null>(null)
+  const [todo, setTodo] = useState<Todo | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -69,9 +69,9 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
 
   useEffect(() => {
     if (state?.user?.id && id) {
-      const ref = databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`)
+      const taskRef = ref(db, `${getUserRoute(state?.user?.id)}/${id}`)
       let wasLoaded = false
-      const unsubscribe = ref.on('value', (snapshot: DataSnapshot) => {
+      const unsubscribe = onValue(taskRef, snapshot => {
         const item = snapshot.val()
         if (item) {
           setTodo({ ...item, id })
@@ -89,8 +89,8 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
     }
   }, [state.user, id])
 
-  const handleDeleteFile = async (file: string, todo: ITodo) => {
-    const newTodo: ITodo = {
+  const handleDeleteFile = async (file: string, todo: Todo) => {
+    const newTodo: Todo = {
       ...todo,
       files: todo?.files?.filter(fileUrl => fileUrl !== file),
     }
@@ -100,7 +100,7 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
     }
   }
 
-  const handleEditTask = async (todo: ITodo) => {
+  const handleEditTask = async (todo: Todo) => {
     if (state?.user?.id) {
       updateTask(todo, state?.user?.id)
     }
@@ -247,4 +247,4 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
   )
 }
 
-export default TaskPreview
+export { TaskPreview }

@@ -8,14 +8,14 @@ import {
 import { useEffect, useState } from 'react'
 import { getCloudinaryDownloadUrl, getCloudinaryLQIP, getCloudinaryPreview } from 'services/image'
 
-interface IImageLightboxProps {
+interface ImageLightboxProps {
   open: boolean
   images: string[]
   initialIndex?: number
   onClose: () => void
 }
 
-const ImageLightbox = ({ open, images, initialIndex = 0, onClose }: IImageLightboxProps) => {
+const ImageLightbox = ({ open, images, initialIndex = 0, onClose }: ImageLightboxProps) => {
   const [index, setIndex] = useState(initialIndex)
   const [loaded, setLoaded] = useState(false)
 

@@ -1,37 +1,22 @@
-import { IUser } from 'services/auth'
+import { User } from 'services/auth'
 
-export enum ACTION_TYPE {
-  SET_USER = 'SET_USER',
-  SET_AUTH_MODAL = 'SET_AUTH_MODAL',
-  SET_CURRENT_FOLDER = 'SET_CURRENT_FOLDER',
+export type ActionType = 'SET_USER' | 'SET_AUTH_MODAL' | 'SET_CURRENT_FOLDER'
+
+export type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR' | 'IDLE'
+
+export type SetUserAction = {
+  type: 'SET_USER'
+  payload: { user: User | null }
 }
 
-export enum LOADING {
-  LOADING = 'LOADING',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
-  IDLE = 'IDLE',
+export type SetAuthModalAction = {
+  type: 'SET_AUTH_MODAL'
+  payload: { isOpen: boolean }
 }
 
-export interface ISetUser {
-  type: ACTION_TYPE.SET_USER
-  payload: {
-    user: IUser | null
-  }
+export type SetCurrentFolderAction = {
+  type: 'SET_CURRENT_FOLDER'
+  payload: { folderId: string | null }
 }
 
-export interface IAuthModal {
-  type: ACTION_TYPE.SET_AUTH_MODAL
-  payload: {
-    isOpen: boolean
-  }
-}
-
-export interface ISetCurrentFolder {
-  type: ACTION_TYPE.SET_CURRENT_FOLDER
-  payload: {
-    folderId: string | null
-  }
-}
-
-export type AppActions = ISetUser | IAuthModal | ISetCurrentFolder
+export type AppAction = SetUserAction | SetAuthModalAction | SetCurrentFolderAction

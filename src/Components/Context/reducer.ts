@@ -1,13 +1,13 @@
-import { ACTION_TYPE, AppActions } from './actions'
-import { CURRENT_FOLDER_STORAGE_KEY, IStore } from './store'
+import { AppAction } from './actions'
+import { CURRENT_FOLDER_STORAGE_KEY, Store } from './store'
 
-const reducer = (currentStore: IStore, action: AppActions): IStore => {
+const reducer = (currentStore: Store, action: AppAction): Store => {
   switch (action.type) {
-    case ACTION_TYPE.SET_USER:
+    case 'SET_USER':
       return { ...currentStore, user: action.payload.user }
-    case ACTION_TYPE.SET_AUTH_MODAL:
+    case 'SET_AUTH_MODAL':
       return { ...currentStore, isShowAuthModal: action.payload.isOpen }
-    case ACTION_TYPE.SET_CURRENT_FOLDER:
+    case 'SET_CURRENT_FOLDER':
       if (typeof window !== 'undefined') {
         try {
           if (action.payload.folderId) {

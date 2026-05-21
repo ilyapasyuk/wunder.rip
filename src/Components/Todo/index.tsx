@@ -3,16 +3,16 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { CSSProperties } from 'react'
-import { ITodo } from 'services/task'
+import { Todo } from 'services/task'
 
-interface ITodoProps {
-  todo: ITodo
-  toggleDone: (todo: ITodo) => void
-  deleteTodo: (todo: ITodo) => void
-  onSelect: (todo: ITodo) => void
+interface TodoItemProps {
+  todo: Todo
+  toggleDone: (todo: Todo) => void
+  deleteTodo: (todo: Todo) => void
+  onSelect: (todo: Todo) => void
 }
 
-const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
+const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoItemProps) => {
   const hasFiles = todo.files && todo.files.length > 0
   const hasNote = todo.note && todo.note.length > 0
 

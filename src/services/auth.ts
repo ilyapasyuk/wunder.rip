@@ -4,7 +4,7 @@ import { trackLogin } from 'services/analytics'
 import { auth } from 'services/firebase'
 import { toast } from 'sonner'
 
-export type IUser = {
+export type User = {
   id: string
   avatar: string
   email: string
@@ -28,7 +28,7 @@ const getProvider = (provider: PROVIDER): GoogleAuthProvider | GithubAuthProvide
 const signIn = async (
   provider: PROVIDER,
 ): Promise<{
-  user?: IUser
+  user?: User
   error?: Error
 }> => {
   try {
@@ -39,8 +39,7 @@ const signIn = async (
     const avatar: string = result.user?.photoURL || ''
     const fullName: string = result.user?.displayName || ''
 
-    const preparedUser: IUser = { id, avatar, email, fullName }
-    window.localStorage.setItem('user', JSON.stringify(preparedUser))
+    const preparedUser: User = { id, avatar, email, fullName }
     trackLogin(provider)
     return {
       user: preparedUser,
@@ -56,7 +55,6 @@ const signIn = async (
 }
 
 const logOut = async (): Promise<void> => {
-  window.localStorage.removeItem('user')
   return signOut(auth)
 }
 

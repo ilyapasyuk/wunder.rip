@@ -1,5 +1,7 @@
+import { get, push, ref, update } from 'firebase/database'
+
 import { trackFolderCreated, trackFolderDeleted, trackFolderRenamed } from 'services/analytics'
-import { databaseRef } from 'services/firebase'
+import { db } from 'services/firebase'
 import {
   getFoldersRoute,
   getUpdateFolderRoute,
@@ -8,7 +10,7 @@ import {
 } from 'services/routes'
 import { toast } from 'sonner'
 
-export type IFolder = {
+export type Folder = {
   id?: string
   name: string
   createdAt: number
@@ -24,12 +26,12 @@ const createFolder = async (
 }> => {
   try {
     const timestamp = Date.now()
-    const value: IFolder = {
+    const value: Folder = {
       name: name.slice(0, 60).trim(),
       createdAt: timestamp,
       order: -timestamp,
     }
-    const folderRef = await databaseRef.child(getFoldersRoute(userId)).push(value)
+    const folderRef = await push(ref(db, getFoldersRoute(userId)), value)
     toast.success('List created')
     trackFolderCreated()
     return { id: folderRef.key }
@@ -47,7 +49,7 @@ const renameFolder = async (folderId: string, name: string, userId: string) => {
     if (!trimmed) {
       return
     }
-    await databaseRef.update({
+    await update(ref(db), {
       [`${getUpdateFolderRoute(userId, folderId)}/name`]: trimmed,
     })
     trackFolderRenamed()
@@ -60,7 +62,7 @@ const renameFolder = async (folderId: string, name: string, userId: string) => {
 
 const deleteFolder = async (folderId: string, userId: string) => {
   try {
-    const snapshot = await databaseRef.child(getUserRoute(userId)).once('value')
+    const snapshot = await get(ref(db, getUserRoute(userId)))
     const tasks = (snapshot.val() || {}) as Record<string, { folderId?: string | null }>
 
     const updates: Record<string, unknown> = {
@@ -73,7 +75,7 @@ const deleteFolder = async (folderId: string, userId: string) => {
       }
     }
 
-    await databaseRef.update(updates)
+    await update(ref(db), updates)
     toast.success('List deleted')
     trackFolderDeleted()
   } catch (error) {

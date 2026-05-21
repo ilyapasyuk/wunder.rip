@@ -8,7 +8,7 @@ import { applyTheme, getInitialTheme, watchSystemTheme } from 'services/theme'
 
 import { Auth } from './Components/Auth'
 import { Layout } from './Components/Layout'
-import TaskPreview from './Components/TaskPreview'
+import { TaskPreview } from './Components/TaskPreview'
 import './index.css'
 
 const container = document.getElementById('wunderTodo')

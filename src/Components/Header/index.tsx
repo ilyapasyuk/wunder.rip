@@ -8,11 +8,11 @@ import {
 } from '@heroicons/react/20/solid'
 import { Fragment, useEffect, useState } from 'react'
 
-import { IUser } from 'services/auth'
+import { User } from 'services/auth'
 import { getCurrentTheme, toggleTheme } from 'services/theme'
 
 interface IHeaderProps {
-  user: IUser | null
+  user: User | null
   onLogout: () => void
 }
 
