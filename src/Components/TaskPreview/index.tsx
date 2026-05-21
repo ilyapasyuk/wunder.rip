@@ -1,4 +1,5 @@
 import { StoreContext } from 'Components/Context/store'
+import { ImageLightbox } from 'Components/ImageLightbox'
 import { ImageUploader } from 'Components/ImageUploader'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
@@ -6,7 +7,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { trackTaskViewed } from 'services/analytics'
 import { databaseRef } from 'services/firebase'
-import { getCloudinaryImage } from 'services/image'
+import { getCloudinaryThumb } from 'services/image'
 import { getUserRoute } from 'services/routes'
 import { ITodo, updateTask } from 'services/task'
 
@@ -19,6 +20,7 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
   const { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<ITodo | null>(null)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
   const handleClose = () => {
@@ -174,7 +176,7 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
                 </div>
                 {Boolean(todo.files?.length) && (
                   <div className="grid grid-cols-2 gap-x-4 gap-y-4 mb-8">
-                    {todo.files?.map(file => (
+                    {todo.files?.map((file, idx) => (
                       <div key={`${file}?alt=media`} className="relative">
                         <div className="text-right">
                           <button
@@ -188,19 +190,18 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
                         </div>
                         <div className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden">
                           <img
-                            className="object-cover pointer-events-none group-hover:opacity-75"
-                            src={`${getCloudinaryImage(file, 240, 160, false, true)}`}
-                            alt="avatar"
-                            height={100}
+                            className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
+                            src={getCloudinaryThumb(file, { width: 480, height: 320 })}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
                           />
                           <button
                             type="button"
-                            className="absolute inset-0 focus:outline-none"
-                            onClick={() => {
-                              window.open(`${getCloudinaryImage(file)}`, '_blank')
-                            }}
+                            className="absolute inset-0 focus:outline-none cursor-zoom-in"
+                            onClick={() => setLightboxIndex(idx)}
                           >
-                            <span className="sr-only">View details</span>
+                            <span className="sr-only">Open image</span>
                           </button>
                         </div>
                       </div>
@@ -224,6 +225,12 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
           )}
         </div>
       </div>
+      <ImageLightbox
+        open={lightboxIndex !== null}
+        images={todo?.files ?? []}
+        initialIndex={lightboxIndex ?? 0}
+        onClose={() => setLightboxIndex(null)}
+      />
     </>
   )
 }

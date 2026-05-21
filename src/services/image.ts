@@ -45,23 +45,54 @@ const uploadImage = async (
   }
 }
 
-const getCloudinaryImage = (
-  id: string,
-  width?: number,
-  height?: number,
-  fit = false,
-  fill = false,
-  isDetectFaces = false,
-  quality = 100,
-): string => {
-  const qualityParam = quality ? `q_${quality}` : 'q_auto:best'
-  const fitParam = fit ? ',c_fit' : ''
-  const fillParam = fill ? ',c_fill' : ''
-  const detectFacesParam = isDetectFaces ? ',g_faces' : ''
-  const widthParam = width ? `,w_${width}` : ''
-  const heightParam = height ? `,h_${height}` : ''
+const CLOUDINARY_BASE = `https://res.cloudinary.com/${cloudinaryAppName}/image/upload`
 
-  return `https://res.cloudinary.com/${cloudinaryAppName}/image/upload/${qualityParam}${widthParam}${heightParam}${fitParam}${fillParam}${detectFacesParam}/${id}`
+type ThumbOptions = {
+  width: number
+  height: number
+  gravity?: 'auto' | 'face' | 'faces' | 'center'
 }
 
-export { uploadImage, getCloudinaryImage }
+/**
+ * Optimized thumbnail URL.
+ * Uses f_auto (WebP/AVIF), q_auto (smart quality), c_fill with smart gravity,
+ * and dpr_auto so retina devices get a sharper variant when the browser hints DPR.
+ */
+const getCloudinaryThumb = (
+  id: string,
+  { width, height, gravity = 'auto' }: ThumbOptions,
+): string => {
+  return `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_${gravity},w_${width},h_${height},dpr_auto/${id}`
+}
+
+/**
+ * Full-size preview URL (capped to maxWidth so we don't ship 8000px originals).
+ */
+const getCloudinaryPreview = (id: string, maxWidth = 2000): string => {
+  return `${CLOUDINARY_BASE}/f_auto,q_auto:best,c_limit,w_${maxWidth},dpr_auto/${id}`
+}
+
+/**
+ * Adds Content-Disposition: attachment via Cloudinary's fl_attachment flag —
+ * the browser will download the file instead of navigating to it.
+ * Cross-origin <a download> is unreliable; this is the reliable path.
+ */
+const getCloudinaryDownloadUrl = (id: string, filename?: string): string => {
+  const flag = filename ? `fl_attachment:${encodeURIComponent(filename)}` : 'fl_attachment'
+  return `${CLOUDINARY_BASE}/${flag}/${id}`
+}
+
+/**
+ * Plain optimized URL — kept for backward-compat and ad-hoc usage.
+ */
+const getCloudinaryImage = (id: string): string => {
+  return `${CLOUDINARY_BASE}/f_auto,q_auto/${id}`
+}
+
+export {
+  getCloudinaryDownloadUrl,
+  getCloudinaryImage,
+  getCloudinaryPreview,
+  getCloudinaryThumb,
+  uploadImage,
+}
