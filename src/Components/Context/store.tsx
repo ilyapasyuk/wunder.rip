@@ -45,4 +45,4 @@ const StoreProvider = ({ children }: StoreProviderProps) => {
   return <StoreContext.Provider value={{ state, dispatch }}>{children}</StoreContext.Provider>
 }
 
-export { StoreProvider, StoreContext, CURRENT_FOLDER_STORAGE_KEY }
+export { CURRENT_FOLDER_STORAGE_KEY, StoreContext, StoreProvider }

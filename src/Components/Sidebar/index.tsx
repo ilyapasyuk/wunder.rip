@@ -14,8 +14,8 @@ import type { DataSnapshot } from 'firebase/database'
 import {
   CSSProperties,
   KeyboardEvent,
-  PointerEvent as ReactPointerEvent,
   ReactNode,
+  PointerEvent as ReactPointerEvent,
   useContext,
   useEffect,
   useMemo,
@@ -113,6 +113,33 @@ const Sidebar = ({ todos }: ISidebarProps) => {
 
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp)
+  }
+
+  const handleResizeKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const STEP = e.shiftKey ? 32 : 16
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      setSidebarWidth(w => {
+        const next = Math.max(SIDEBAR_MIN_WIDTH, w - STEP)
+        localStorage.setItem(SIDEBAR_WIDTH_KEY, String(next))
+        return next
+      })
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      setSidebarWidth(w => {
+        const next = Math.min(SIDEBAR_MAX_WIDTH, w + STEP)
+        localStorage.setItem(SIDEBAR_WIDTH_KEY, String(next))
+        return next
+      })
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      setSidebarWidth(SIDEBAR_MIN_WIDTH)
+      localStorage.setItem(SIDEBAR_WIDTH_KEY, String(SIDEBAR_MIN_WIDTH))
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      setSidebarWidth(SIDEBAR_MAX_WIDTH)
+      localStorage.setItem(SIDEBAR_WIDTH_KEY, String(SIDEBAR_MAX_WIDTH))
+    }
   }
 
   useEffect(() => {
@@ -342,12 +369,18 @@ const Sidebar = ({ todos }: ISidebarProps) => {
           )}
         </div>
       </div>
+      {/* biome-ignore lint/a11y/useSemanticElements: there is no native HTML element for a resize splitter; the WAI-ARIA window splitter pattern uses role="separator" with aria-valuenow/min/max and keyboard handlers. */}
       <div
         role="separator"
         aria-orientation="vertical"
         aria-label="Resize sidebar"
+        aria-valuenow={sidebarWidth}
+        aria-valuemin={SIDEBAR_MIN_WIDTH}
+        aria-valuemax={SIDEBAR_MAX_WIDTH}
+        tabIndex={0}
         onPointerDown={handleResizePointerDown}
-        className={`hidden md:block absolute top-0 right-0 h-full w-1.5 -mr-px cursor-col-resize select-none transition-colors ${
+        onKeyDown={handleResizeKeyDown}
+        className={`hidden md:block absolute top-0 right-0 h-full w-1.5 -mr-px cursor-col-resize select-none transition-colors focus:outline-none focus:bg-primary/40 ${
           isResizing ? 'bg-primary/40' : 'hover:bg-primary/30'
         }`}
       />

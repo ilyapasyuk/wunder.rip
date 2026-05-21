@@ -124,9 +124,9 @@ const moveTodoToFolder = async (taskId: string, folderId: string | null, userId:
 
 export {
   createTodo,
-  prepareTaskForUpdate,
-  updateTask,
-  updateAllTasks,
   deleteTodo,
   moveTodoToFolder,
+  prepareTaskForUpdate,
+  updateAllTasks,
+  updateTask,
 }

@@ -21,9 +21,9 @@ enum ROUTE {
 
 export {
   getCreateTaskRoute,
-  getUpdateTaskRoute,
-  getUserRoute,
   getFoldersRoute,
   getUpdateFolderRoute,
+  getUpdateTaskRoute,
+  getUserRoute,
   ROUTE,
 }

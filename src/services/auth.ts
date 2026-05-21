@@ -16,7 +16,7 @@ export enum PROVIDER {
   GOOGLE = 'google',
 }
 
-const getProvider = (provider: PROVIDER) => {
+const getProvider = (provider: PROVIDER): GoogleAuthProvider | GithubAuthProvider => {
   switch (provider) {
     case PROVIDER.GOOGLE:
       return new GoogleAuthProvider()
@@ -32,7 +32,7 @@ const signIn = async (
   error?: Error
 }> => {
   try {
-    const result = await signInWithPopup(auth, getProvider(provider)!)
+    const result = await signInWithPopup(auth, getProvider(provider))
 
     const id: string = result.user?.uid || ''
     const email: string = result.user?.email || ''
@@ -60,4 +60,4 @@ const logOut = async (): Promise<void> => {
   return signOut(auth)
 }
 
-export { signIn, logOut }
+export { logOut, signIn }

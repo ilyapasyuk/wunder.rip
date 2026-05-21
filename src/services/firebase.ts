@@ -53,4 +53,4 @@ export const databaseRef: DatabaseRefShim = {
   update: (updates: Record<string, unknown>) => dbUpdate(dbRef(db), updates),
 }
 
-export { app, auth, analytics }
+export { analytics, app, auth }

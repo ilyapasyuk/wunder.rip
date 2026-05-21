@@ -29,7 +29,7 @@ const TodoList = ({ todos: _todos, visibleTodos }: ITodoListProps) => {
   }
 
   const handleKeyPress = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.charCode === 13 && Boolean((e.target as HTMLInputElement).value.length)) {
+    if (e.charCode === 13 && (e.target as HTMLInputElement).value.length) {
       const text = (e.target as HTMLInputElement).value
       setCurrentTodo('')
       await handleAddTodo(text)

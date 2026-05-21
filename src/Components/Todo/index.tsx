@@ -1,7 +1,7 @@
 import { Checkbox } from 'Components/Checkbox'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Bars3Icon, ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { CSSProperties } from 'react'
 import { ITodo } from 'services/task'
 
@@ -33,12 +33,10 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
     : 'text-text-primary dark:text-text-dark-primary'
 
   return (
-    // biome-ignore lint/a11y/useAriaPropsSupportedByRole: <explanation>
     <div
       ref={setNodeRef}
       style={style}
       className="bg-surface dark:bg-surface-dark shadow-sm rounded-lg border border-border dark:border-border-dark hover:shadow-md transition-shadow"
-      aria-label="Drag"
       {...attributes}
       {...listeners}
     >

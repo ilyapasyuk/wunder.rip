@@ -83,4 +83,4 @@ const deleteFolder = async (folderId: string, userId: string) => {
   }
 }
 
-export { createFolder, renameFolder, deleteFolder }
+export { createFolder, deleteFolder, renameFolder }
