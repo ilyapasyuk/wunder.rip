@@ -1,29 +1,44 @@
 import { StoreContext } from 'Components/Context/store'
+import { ImageLightbox } from 'Components/ImageLightbox'
 import { ImageUploader } from 'Components/ImageUploader'
-import { XMarkIcon } from '@heroicons/react/20/solid'
-import type { DataSnapshot } from 'firebase/database'
+import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { onValue, ref } from 'firebase/database'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { trackTaskViewed } from 'services/analytics'
-import { databaseRef } from 'services/firebase'
-import { getCloudinaryImage } from 'services/image'
+import { db } from 'services/firebase'
+import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
+import { notify } from 'services/notify'
 import { getUserRoute } from 'services/routes'
-import { ITodo, updateTask } from 'services/task'
+import { Todo, updateTask } from 'services/task'
 
-interface ITaskPreviewProps {
+interface TaskPreviewProps {
   onClose: () => void
 }
 
-const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
+const PANEL_TRANSITION_MS = 280
+
+const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   const navigate = useNavigate()
   const { id } = useParams()
   const { state } = useContext(StoreContext)
-  const [todo, setTodo] = useState<ITodo | null>(null)
+  const [todo, setTodo] = useState<Todo | null>(null)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [isOpen, setIsOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
 
+  // Trigger enter transition on first paint.
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setIsOpen(true))
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
   const handleClose = () => {
-    navigate('/')
-    onClose()
+    setIsOpen(false)
+    window.setTimeout(() => {
+      navigate('/')
+      onClose()
+    }, PANEL_TRANSITION_MS)
   }
 
   useEffect(() => {
@@ -67,9 +82,9 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
 
   useEffect(() => {
     if (state?.user?.id && id) {
-      const ref = databaseRef.child(`${getUserRoute(state?.user?.id)}/${id}`)
+      const taskRef = ref(db, `${getUserRoute(state?.user?.id)}/${id}`)
       let wasLoaded = false
-      const unsubscribe = ref.on('value', (snapshot: DataSnapshot) => {
+      const unsubscribe = onValue(taskRef, snapshot => {
         const item = snapshot.val()
         if (item) {
           setTodo({ ...item, id })
@@ -87,18 +102,19 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
     }
   }, [state.user, id])
 
-  const handleDeleteFile = async (file: string, todo: ITodo) => {
-    const newTodo: ITodo = {
+  const handleDeleteFile = async (file: string, todo: Todo) => {
+    const newTodo: Todo = {
       ...todo,
       files: todo?.files?.filter(fileUrl => fileUrl !== file),
     }
 
     if (state?.user?.id) {
       await updateTask(newTodo, state?.user?.id)
+      notify.success('Image removed')
     }
   }
 
-  const handleEditTask = async (todo: ITodo) => {
+  const handleEditTask = async (todo: Todo) => {
     if (state?.user?.id) {
       updateTask(todo, state?.user?.id)
     }
@@ -106,16 +122,22 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Mobile-only backdrop — fades in/out, captures taps to close. */}
       <button
-        className="fixed inset-0 bg-overlay z-40 md:hidden"
-        onClick={handleClose}
         type="button"
+        aria-label="Close panel"
+        onClick={handleClose}
+        className={`fixed inset-0 z-40 bg-overlay md:hidden transition-opacity duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
       />
-      {/* Panel */}
+      {/* Panel — fixed overlay (not in flex flow), slides in from the right.
+          Sits below the header on desktop; covers the whole screen on mobile. */}
       <div
         ref={panelRef}
-        className="fixed inset-0 md:relative md:inset-auto w-full md:w-96 md:max-w-md border-l border-border dark:border-border-dark bg-surface dark:bg-surface-dark shadow-xl z-50 md:z-auto"
+        className={`fixed top-0 md:top-14 right-0 bottom-0 z-50 w-full md:w-[28rem] md:max-w-[min(28rem,calc(100vw-var(--sidebar-w)-2rem))] bg-surface dark:bg-surface-dark md:border-l border-border dark:border-border-dark shadow-2xl will-change-transform transition-transform duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="task-preview-title"
@@ -174,33 +196,44 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
                 </div>
                 {Boolean(todo.files?.length) && (
                   <div className="grid grid-cols-2 gap-x-4 gap-y-4 mb-8">
-                    {todo.files?.map(file => (
-                      <div key={`${file}?alt=media`} className="relative">
-                        <div className="text-right">
-                          <button
-                            className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
-                            onClick={() => handleDeleteFile(file, todo)}
-                            aria-label="Delete image"
-                            type="button"
+                    {todo.files?.map((file, idx) => (
+                      <div
+                        key={`${file}?alt=media`}
+                        className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden"
+                      >
+                        <img
+                          className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
+                          src={getCloudinaryThumb(file, { width: 480, height: 320 })}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-0 focus:outline-none cursor-zoom-in"
+                          onClick={() => setLightboxIndex(idx)}
+                          aria-label="Open image"
+                        />
+                        <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+                          <a
+                            href={getCloudinaryDownloadUrl(file)}
+                            download
+                            onClick={e => e.stopPropagation()}
+                            className="p-1.5 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                            aria-label="Download image"
                           >
-                            <XMarkIcon className="size-5 shrink-0" />
-                          </button>
-                        </div>
-                        <div className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden">
-                          <img
-                            className="object-cover pointer-events-none group-hover:opacity-75"
-                            src={`${getCloudinaryImage(file, 240, 160, false, true)}`}
-                            alt="avatar"
-                            height={100}
-                          />
+                            <ArrowDownTrayIcon className="size-4 shrink-0" />
+                          </a>
                           <button
                             type="button"
-                            className="absolute inset-0 focus:outline-none"
-                            onClick={() => {
-                              window.open(`${getCloudinaryImage(file)}`, '_blank')
+                            onClick={e => {
+                              e.stopPropagation()
+                              handleDeleteFile(file, todo)
                             }}
+                            className="p-1.5 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                            aria-label="Delete image"
                           >
-                            <span className="sr-only">View details</span>
+                            <XMarkIcon className="size-4 shrink-0" />
                           </button>
                         </div>
                       </div>
@@ -224,8 +257,14 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
           )}
         </div>
       </div>
+      <ImageLightbox
+        open={lightboxIndex !== null}
+        images={todo?.files ?? []}
+        initialIndex={lightboxIndex ?? 0}
+        onClose={() => setLightboxIndex(null)}
+      />
     </>
   )
 }
 
-export default TaskPreview
+export { TaskPreview }

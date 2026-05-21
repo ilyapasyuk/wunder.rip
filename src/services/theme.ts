@@ -72,4 +72,4 @@ const watchSystemTheme = (callback: (theme: Theme) => void): (() => void) => {
   return () => mediaQuery.removeListener(handleChange)
 }
 
-export { getInitialTheme, setTheme, toggleTheme, getCurrentTheme, applyTheme, watchSystemTheme }
+export { applyTheme, getCurrentTheme, getInitialTheme, setTheme, toggleTheme, watchSystemTheme }

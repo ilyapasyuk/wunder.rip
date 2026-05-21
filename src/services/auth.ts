@@ -2,9 +2,9 @@ import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from
 
 import { trackLogin } from 'services/analytics'
 import { auth } from 'services/firebase'
-import { toast } from 'sonner'
+import { notify } from 'services/notify'
 
-export type IUser = {
+export type User = {
   id: string
   avatar: string
   email: string
@@ -16,7 +16,7 @@ export enum PROVIDER {
   GOOGLE = 'google',
 }
 
-const getProvider = (provider: PROVIDER) => {
+const getProvider = (provider: PROVIDER): GoogleAuthProvider | GithubAuthProvider => {
   switch (provider) {
     case PROVIDER.GOOGLE:
       return new GoogleAuthProvider()
@@ -28,19 +28,18 @@ const getProvider = (provider: PROVIDER) => {
 const signIn = async (
   provider: PROVIDER,
 ): Promise<{
-  user?: IUser
+  user?: User
   error?: Error
 }> => {
   try {
-    const result = await signInWithPopup(auth, getProvider(provider)!)
+    const result = await signInWithPopup(auth, getProvider(provider))
 
     const id: string = result.user?.uid || ''
     const email: string = result.user?.email || ''
     const avatar: string = result.user?.photoURL || ''
     const fullName: string = result.user?.displayName || ''
 
-    const preparedUser: IUser = { id, avatar, email, fullName }
-    window.localStorage.setItem('user', JSON.stringify(preparedUser))
+    const preparedUser: User = { id, avatar, email, fullName }
     trackLogin(provider)
     return {
       user: preparedUser,
@@ -48,7 +47,7 @@ const signIn = async (
   } catch (error) {
     const errorMessage = `Login error: ${error}`
     console.error(errorMessage)
-    toast.error(errorMessage)
+    notify.error(errorMessage)
     return {
       error: new Error(errorMessage),
     }
@@ -56,8 +55,7 @@ const signIn = async (
 }
 
 const logOut = async (): Promise<void> => {
-  window.localStorage.removeItem('user')
   return signOut(auth)
 }
 
-export { signIn, logOut }
+export { logOut, signIn }

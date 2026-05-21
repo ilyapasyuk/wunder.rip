@@ -1,18 +1,7 @@
 import { getAnalytics } from 'firebase/analytics'
 import { type FirebaseApp, initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import {
-  type DatabaseReference,
-  type DataSnapshot,
-  child as dbChild,
-  get as dbGet,
-  push as dbPush,
-  ref as dbRef,
-  update as dbUpdate,
-  getDatabase,
-  onValue,
-  type Unsubscribe,
-} from 'firebase/database'
+import { getDatabase } from 'firebase/database'
 
 const config = {
   apiKey: 'AIzaSyAdqcW0V8x6bJVmPr4TY6cdh77rt3FV1oY',
@@ -30,27 +19,4 @@ const db = getDatabase(app)
 const auth = getAuth(app)
 const analytics = getAnalytics(app)
 
-type ChildRefShim = {
-  on: (event: 'value', callback: (snapshot: DataSnapshot) => void) => Unsubscribe
-  push: (value: unknown) => Promise<DatabaseReference>
-  once: (event: 'value') => Promise<DataSnapshot>
-}
-
-type DatabaseRefShim = {
-  child: (path: string) => ChildRefShim
-  update: (updates: Record<string, unknown>) => Promise<void>
-}
-
-export const databaseRef: DatabaseRefShim = {
-  child: (path: string): ChildRefShim => {
-    const nodeRef = dbChild(dbRef(db), path)
-    return {
-      on: (_event, callback) => onValue(nodeRef, callback),
-      push: async (value: unknown) => dbPush(nodeRef, value),
-      once: async _event => dbGet(nodeRef),
-    }
-  },
-  update: (updates: Record<string, unknown>) => dbUpdate(dbRef(db), updates),
-}
-
-export { app, auth, analytics }
+export { analytics, app, auth, db }

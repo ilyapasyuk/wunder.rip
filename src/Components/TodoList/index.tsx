@@ -1,23 +1,23 @@
 import { StoreContext } from 'Components/Context/store'
 import { TodoItem } from 'Components/Todo'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import type { DataSnapshot } from 'firebase/database'
+import { onValue, ref } from 'firebase/database'
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { trackTaskCompleted } from 'services/analytics'
-import { databaseRef } from 'services/firebase'
-import { IFolder } from 'services/folder'
+import { db } from 'services/firebase'
+import { Folder } from 'services/folder'
 import { getFoldersRoute } from 'services/routes'
-import { createTodo, deleteTodo, ITodo, updateTask } from 'services/task'
+import { createTodo, deleteTodo, Todo, updateTask } from 'services/task'
 
-interface ITodoListProps {
-  todos: ITodo[]
-  visibleTodos: ITodo[]
+interface TodoListProps {
+  todos: Todo[]
+  visibleTodos: Todo[]
 }
 
-const TodoList = ({ todos: _todos, visibleTodos }: ITodoListProps) => {
+const TodoList = ({ todos: _todos, visibleTodos }: TodoListProps) => {
   const { state } = useContext(StoreContext)
-  const [folders, setFolders] = useState<IFolder[]>([])
+  const [folders, setFolders] = useState<Folder[]>([])
   const [currentTodo, setCurrentTodo] = useState<string>('')
   const navigate = useNavigate()
 
@@ -28,16 +28,16 @@ const TodoList = ({ todos: _todos, visibleTodos }: ITodoListProps) => {
     }
   }
 
-  const handleKeyPress = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.charCode === 13 && Boolean((e.target as HTMLInputElement).value.length)) {
-      const text = (e.target as HTMLInputElement).value
+  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && e.currentTarget.value.length) {
+      const text = e.currentTarget.value
       setCurrentTodo('')
       await handleAddTodo(text)
     }
   }
 
-  const handleToggleDone = async (todo: ITodo) => {
-    const value: ITodo = {
+  const handleToggleDone = async (todo: Todo) => {
+    const value: Todo = {
       ...todo,
       done: !todo.done,
     }
@@ -53,18 +53,16 @@ const TodoList = ({ todos: _todos, visibleTodos }: ITodoListProps) => {
       setFolders([])
       return
     }
-    const unsubscribe = databaseRef
-      .child(getFoldersRoute(state.user.id))
-      .on('value', (snapshot: DataSnapshot) => {
-        const items = snapshot.val() || {}
-        const prepared: IFolder[] = Object.keys(items).map(id => ({
-          id,
-          name: items[id].name,
-          createdAt: items[id].createdAt,
-          order: items[id].order || 0,
-        }))
-        setFolders(prepared)
-      })
+    const unsubscribe = onValue(ref(db, getFoldersRoute(state.user.id)), snapshot => {
+      const items = snapshot.val() || {}
+      const prepared: Folder[] = Object.keys(items).map(id => ({
+        id,
+        name: items[id].name,
+        createdAt: items[id].createdAt,
+        order: items[id].order || 0,
+      }))
+      setFolders(prepared)
+    })
     return () => unsubscribe()
   }, [state.user])
 
@@ -77,7 +75,7 @@ const TodoList = ({ todos: _todos, visibleTodos }: ITodoListProps) => {
 
   return (
     <div className="bg-background dark:bg-background-dark h-full min-h-screen">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-2xl font-semibold text-text-primary dark:text-text-dark-primary mb-4">
           {currentFolderName}
         </h1>
@@ -85,7 +83,7 @@ const TodoList = ({ todos: _todos, visibleTodos }: ITodoListProps) => {
           type="text"
           value={currentTodo}
           onChange={e => setCurrentTodo(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder="New task..."
           className="block w-full rounded-lg border-0 px-4 py-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark shadow-sm ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-base leading-6 mb-6 transition-all"
         />

@@ -1,9 +1,11 @@
-import { trackTaskCreated, trackTaskDeleted } from 'services/analytics'
-import { databaseRef } from 'services/firebase'
-import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/routes'
-import { toast } from 'sonner'
+import { push, ref, update } from 'firebase/database'
 
-export type ITodo = {
+import { trackTaskCreated, trackTaskDeleted } from 'services/analytics'
+import { db } from 'services/firebase'
+import { notify } from 'services/notify'
+import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/routes'
+
+export type Todo = {
   task: string
   done: boolean
   id?: string
@@ -26,7 +28,7 @@ const createTodo = async (
   try {
     const timestamp = Date.now()
 
-    const value: ITodo = {
+    const value: Todo = {
       task: todo.slice(0, 100).trim(),
       done: false,
       createdAt: timestamp,
@@ -37,8 +39,8 @@ const createTodo = async (
       folderId: folderId || null,
     }
 
-    const taskRef = await databaseRef.child(getCreateTaskRoute(userId)).push(value)
-    toast.success('Task created')
+    const taskRef = await push(ref(db, getCreateTaskRoute(userId)), value)
+    notify.success('Task created')
     trackTaskCreated()
     return {
       id: taskRef.key,
@@ -46,61 +48,44 @@ const createTodo = async (
   } catch (error) {
     const message = `Error creating task: ${error}`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
     return {
       error: new Error(message),
     }
   }
 }
 
-const prepareTaskForUpdate = (todo: ITodo) => {
-  const newTask = {}
+const prepareTaskForUpdate = (todo: Todo): Partial<Todo> =>
+  Object.fromEntries(Object.entries(todo).filter(([, value]) => value !== undefined))
 
-  for (const key in todo) {
-    // @ts-expect-error
-    if (todo[key] !== undefined) {
-      // @ts-expect-error
-      newTask[key] = todo[key]
-    }
-  }
-
-  return newTask
-}
-
-const updateTask = (todo: ITodo, userId: string) => {
+const updateTask = (todo: Todo, userId: string) => {
   const newTask = prepareTaskForUpdate(todo)
   if (todo.id) {
-    const updates = {
-      [getUpdateTaskRoute(userId, todo.id)]: newTask,
-    }
-
-    return databaseRef.update(updates)
+    return update(ref(db), { [getUpdateTaskRoute(userId, todo.id)]: newTask })
   }
 }
 
-const updateAllTasks = (todos: ITodo[], userId: string) => {
-  const updates = {}
+const updateAllTasks = (todos: Todo[], userId: string) => {
+  const updates: Record<string, Partial<Todo>> = {}
   todos.forEach(todo => {
-    const newTask = prepareTaskForUpdate(todo)
     if (todo.id) {
-      // @ts-expect-error
-      updates[getUpdateTaskRoute(userId, todo.id)] = newTask
+      updates[getUpdateTaskRoute(userId, todo.id)] = prepareTaskForUpdate(todo)
     }
   })
 
-  return databaseRef.update(updates)
+  return update(ref(db), updates)
 }
 
-const deleteTodo = async (todo: ITodo, userId: string) => {
+const deleteTodo = async (todo: Todo, userId: string) => {
   if (todo.id) {
     try {
-      await databaseRef.update({ [getUpdateTaskRoute(userId, todo.id)]: null })
-      toast.success('Task deleted')
+      await update(ref(db), { [getUpdateTaskRoute(userId, todo.id)]: null })
+      notify.success('Task deleted')
       trackTaskDeleted()
     } catch (error) {
       const message = `Error deleting task: ${error}`
       console.error(message)
-      toast.error(message)
+      notify.error(message)
       return {
         error: new Error(message),
       }
@@ -108,7 +93,7 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
   } else {
     const message = `Error deleting task: no id`
     console.error(message)
-    toast.error(message)
+    notify.error(message)
     return {
       error: new Error(message),
     }
@@ -116,7 +101,7 @@ const deleteTodo = async (todo: ITodo, userId: string) => {
 }
 
 const moveTodoToFolder = async (taskId: string, folderId: string | null, userId: string) => {
-  await databaseRef.update({
+  await update(ref(db), {
     [`${getUpdateTaskRoute(userId, taskId)}/folderId`]: folderId,
     [`${getUpdateTaskRoute(userId, taskId)}/order`]: -Date.now(),
   })
@@ -124,9 +109,9 @@ const moveTodoToFolder = async (taskId: string, folderId: string | null, userId:
 
 export {
   createTodo,
-  prepareTaskForUpdate,
-  updateTask,
-  updateAllTasks,
   deleteTodo,
   moveTodoToFolder,
+  prepareTaskForUpdate,
+  updateAllTasks,
+  updateTask,
 }

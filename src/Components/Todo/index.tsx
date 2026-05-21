@@ -1,18 +1,18 @@
 import { Checkbox } from 'Components/Checkbox'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Bars3Icon, ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { CSSProperties } from 'react'
-import { ITodo } from 'services/task'
+import { Todo } from 'services/task'
 
-interface ITodoProps {
-  todo: ITodo
-  toggleDone: (todo: ITodo) => void
-  deleteTodo: (todo: ITodo) => void
-  onSelect: (todo: ITodo) => void
+interface TodoItemProps {
+  todo: Todo
+  toggleDone: (todo: Todo) => void
+  deleteTodo: (todo: Todo) => void
+  onSelect: (todo: Todo) => void
 }
 
-const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
+const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoItemProps) => {
   const hasFiles = todo.files && todo.files.length > 0
   const hasNote = todo.note && todo.note.length > 0
 
@@ -33,12 +33,10 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: ITodoProps) => {
     : 'text-text-primary dark:text-text-dark-primary'
 
   return (
-    // biome-ignore lint/a11y/useAriaPropsSupportedByRole: <explanation>
     <div
       ref={setNodeRef}
       style={style}
       className="bg-surface dark:bg-surface-dark shadow-sm rounded-lg border border-border dark:border-border-dark hover:shadow-md transition-shadow"
-      aria-label="Drag"
       {...attributes}
       {...listeners}
     >

@@ -21,13 +21,13 @@ const trackFolderRenamed = () => logEvent(analytics, 'folder_renamed')
 const trackFolderDeleted = () => logEvent(analytics, 'folder_deleted')
 
 export {
-  trackLogin,
-  trackTaskCreated,
-  trackTaskCompleted,
-  trackTaskDeleted,
-  trackTaskViewed,
-  trackTaskReordered,
   trackFolderCreated,
-  trackFolderRenamed,
   trackFolderDeleted,
+  trackFolderRenamed,
+  trackLogin,
+  trackTaskCompleted,
+  trackTaskCreated,
+  trackTaskDeleted,
+  trackTaskReordered,
+  trackTaskViewed,
 }

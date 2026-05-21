@@ -1,14 +1,14 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
-/** biome-ignore-all lint/a11y/useKeyWithClickEvents: <explanation> */
-import { DragEvent, useRef, useState } from 'react'
+import { CLOUDINARY_UPLOAD_PRESET } from 'config/cloudinary'
+import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
 
 import { uploadImage } from 'services/image'
+import { notify } from 'services/notify'
 
-interface IImageUploaderProps {
+interface ImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void
 }
 
-const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
+const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isDragOver, setIsDragOver] = useState<boolean>(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -20,9 +20,10 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
 
     try {
       setLoading(true)
-      const { cloudinaryId } = await uploadImage(file, 'wunderrip_task')
+      const { cloudinaryId } = await uploadImage(file, CLOUDINARY_UPLOAD_PRESET)
       if (cloudinaryId) {
         onFileUploaded(cloudinaryId)
+        notify.success('Image added')
       }
     } catch (error) {
       console.error(error)
@@ -34,6 +35,13 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
   const handleAreaClick = () => {
     if (!isLoading && fileInputRef.current) {
       fileInputRef.current.click()
+    }
+  }
+
+  const handleAreaKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleAreaClick()
     }
   }
 
@@ -70,12 +78,17 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
   }
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: drop-zone wraps a nested <label>/<input type="file">, which is invalid HTML inside a real <button>; div with role=button + keyboard handlers is the standard workaround.
     <div
+      role="button"
+      tabIndex={isLoading ? -1 : 0}
+      aria-disabled={isLoading}
       onClick={handleAreaClick}
+      onKeyDown={handleAreaKeyDown}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`mt-2 flex justify-center rounded-lg border border-dashed px-6 py-10 cursor-pointer transition-colors ${
+      className={`mt-2 flex justify-center rounded-lg border border-dashed px-6 py-10 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
         isDragOver
           ? 'border-primary bg-primary/5 dark:bg-primary/10'
           : 'border-border dark:border-border-dark hover:bg-overlay-hover'
@@ -96,9 +109,11 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
         </svg>
         {
           <div className="mt-4 flex text-sm leading-6 text-text-secondary dark:text-text-dark-secondary">
+            {/* biome-ignore lint/a11y/useKeyWithClickEvents: onClick here only stops bubbling to the parent drop-zone (which has its own keyboard handler); the label itself relies on native label→input activation, no keyboard handler needed. */}
             <label
               aria-disabled={isLoading}
               htmlFor="img"
+              onClick={e => e.stopPropagation()}
               className="relative cursor-pointer rounded-md bg-surface dark:bg-surface-dark font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primary-hover"
             >
               <span>Upload a file</span>
