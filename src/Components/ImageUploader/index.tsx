@@ -99,6 +99,7 @@ const ImageUploader = ({ onFileUploaded }: IImageUploaderProps) => {
             <label
               aria-disabled={isLoading}
               htmlFor="img"
+              onClick={e => e.stopPropagation()}
               className="relative cursor-pointer rounded-md bg-surface dark:bg-surface-dark font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primary-hover"
             >
               <span>Upload a file</span>

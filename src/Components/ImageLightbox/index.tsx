@@ -6,7 +6,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react'
-import { getCloudinaryDownloadUrl, getCloudinaryPreview } from 'services/image'
+import { getCloudinaryDownloadUrl, getCloudinaryLQIP, getCloudinaryPreview } from 'services/image'
 
 interface IImageLightboxProps {
   open: boolean
@@ -56,18 +56,34 @@ const ImageLightbox = ({ open, images, initialIndex = 0, onClose }: IImageLightb
       <div className="fixed inset-0 flex items-center justify-center p-4 sm:p-8">
         <DialogPanel
           transition
-          className="relative transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+          className="relative w-[92vw] h-[80vh] sm:w-[88vw] sm:h-[82vh] max-w-[1400px] max-h-[900px] rounded-lg shadow-2xl bg-black/40 overflow-hidden transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
         >
+          {/* LQIP — blurred placeholder, fills the panel via object-contain */}
           <img
-            key={current}
+            key={`lqip-${current}`}
+            src={getCloudinaryLQIP(current)}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-contain select-none"
+          />
+          {/* Full-resolution preview, fades in over the LQIP */}
+          <img
+            key={`full-${current}`}
             src={getCloudinaryPreview(current, 2000)}
             alt=""
             draggable={false}
             onLoad={() => setLoaded(true)}
-            className={`block max-w-[90vw] max-h-[85vh] object-contain rounded-lg shadow-2xl bg-black/40 transition-opacity duration-200 ${
+            className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ease-out ${
               loaded ? 'opacity-100' : 'opacity-0'
             }`}
           />
+          {/* Subtle progress indicator while the full image is loading */}
+          {!loaded && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="size-10 rounded-full border-2 border-white/30 border-t-white/90 animate-spin" />
+            </div>
+          )}
 
           {hasMultiple && (
             <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur text-xs font-medium text-white/90 select-none">

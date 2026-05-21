@@ -73,6 +73,16 @@ const getCloudinaryPreview = (id: string, maxWidth = 2000): string => {
 }
 
 /**
+ * Low-quality image placeholder — a pre-blurred copy used to hold
+ * dimensions and provide an instant visual while the full preview loads.
+ * Preserves the original aspect ratio (c_limit), heavily blurred so it
+ * compresses to ~10–30 KB even at a usable display size.
+ */
+const getCloudinaryLQIP = (id: string): string => {
+  return `${CLOUDINARY_BASE}/f_auto,q_auto:low,c_limit,w_1200,e_blur:1500/${id}`
+}
+
+/**
  * Adds Content-Disposition: attachment via Cloudinary's fl_attachment flag —
  * the browser will download the file instead of navigating to it.
  * Cross-origin <a download> is unreliable; this is the reliable path.
@@ -92,6 +102,7 @@ const getCloudinaryImage = (id: string): string => {
 export {
   getCloudinaryDownloadUrl,
   getCloudinaryImage,
+  getCloudinaryLQIP,
   getCloudinaryPreview,
   getCloudinaryThumb,
   uploadImage,

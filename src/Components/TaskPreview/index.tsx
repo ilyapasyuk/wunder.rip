@@ -1,13 +1,13 @@
 import { StoreContext } from 'Components/Context/store'
 import { ImageLightbox } from 'Components/ImageLightbox'
 import { ImageUploader } from 'Components/ImageUploader'
-import { XMarkIcon } from '@heroicons/react/20/solid'
+import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import type { DataSnapshot } from 'firebase/database'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { trackTaskViewed } from 'services/analytics'
 import { databaseRef } from 'services/firebase'
-import { getCloudinaryThumb } from 'services/image'
+import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
 import { getUserRoute } from 'services/routes'
 import { ITodo, updateTask } from 'services/task'
 
@@ -177,31 +177,43 @@ const TaskPreview = ({ onClose }: ITaskPreviewProps) => {
                 {Boolean(todo.files?.length) && (
                   <div className="grid grid-cols-2 gap-x-4 gap-y-4 mb-8">
                     {todo.files?.map((file, idx) => (
-                      <div key={`${file}?alt=media`} className="relative">
-                        <div className="text-right">
+                      <div
+                        key={`${file}?alt=media`}
+                        className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden"
+                      >
+                        <img
+                          className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
+                          src={getCloudinaryThumb(file, { width: 480, height: 320 })}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-0 focus:outline-none cursor-zoom-in"
+                          onClick={() => setLightboxIndex(idx)}
+                          aria-label="Open image"
+                        />
+                        <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+                          <a
+                            href={getCloudinaryDownloadUrl(file)}
+                            download
+                            onClick={e => e.stopPropagation()}
+                            className="p-1.5 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                            aria-label="Download image"
+                          >
+                            <ArrowDownTrayIcon className="size-4 shrink-0" />
+                          </a>
                           <button
-                            className="p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:bg-overlay-hover hover:text-text-primary dark:hover:text-text-dark-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
-                            onClick={() => handleDeleteFile(file, todo)}
+                            type="button"
+                            onClick={e => {
+                              e.stopPropagation()
+                              handleDeleteFile(file, todo)
+                            }}
+                            className="p-1.5 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
                             aria-label="Delete image"
-                            type="button"
                           >
-                            <XMarkIcon className="size-5 shrink-0" />
-                          </button>
-                        </div>
-                        <div className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden">
-                          <img
-                            className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
-                            src={getCloudinaryThumb(file, { width: 480, height: 320 })}
-                            alt=""
-                            loading="lazy"
-                            decoding="async"
-                          />
-                          <button
-                            type="button"
-                            className="absolute inset-0 focus:outline-none cursor-zoom-in"
-                            onClick={() => setLightboxIndex(idx)}
-                          >
-                            <span className="sr-only">Open image</span>
+                            <XMarkIcon className="size-4 shrink-0" />
                           </button>
                         </div>
                       </div>
