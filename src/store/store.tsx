@@ -1,4 +1,4 @@
-import { reducer } from 'Components/Context/reducer'
+import { reducer } from 'store/reducer'
 import { createContext, Dispatch, ReactNode, useReducer } from 'react'
 import { User } from 'services/auth'
 

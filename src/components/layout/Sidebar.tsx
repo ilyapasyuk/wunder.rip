@@ -1,5 +1,5 @@
-import { StoreContext } from 'Components/Context/store'
-import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'Components/Workspace/droppable'
+import { StoreContext } from 'store/store'
+import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import { useDroppable } from '@dnd-kit/core'
 import {
   CheckIcon,
@@ -20,9 +20,10 @@ import {
   useRef,
   useState,
 } from 'react'
+import { Link } from 'react-router-dom'
 import { db } from 'services/firebase'
 import { createFolder, deleteFolder, Folder, renameFolder } from 'services/folder'
-import { getFoldersRoute } from 'services/routes'
+import { getFoldersRoute } from 'services/db-paths'
 import { Todo } from 'services/task'
 
 interface SidebarProps {
@@ -248,8 +249,8 @@ const Sidebar = ({ todos }: SidebarProps) => {
   }
 
   return (
-    <aside className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:min-h-[calc(100vh-3.5rem)]">
-      <div className="px-3 py-4 flex flex-col gap-1">
+    <aside className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:h-full flex flex-col">
+      <div className="px-3 py-4 flex flex-col gap-1 flex-1 min-h-0 md:overflow-y-auto">
         <DroppableRow
           id={INBOX_DROPPABLE_ID}
           isActive={state.currentFolderId === null}
@@ -367,6 +368,15 @@ const Sidebar = ({ todos }: SidebarProps) => {
             </button>
           )}
         </div>
+      </div>
+      <div className="px-3 py-3 border-t border-border dark:border-border-dark flex items-center gap-3 text-xs text-text-secondary/70 dark:text-text-dark-secondary/70">
+        <Link to="/terms" className="hover:text-text-primary dark:hover:text-text-dark-primary transition-colors">
+          Terms
+        </Link>
+        <span aria-hidden="true">·</span>
+        <Link to="/privacy" className="hover:text-text-primary dark:hover:text-text-dark-primary transition-colors">
+          Privacy
+        </Link>
       </div>
       {/* biome-ignore lint/a11y/useSemanticElements: there is no native HTML element for a resize splitter; the WAI-ARIA window splitter pattern uses role="separator" with aria-valuenow/min/max and keyboard handlers. */}
       <div

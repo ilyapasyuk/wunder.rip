@@ -3,7 +3,7 @@ import {
   CLOUDINARY_DELIVERY_BASE,
   CLOUDINARY_UPLOAD_ENDPOINT,
 } from 'config/cloudinary'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 const uploadImage = async (
   file: File | Blob | string,
@@ -51,16 +51,11 @@ type ThumbOptions = {
   gravity?: 'auto' | 'face' | 'faces' | 'center'
 }
 
-/**
- * Optimized thumbnail URL.
- * Uses f_auto (WebP/AVIF), q_auto (smart quality), c_fill with smart gravity,
- * and dpr_auto so retina devices get a sharper variant when the browser hints DPR.
- */
 const getCloudinaryThumb = (
   id: string,
   { width, height, gravity = 'auto' }: ThumbOptions,
 ): string => {
-  return `${CLOUDINARY_DELIVERY_BASE}/f_auto,q_auto,c_fill,g_${gravity},w_${width},h_${height},dpr_auto/${id}`
+  return `${CLOUDINARY_DELIVERY_BASE}/f_auto,q_auto:eco,c_fill,g_${gravity},w_${width},h_${height},dpr_auto/${id}`
 }
 
 /**
@@ -70,14 +65,8 @@ const getCloudinaryPreview = (id: string, maxWidth = 2000): string => {
   return `${CLOUDINARY_DELIVERY_BASE}/f_auto,q_auto:best,c_limit,w_${maxWidth},dpr_auto/${id}`
 }
 
-/**
- * Low-quality image placeholder — a pre-blurred copy used to hold
- * dimensions and provide an instant visual while the full preview loads.
- * Preserves the original aspect ratio (c_limit), heavily blurred so it
- * compresses to ~10–30 KB even at a usable display size.
- */
 const getCloudinaryLQIP = (id: string): string => {
-  return `${CLOUDINARY_DELIVERY_BASE}/f_auto,q_auto:low,c_limit,w_1200,e_blur:1500/${id}`
+  return `${CLOUDINARY_DELIVERY_BASE}/f_auto,q_auto:low,c_limit,w_64,e_blur:1500/${id}`
 }
 
 /**

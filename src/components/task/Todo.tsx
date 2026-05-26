@@ -1,4 +1,4 @@
-import { Checkbox } from 'Components/Checkbox'
+import { Checkbox } from 'components/ui/Checkbox'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'

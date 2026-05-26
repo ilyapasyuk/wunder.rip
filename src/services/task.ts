@@ -1,9 +1,9 @@
 import { push, ref, update } from 'firebase/database'
 
-import { trackTaskCreated, trackTaskDeleted } from 'services/analytics'
+import { trackTaskCreated, trackTaskDeleted } from 'lib/analytics'
 import { db } from 'services/firebase'
-import { notify } from 'services/notify'
-import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/routes'
+import { notify } from 'lib/notify'
+import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/db-paths'
 
 export type Todo = {
   task: string

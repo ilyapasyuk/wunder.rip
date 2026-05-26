@@ -1,13 +1,13 @@
-import { StoreContext } from 'Components/Context/store'
-import { TodoItem } from 'Components/Todo'
+import { StoreContext } from 'store/store'
+import { TodoItem } from 'components/task/Todo'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { onValue, ref } from 'firebase/database'
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { trackTaskCompleted } from 'services/analytics'
+import { trackTaskCompleted } from 'lib/analytics'
 import { db } from 'services/firebase'
 import { Folder } from 'services/folder'
-import { getFoldersRoute } from 'services/routes'
+import { getFoldersRoute } from 'services/db-paths'
 import { createTodo, deleteTodo, Todo, updateTask } from 'services/task'
 
 interface TodoListProps {

@@ -2,7 +2,7 @@ import { CLOUDINARY_UPLOAD_PRESET } from 'config/cloudinary'
 import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
 
 import { uploadImage } from 'services/image'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 interface ImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void
@@ -134,6 +134,9 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
         }
         <p className="text-xs leading-5 text-text-secondary dark:text-text-dark-secondary">
           {isLoading ? 'Uploading...' : 'PNG, JPG, GIF up to 10MB'}
+        </p>
+        <p className="mt-1 text-[11px] leading-4 text-text-secondary/70 dark:text-text-dark-secondary/70">
+          Uploaded images are stored on a public URL.
         </p>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { PROVIDER } from 'services/auth'
 
 import { GoogleIcon } from './GoogleIcon'
@@ -8,14 +9,21 @@ interface Props {
 
 const LoginForm = ({ onLogin }: Props) => {
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background dark:bg-background-dark">
+    <div className="min-h-full flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background dark:bg-background-dark">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold tracking-tight text-text-primary dark:text-text-dark-primary">
-            Welcome to Wunder Rip
+          <span
+            aria-hidden="true"
+            className="inline-flex size-12 rounded-2xl bg-gradient-to-br from-primary to-primary-hover items-center justify-center text-white font-bold text-xl shadow-sm mb-6"
+          >
+            W
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-text-primary dark:text-text-dark-primary leading-tight">
+            Capture tasks.{' '}
+            <span className="text-primary">Stay focused.</span>
           </h2>
-          <p className="mt-2 text-sm text-text-secondary dark:text-text-dark-secondary">
-            Sign in to continue to your account
+          <p className="mt-3 text-sm text-text-secondary dark:text-text-dark-secondary">
+            Your lists, notes, and images — all in one place.
           </p>
         </div>
 
@@ -28,23 +36,18 @@ const LoginForm = ({ onLogin }: Props) => {
             <GoogleIcon className="size-5 shrink-0" />
             <span>Continue with Google</span>
           </button>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border dark:border-border-dark" />
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="px-2 bg-surface dark:bg-surface-dark text-text-secondary dark:text-text-dark-secondary">
-                  Secure authentication
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <p className="mt-6 text-center text-xs text-text-secondary dark:text-text-dark-secondary">
-          By continuing, you agree to our Terms of Service and Privacy Policy
+          By continuing, you agree to our{' '}
+          <Link to="/terms" className="text-primary hover:underline">
+            Terms of Service
+          </Link>{' '}
+          and{' '}
+          <Link to="/privacy" className="text-primary hover:underline">
+            Privacy Policy
+          </Link>
+          .
         </p>
       </div>
     </div>

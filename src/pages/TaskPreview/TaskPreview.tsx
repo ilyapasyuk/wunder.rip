@@ -1,15 +1,15 @@
-import { StoreContext } from 'Components/Context/store'
-import { ImageLightbox } from 'Components/ImageLightbox'
-import { ImageUploader } from 'Components/ImageUploader'
+import { StoreContext } from 'store/store'
+import { ImageLightbox } from 'components/image/ImageLightbox'
+import { ImageUploader } from 'components/image/ImageUploader'
 import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { onValue, ref } from 'firebase/database'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { trackTaskViewed } from 'services/analytics'
+import { trackTaskViewed } from 'lib/analytics'
 import { db } from 'services/firebase'
 import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
-import { notify } from 'services/notify'
-import { getUserRoute } from 'services/routes'
+import { notify } from 'lib/notify'
+import { getUserRoute } from 'services/db-paths'
 import { Todo, updateTask } from 'services/task'
 
 interface TaskPreviewProps {
@@ -203,7 +203,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                       >
                         <img
                           className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
-                          src={getCloudinaryThumb(file, { width: 480, height: 320 })}
+                          src={getCloudinaryThumb(file, { width: 240, height: 160 })}
                           alt=""
                           loading="lazy"
                           decoding="async"

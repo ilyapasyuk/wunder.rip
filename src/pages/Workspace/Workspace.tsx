@@ -1,7 +1,7 @@
-import { Checkbox } from 'Components/Checkbox'
-import { StoreContext } from 'Components/Context/store'
-import { Sidebar } from 'Components/Sidebar'
-import { TodoList } from 'Components/TodoList'
+import { Checkbox } from 'components/ui/Checkbox'
+import { StoreContext } from 'store/store'
+import { Sidebar } from 'components/layout/Sidebar'
+import { TodoList } from 'components/task/TodoList'
 import { DndContext, DragOverlay } from '@dnd-kit/core'
 import { ListBulletIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { onValue, ref } from 'firebase/database'
@@ -9,7 +9,7 @@ import { useTaskDnd } from 'hooks/useTaskDnd'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { db } from 'services/firebase'
-import { getUserRoute } from 'services/routes'
+import { getUserRoute } from 'services/db-paths'
 import { Todo } from 'services/task'
 
 const Workspace = () => {
@@ -64,9 +64,9 @@ const Workspace = () => {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row md:h-full">
         <Sidebar todos={todos} />
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 md:min-h-0 md:overflow-y-auto">
           <TodoList todos={todos} visibleTodos={visibleTodos} />
         </div>
         <Outlet />

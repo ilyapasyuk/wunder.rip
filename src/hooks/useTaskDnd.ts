@@ -1,17 +1,20 @@
-import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'Components/Workspace/droppable'
+import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import {
   CollisionDetection,
   DragEndEvent,
   DragStartEvent,
-  PointerSensor,
+  KeyboardSensor,
+  MouseSensor,
   pointerWithin,
   rectIntersection,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { arrayMove } from '@dnd-kit/sortable'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { trackTaskReordered } from 'services/analytics'
+import { trackTaskReordered } from 'lib/analytics'
 import { moveTodoToFolder, Todo, updateAllTasks } from 'services/task'
 
 type UseTaskDndArgs = {
@@ -25,7 +28,16 @@ const useTaskDnd = ({ todos, visibleTodos, setTodos, userId }: UseTaskDndArgs) =
   const [activeId, setActiveId] = useState<string | null>(null)
   const [overlaySize, setOverlaySize] = useState<{ width: number; height: number } | null>(null)
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }))
+  const sensors = useSensors(
+    // Mouse: keep distance-based activation — no delay for desktop users.
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    // Touch: long-press activates a drag. Without a delay the browser cannot
+    // tell a drag from a scroll, so vertical scrolling fights with the drag
+    // and feels broken. 200ms with 8px tolerance is the recommended baseline.
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
+    // Keyboard: Space starts the drag, arrows move, Enter drops. Needed for a11y.
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  )
 
   const collisionDetection: CollisionDetection = args => {
     const pointer = pointerWithin(args)

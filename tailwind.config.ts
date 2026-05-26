@@ -42,6 +42,10 @@ export default {
           DEFAULT: '#00854d',
           dark: '#00a85f',
         },
+        danger: {
+          DEFAULT: '#d83a52',
+          dark: '#e85d72',
+        },
         overlay: {
           DEFAULT: 'rgba(41, 47, 76, 0.7)',
           hover: 'rgba(103, 104, 121, 0.1)',
