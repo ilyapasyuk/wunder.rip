@@ -14,19 +14,10 @@ const getFoldersRoute = (userId: string): string => `${FOLDER_DB}/${userId}`
 const getUpdateFolderRoute = (userId: string, folderId: string): string =>
   `${FOLDER_DB}/${userId}/${folderId}`
 
-enum ROUTE {
-  ROOT = '/',
-  TASK_PAGE = '/t/:id',
-  TERMS = '/terms',
-  PRIVACY = '/privacy',
-  ACCOUNT = '/account',
-}
-
 export {
   getCreateTaskRoute,
   getFoldersRoute,
   getUpdateFolderRoute,
   getUpdateTaskRoute,
   getUserRoute,
-  ROUTE,
 }

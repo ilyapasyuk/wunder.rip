@@ -1,4 +1,4 @@
-import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'Components/Workspace/droppable'
+import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import {
   CollisionDetection,
   DragEndEvent,
@@ -14,7 +14,7 @@ import {
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { arrayMove } from '@dnd-kit/sortable'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { trackTaskReordered } from 'services/analytics'
+import { trackTaskReordered } from 'lib/analytics'
 import { moveTodoToFolder, Todo, updateAllTasks } from 'services/task'
 
 type UseTaskDndArgs = {

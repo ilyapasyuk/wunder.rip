@@ -1,8 +1,8 @@
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
-import { trackLogin } from 'services/analytics'
+import { trackLogin } from 'lib/analytics'
 import { auth } from 'services/firebase'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 export type User = {
   id: string

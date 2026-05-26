@@ -2,7 +2,7 @@ import { deleteUser, GoogleAuthProvider, reauthenticateWithPopup } from 'firebas
 import { ref, remove } from 'firebase/database'
 
 import { auth, db } from 'services/firebase'
-import { getFoldersRoute, getUserRoute } from 'services/routes'
+import { getFoldersRoute, getUserRoute } from 'services/db-paths'
 
 const deleteAccount = async (userId: string): Promise<void> => {
   const current = auth.currentUser

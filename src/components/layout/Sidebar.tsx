@@ -1,5 +1,5 @@
-import { StoreContext } from 'Components/Context/store'
-import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'Components/Workspace/droppable'
+import { StoreContext } from 'store/store'
+import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import { useDroppable } from '@dnd-kit/core'
 import {
   CheckIcon,
@@ -23,7 +23,7 @@ import {
 import { Link } from 'react-router-dom'
 import { db } from 'services/firebase'
 import { createFolder, deleteFolder, Folder, renameFolder } from 'services/folder'
-import { getFoldersRoute } from 'services/routes'
+import { getFoldersRoute } from 'services/db-paths'
 import { Todo } from 'services/task'
 
 interface SidebarProps {

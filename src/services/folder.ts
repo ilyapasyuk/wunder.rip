@@ -1,14 +1,14 @@
 import { get, push, ref, update } from 'firebase/database'
 
-import { trackFolderCreated, trackFolderDeleted, trackFolderRenamed } from 'services/analytics'
+import { trackFolderCreated, trackFolderDeleted, trackFolderRenamed } from 'lib/analytics'
 import { db } from 'services/firebase'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 import {
   getFoldersRoute,
   getUpdateFolderRoute,
   getUpdateTaskRoute,
   getUserRoute,
-} from 'services/routes'
+} from 'services/db-paths'
 
 export type Folder = {
   id?: string

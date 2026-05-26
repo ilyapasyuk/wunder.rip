@@ -3,7 +3,7 @@ import {
   CLOUDINARY_DELIVERY_BASE,
   CLOUDINARY_UPLOAD_ENDPOINT,
 } from 'config/cloudinary'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 const uploadImage = async (
   file: File | Blob | string,

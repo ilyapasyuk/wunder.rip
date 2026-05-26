@@ -2,7 +2,7 @@ import { CLOUDINARY_UPLOAD_PRESET } from 'config/cloudinary'
 import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
 
 import { uploadImage } from 'services/image'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 interface ImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void

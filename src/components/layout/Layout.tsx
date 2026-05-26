@@ -1,8 +1,8 @@
-import { StoreContext } from 'Components/Context/store'
-import { Header } from 'Components/Header'
+import { StoreContext } from 'store/store'
+import { Header } from 'components/layout/Header'
 import { ReactNode, useContext } from 'react'
 import { logOut } from 'services/auth'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 import { Toaster } from 'sonner'
 
 interface LayoutProps {

@@ -1,11 +1,11 @@
-import { StoreContext } from 'Components/Context/store'
+import { StoreContext } from 'store/store'
 import { ExclamationTriangleIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { deleteAccount } from 'services/account'
 import { logOut } from 'services/auth'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 import { DeleteAccountDialog } from './DeleteAccountDialog'
 

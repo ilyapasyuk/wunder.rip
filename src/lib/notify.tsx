@@ -1,4 +1,4 @@
-import { ToastCard, type ToastVariant } from 'Components/ToastCard'
+import { ToastCard, type ToastVariant } from 'components/ui/ToastCard'
 import { toast } from 'sonner'
 
 type NotifyInput = string | { title: string; description?: string }

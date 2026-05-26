@@ -1,6 +1,7 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "Wunder.rip",
+  "short_name": "Wunder",
+  "description": "Capture tasks, attach images, stay focused.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +14,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "theme_color": "#323338",
+  "background_color": "#1a1b23",
+  "display": "standalone",
+  "start_url": "/"
 }

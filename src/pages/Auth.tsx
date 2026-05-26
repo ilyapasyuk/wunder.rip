@@ -1,10 +1,10 @@
-import { StoreContext } from 'Components/Context/store'
-import { LoginForm } from 'Components/LoginForm'
+import { StoreContext } from 'store/store'
+import { LoginForm } from 'pages/LoginForm/LoginForm'
 import { onAuthStateChanged } from 'firebase/auth'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { PROVIDER, signIn, User } from 'services/auth'
 import { auth } from 'services/firebase'
-import { notify } from 'services/notify'
+import { notify } from 'lib/notify'
 
 interface AuthProps {
   children: ReactNode

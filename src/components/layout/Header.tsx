@@ -10,7 +10,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { User } from 'services/auth'
-import { getCurrentTheme, toggleTheme } from 'services/theme'
+import { getCurrentTheme, toggleTheme } from 'lib/theme'
 
 interface IHeaderProps {
   user: User | null
