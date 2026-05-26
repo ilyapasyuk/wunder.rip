@@ -19,10 +19,10 @@ const Layout = ({ children }: LayoutProps) => {
   }
 
   return (
-    <div className="bg-background dark:bg-background-dark h-full min-h-screen">
+    <div className="bg-background dark:bg-background-dark min-h-screen md:h-dvh md:flex md:flex-col md:overflow-hidden">
       <Header user={state.user} onLogout={onLogout} />
 
-      {children}
+      <div className="md:flex-1 md:min-h-0 md:overflow-y-auto">{children}</div>
 
       <Toaster position="bottom-right" offset="16px" gap={10} />
     </div>

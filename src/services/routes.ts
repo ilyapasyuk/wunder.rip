@@ -17,6 +17,9 @@ const getUpdateFolderRoute = (userId: string, folderId: string): string =>
 enum ROUTE {
   ROOT = '/',
   TASK_PAGE = '/t/:id',
+  TERMS = '/terms',
+  PRIVACY = '/privacy',
+  ACCOUNT = '/account',
 }
 
 export {

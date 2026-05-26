@@ -64,9 +64,9 @@ const Workspace = () => {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row md:h-full">
         <Sidebar todos={todos} />
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 md:min-h-0 md:overflow-y-auto">
           <TodoList todos={todos} visibleTodos={visibleTodos} />
         </div>
         <Outlet />

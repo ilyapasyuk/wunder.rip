@@ -203,7 +203,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                       >
                         <img
                           className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
-                          src={getCloudinaryThumb(file, { width: 480, height: 320 })}
+                          src={getCloudinaryThumb(file, { width: 240, height: 160 })}
                           alt=""
                           loading="lazy"
                           decoding="async"

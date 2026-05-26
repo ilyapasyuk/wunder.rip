@@ -7,6 +7,7 @@ import {
   SunIcon,
 } from '@heroicons/react/20/solid'
 import { Fragment, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { User } from 'services/auth'
 import { getCurrentTheme, toggleTheme } from 'services/theme'
@@ -37,9 +38,9 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
   }
 
   return (
-    <div className="w-full relative bg-header dark:bg-header-dark border-b border-border-light dark:border-border-dark">
-      <div className="md:pl-[var(--sidebar-w)]">
-        <div className="h-14 mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <div className="w-full md:shrink-0 sticky top-0 z-30 bg-header dark:bg-header-dark border-b border-border-light dark:border-border-dark">
+      <div className="h-14 flex items-stretch">
+        <div className="md:w-[var(--sidebar-w)] md:shrink-0 flex items-center px-4 sm:px-6 lg:px-8">
           <a href="/" className="group flex items-center gap-2.5 focus:outline-none">
             <span
               aria-hidden="true"
@@ -51,6 +52,8 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
               Wunder<span className="text-primary-light/90 dark:text-primary/90">.rip</span>
             </span>
           </a>
+        </div>
+        <div className="flex-1 min-w-0 flex items-center justify-end px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <button
               onClick={handleToggleTheme}
@@ -97,8 +100,8 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                       <div className="px-1 py-1">
                         <Menu.Item>
                           {({ active }) => (
-                            <button
-                              type="button"
+                            <Link
+                              to="/account"
                               className={`${
                                 active
                                   ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
@@ -109,8 +112,8 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                                 className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
                                 aria-hidden="true"
                               />
-                              {user?.email}
-                            </button>
+                              <span className="truncate">Account</span>
+                            </Link>
                           )}
                         </Menu.Item>
                       </div>
