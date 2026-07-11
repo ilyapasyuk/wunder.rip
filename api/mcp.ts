@@ -30,14 +30,15 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
   <body>
     <h1>wunder.rip MCP server</h1>
     <p>Lets an MCP client (Claude Code, Claude Desktop, etc.) create and manage your wunder.rip tasks and lists, authorized as you via Google sign-in.</p>
+    <p>Most clients support remote MCP OAuth — just add the URL, no token to copy:</p>
+    <pre>claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp</pre>
+    <p>The client will open a browser to sign in with Google the first time. If your client doesn't support OAuth discovery, use a manually-minted bearer token instead:</p>
     <ol>
       <li>Open <a href="/api/auth/google">/api/auth/google</a> and sign in with your Google account.</li>
       <li>Copy the bearer token shown on the resulting page.</li>
-      <li>Add this server to your MCP client, for example:
-        <pre>claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp --header "Authorization: Bearer &lt;token&gt;"</pre>
-      </li>
+      <li><pre>claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp --header "Authorization: Bearer &lt;token&gt;"</pre></li>
     </ol>
-    <p>Endpoint: <code class="inline">POST ${baseUrl}/api/mcp</code> (Streamable HTTP, requires the bearer token above).</p>
+    <p>Endpoint: <code class="inline">POST ${baseUrl}/api/mcp</code> (Streamable HTTP).</p>
   </body>
 </html>`
 
@@ -196,8 +197,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
+  const wwwAuthenticate = `Bearer resource_metadata="${getBaseUrl(req)}/.well-known/oauth-protected-resource"`
+
   const token = getBearerToken(req)
   if (!token) {
+    res.setHeader('WWW-Authenticate', wwwAuthenticate)
     res.status(401).json(jsonRpcError(-32001, 'Missing bearer token'))
     return
   }
@@ -206,6 +210,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     email = parseSession(token).email
   } catch {
+    res.setHeader('WWW-Authenticate', wwwAuthenticate)
     res.status(401).json(jsonRpcError(-32001, 'Invalid or expired token'))
     return
   }

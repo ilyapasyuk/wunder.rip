@@ -1,10 +1,5 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
-export type Session = {
-  email: string
-  exp: number
-}
-
 const getSecret = (): string => {
   const secret = process.env.MCP_TOKEN_SECRET
   if (!secret) {
@@ -13,31 +8,40 @@ const getSecret = (): string => {
   return secret
 }
 
-const sign = (payload: string, secret: string): string =>
+const hmac = (payload: string, secret: string): string =>
   createHmac('sha256', secret).update(payload).digest('hex')
 
-export const signSession = (session: Session): string => {
-  const encoded = Buffer.from(JSON.stringify(session)).toString('base64url')
-  const signature = sign(encoded, getSecret())
-  return `${encoded}.${signature}`
+export type Signed<T> = T & { exp: number }
+
+/** Signs an arbitrary JSON-serializable payload with an expiry, HMAC'd — no server-side state needed to verify it later. */
+export const sign = <T extends object>(payload: T, ttlMs: number): string => {
+  const withExp: Signed<T> = { ...payload, exp: Date.now() + ttlMs }
+  const encoded = Buffer.from(JSON.stringify(withExp)).toString('base64url')
+  return `${encoded}.${hmac(encoded, getSecret())}`
 }
 
-export const parseSession = (token: string): Session => {
+export const verify = <T>(token: string): Signed<T> => {
   const [encoded, signature] = token.split('.')
   if (!encoded || !signature) {
     throw new Error('Invalid token')
   }
 
-  const expected = sign(encoded, getSecret())
+  const expected = hmac(encoded, getSecret())
   const a = Buffer.from(signature)
   const b = Buffer.from(expected)
   if (a.length !== b.length || !timingSafeEqual(a, b)) {
     throw new Error('Invalid signature')
   }
 
-  const session = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')) as Session
-  if (Date.now() > session.exp) {
-    throw new Error('Session expired')
+  const parsed = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')) as Signed<T>
+  if (Date.now() > parsed.exp) {
+    throw new Error('Token expired')
   }
-  return session
+  return parsed
 }
+
+export type Session = { email: string }
+
+export const signSession = (email: string, ttlMs: number): string => sign<Session>({ email }, ttlMs)
+
+export const parseSession = (token: string): Signed<Session> => verify<Session>(token)

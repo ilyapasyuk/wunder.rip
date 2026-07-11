@@ -1,7 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { exchangeCodeForUserInfo } from '../../_lib/google-oauth.js'
 import { getBaseUrl } from '../../_lib/http.js'
-import { signSession } from '../../_lib/token.js'
+import { AUTH_CODE_TTL_MS, type AuthCode } from '../../_lib/oauth-code.js'
+import { sign, signSession, verify } from '../../_lib/token.js'
+import type { AuthorizeBundle } from '../../oauth/authorize.js'
 
 const TOKEN_TTL_DAYS = Number(process.env.MCP_TOKEN_TTL_DAYS || 180)
 
@@ -36,19 +38,47 @@ const renderPage = (title: string, body: string): string => `<!doctype html>
   <body>${body}</body>
 </html>`
 
+const isAllowedEmail = (email: string): boolean => {
+  const allowedEmail = process.env.ALLOWED_EMAIL
+  return Boolean(allowedEmail) && email.toLowerCase() === allowedEmail?.toLowerCase()
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const code = typeof req.query.code === 'string' ? req.query.code : undefined
+  const stateParam = typeof req.query.state === 'string' ? req.query.state : undefined
   if (!code) {
     res.status(400).send(renderPage('Sign-in failed', '<h1>Missing authorization code</h1>'))
     return
+  }
+
+  // If `state` decodes as one of our own signed bundles, this callback continues an
+  // in-progress MCP OAuth authorize request rather than the standalone manual-token page.
+  let bundle: AuthorizeBundle | undefined
+  if (stateParam) {
+    try {
+      bundle = verify<AuthorizeBundle>(stateParam)
+    } catch {
+      bundle = undefined
+    }
   }
 
   try {
     const redirectUri = `${getBaseUrl(req)}/api/auth/google/callback`
     const userInfo = await exchangeCodeForUserInfo(code, redirectUri)
 
-    const allowedEmail = process.env.ALLOWED_EMAIL
-    if (!allowedEmail || userInfo.email.toLowerCase() !== allowedEmail.toLowerCase()) {
+    if (!isAllowedEmail(userInfo.email)) {
+      if (bundle) {
+        const target = new URL(bundle.redirectUri)
+        target.searchParams.set('error', 'access_denied')
+        target.searchParams.set(
+          'error_description',
+          'This Google account is not allowed to use this server',
+        )
+        if (bundle.state) target.searchParams.set('state', bundle.state)
+        res.writeHead(302, { Location: target.toString() })
+        res.end()
+        return
+      }
       res
         .status(403)
         .send(
@@ -60,8 +90,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return
     }
 
-    const exp = Date.now() + TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000
-    const token = signSession({ email: userInfo.email, exp })
+    if (bundle) {
+      const authCode = sign<AuthCode>(
+        { email: userInfo.email, codeChallenge: bundle.codeChallenge },
+        AUTH_CODE_TTL_MS,
+      )
+      const target = new URL(bundle.redirectUri)
+      target.searchParams.set('code', authCode)
+      if (bundle.state) target.searchParams.set('state', bundle.state)
+      res.writeHead(302, { Location: target.toString() })
+      res.end()
+      return
+    }
+
+    const token = signSession(userInfo.email, TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000)
 
     res.status(200).send(
       renderPage(
