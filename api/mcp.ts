@@ -99,6 +99,7 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
         white-space: nowrap;
       }
       .copy:hover { background: #0060b9; }
+      code.path { display: inline; background: #f6f7fb; border-radius: 5px; padding: 2px 6px; font-size: 0.85em; white-space: nowrap; }
       .step { color: #676879; font-size: 0.85rem; margin: 8px 0 0; }
       details { margin-top: 16px; }
       summary { cursor: pointer; font-size: 0.85rem; color: #676879; }
@@ -129,21 +130,23 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
       <summary>Other ways to connect</summary>
       <div class="card">
         <h2>Claude Desktop via config file</h2>
+        <p class="step">Edit <code class="path">claude_desktop_config.json</code>, add a <code class="path">wunder-rip</code> entry under <code class="path">mcpServers</code> (create that key if it's not there yet), then restart Claude Desktop.</p>
+        <p class="step" style="margin-top:10px">
+          macOS: <code class="path">~/Library/Application Support/Claude/claude_desktop_config.json</code><br />
+          Windows: <code class="path">%APPDATA%\\Claude\\claude_desktop_config.json</code>
+        </p>
         ${copyRow(
           'cd-json',
-          `{"mcpServers":{"wunder-rip":{"command":"npx","args":["-y","mcp-remote","${baseUrl}/api/mcp"]}}}`,
+          `{
+  "mcpServers": {
+    "wunder-rip": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "${baseUrl}/api/mcp"]
+    }
+  }
+}`,
         )}
-      </div>
-      <div class="card">
-        <h2>No OAuth support</h2>
-        <ol>
-          <li>Sign in at <a href="/api/auth/google">/api/auth/google</a></li>
-          <li>Copy the token shown there</li>
-          <li>${copyRow(
-            'manual-cmd',
-            `claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp --header "Authorization: Bearer <token>"`,
-          )}</li>
-        </ol>
+        <p class="step">If the file already has other servers, merge just the <code class="path">"wunder-rip": {...}</code> entry into the existing <code class="path">mcpServers</code> object instead of replacing the whole file.</p>
       </div>
     </details>
 

@@ -46,12 +46,4 @@ The client opens a browser, you sign in with Google, and it's connected. Under t
 }
 ```
 
-For clients without OAuth support at all, mint a bearer token manually instead:
-
-1. Open `https://<your-deployment-domain>/api/auth/google` and sign in with your wunder.rip Google account.
-2. Copy the bearer token shown on the result page.
-3. ```
-   claude mcp add --transport http wunder-rip https://<your-deployment-domain>/api/mcp --header "Authorization: Bearer <token>"
-   ```
-
-Either way, the token expires after `MCP_TOKEN_TTL_DAYS` — reconnect (or repeat step 1) to mint a new one.
+The access token issued at the end of that flow expires after `MCP_TOKEN_TTL_DAYS` — the client reconnects through the same flow to mint a new one.
