@@ -5,7 +5,7 @@ The killed ~Kenny~ Wunderlist
 
 ## MCP server
 
-`api/` deploys a remote MCP server (Streamable HTTP) alongside the app, so an MCP client (Claude Code, Claude Desktop, etc.) can create/read/update/delete tasks and lists on your behalf. Auth is "Sign in with Google" — same idea as the Lokalize backend's `/auth/google` flow: Google OAuth2 authorization code → verified email → our own signed bearer token. The token holder's email is resolved to the matching Firebase Auth uid (Admin SDK), so the MCP server acts on the exact same account/data as the web app.
+`api/` deploys a remote MCP server (Streamable HTTP) alongside the app, so an MCP client (Claude Code, Claude Desktop, etc.) can create/read/update/delete tasks and lists on your behalf. Auth is "Sign in with Google" — same idea as the Lokalize backend's `/auth/google` flow: Google OAuth2 authorization code → verified email → our own signed bearer token. The uid the server reads/writes is a fixed value (`WUNDER_UID`, your own Firebase Auth uid) rather than resolved dynamically — this is a single-user server, and `firebase-admin/auth` pulls in `jwks-rsa`, which currently crashes under Vercel's Node runtime (`ERR_REQUIRE_ESM`, a bug in `jwks-rsa`'s own `jose` usage).
 
 Visit `/api/mcp` in a browser for a live version of the steps below.
 
@@ -13,11 +13,12 @@ Visit `/api/mcp` in a browser for a live version of the steps below.
 
 1. **Google OAuth client** — in [Google Cloud Console](https://console.cloud.google.com/apis/credentials) for the `wundertodo-app` project: configure the OAuth consent screen if needed (Testing mode + add yourself as a test user is enough), then create an **OAuth client ID** of type "Web application" with authorized redirect URI:
    `https://<your-deployment-domain>/api/auth/google/callback`
-2. **Firebase service account** — Firebase Console → Project settings → Service accounts (project `wundertodo-app`) → *Generate new private key*. This lets the server read/write the Realtime Database directly via the Admin SDK (bypassing client security rules), scoped server-side to only the allowed email's uid.
+2. **Firebase service account** — Firebase Console → Project settings → Service accounts (project `wundertodo-app`) → *Generate new private key*. This lets the server read/write the Realtime Database directly via the Admin SDK (bypassing client security rules).
 3. **Vercel env vars** — set on the project:
    - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` — from step 1
    - `FIREBASE_SERVICE_ACCOUNT` — full JSON key from step 2, as one line
    - `ALLOWED_EMAIL` — the Google account you sign into wunder.rip with; only this identity is granted access
+   - `WUNDER_UID` — your Firebase Auth uid (Firebase Console → Authentication → Users → copy the User UID for the account above)
    - `MCP_TOKEN_SECRET` — random secret used to sign issued bearer tokens (e.g. `openssl rand -hex 32`)
    - `MCP_TOKEN_TTL_DAYS` — optional, default `180`
    - `MCP_PUBLIC_URL` — optional, only needed if the auto-detected request host is wrong (e.g. behind a proxy)
