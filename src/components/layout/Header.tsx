@@ -3,14 +3,14 @@ import {
   ArrowRightOnRectangleIcon,
   ChevronDownIcon,
   Cog6ToothIcon,
+  CommandLineIcon,
   MoonIcon,
   SunIcon,
 } from '@heroicons/react/20/solid'
+import { getCurrentTheme, toggleTheme } from 'lib/theme'
 import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-
 import { User } from 'services/auth'
-import { getCurrentTheme, toggleTheme } from 'lib/theme'
 
 interface IHeaderProps {
   user: User | null
@@ -114,6 +114,26 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                               />
                               <span className="truncate">Account</span>
                             </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="/api/mcp"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`${
+                                active
+                                  ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
+                                  : 'text-text-primary dark:text-text-dark-primary'
+                              } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors`}
+                            >
+                              <CommandLineIcon
+                                className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
+                                aria-hidden="true"
+                              />
+                              <span className="truncate">Connect via MCP</span>
+                            </a>
                           )}
                         </Menu.Item>
                       </div>
