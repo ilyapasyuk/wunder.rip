@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { z } from 'zod'
+import { getImageUrls, uploadImageFromBase64, uploadImageFromUrl } from './_lib/cloudinary.js'
 import * as data from './_lib/db.js'
 import { getUidByEmail } from './_lib/firebase-admin.js'
 import { getBaseUrl, getBearerToken } from './_lib/http.js'
@@ -235,6 +236,67 @@ const buildServer = (uid: string): McpServer => {
     },
     async ({ id }) => {
       await data.deleteTask(uid, id)
+      return { content: [{ type: 'text', text: 'ok' }] }
+    },
+  )
+
+  server.registerTool(
+    'list_task_images',
+    {
+      description: "List a task's attached images, with viewable URLs",
+      inputSchema: { id: z.string() },
+    },
+    async ({ id }) => {
+      const task = await data.getTask(uid, id)
+      const images = (task?.files || []).map(fileId => ({ id: fileId, ...getImageUrls(fileId) }))
+      return { content: [{ type: 'text', text: JSON.stringify(images, null, 2) }] }
+    },
+  )
+
+  server.registerTool(
+    'upload_task_image',
+    {
+      description:
+        'Attach an image to a task, either from a URL or from base64-encoded image data. Provide exactly one of imageUrl or imageBase64.',
+      inputSchema: {
+        id: z.string().describe('Task id'),
+        imageUrl: z.string().optional().describe('Publicly reachable URL of the image to attach'),
+        imageBase64: z.string().optional().describe('Base64-encoded image data (no data: prefix)'),
+        mimeType: z
+          .string()
+          .optional()
+          .describe('Required with imageBase64, e.g. image/png or image/jpeg'),
+      },
+    },
+    async ({ id, imageUrl, imageBase64, mimeType }) => {
+      if (!imageUrl && !imageBase64) {
+        throw new Error('Provide either imageUrl or imageBase64')
+      }
+      if (imageBase64 && !mimeType) {
+        throw new Error('mimeType is required when using imageBase64')
+      }
+
+      const fileId = imageUrl
+        ? await uploadImageFromUrl(imageUrl)
+        : await uploadImageFromBase64(imageBase64!, mimeType!)
+
+      await data.addTaskFile(uid, id, fileId)
+      return {
+        content: [
+          { type: 'text', text: JSON.stringify({ id: fileId, ...getImageUrls(fileId) }, null, 2) },
+        ],
+      }
+    },
+  )
+
+  server.registerTool(
+    'delete_task_image',
+    {
+      description: 'Remove an attached image from a task',
+      inputSchema: { id: z.string().describe('Task id'), imageId: z.string() },
+    },
+    async ({ id, imageId }) => {
+      await data.removeTaskFile(uid, id, imageId)
       return { content: [{ type: 'text', text: 'ok' }] }
     },
   )

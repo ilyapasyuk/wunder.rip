@@ -72,6 +72,28 @@ export const deleteTask = async (uid: string, taskId: string): Promise<void> => 
   await taskRef(uid, taskId).remove()
 }
 
+export const getTask = async (uid: string, taskId: string): Promise<Todo | undefined> => {
+  const snapshot = await taskRef(uid, taskId).get()
+  const value = snapshot.val() as Omit<Todo, 'id'> | null
+  return value ? { id: taskId, ...value } : undefined
+}
+
+export const addTaskFile = async (uid: string, taskId: string, fileId: string): Promise<void> => {
+  await taskRef(uid, taskId)
+    .child('files')
+    .transaction((files: string[] | null) => [...(files || []), fileId])
+}
+
+export const removeTaskFile = async (
+  uid: string,
+  taskId: string,
+  fileId: string,
+): Promise<void> => {
+  await taskRef(uid, taskId)
+    .child('files')
+    .transaction((files: string[] | null) => (files || []).filter(id => id !== fileId))
+}
+
 export const moveTaskToFolder = async (
   uid: string,
   taskId: string,
