@@ -1,11 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { getUidByEmail } from '../_lib/firebase-admin.js'
 import type { AuthCode } from '../_lib/oauth-code.js'
 import { verifyPkce } from '../_lib/pkce.js'
 import { signSession, verify } from '../_lib/token.js'
 
 const TOKEN_TTL_DAYS = Number(process.env.MCP_TOKEN_TTL_DAYS || 180)
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'method_not_allowed' })
     return
@@ -43,9 +44,19 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const allowedEmail = process.env.ALLOWED_EMAIL
-  if (!allowedEmail || authCode.email.toLowerCase() !== allowedEmail.toLowerCase()) {
-    res.status(403).json({ error: 'access_denied' })
+  let uid: string | undefined
+  try {
+    uid = await getUidByEmail(authCode.email)
+  } catch (error) {
+    console.error('Error resolving uid:', error)
+    res.status(500).json({ error: 'server_error' })
+    return
+  }
+  if (!uid) {
+    res.status(403).json({
+      error: 'access_denied',
+      error_description: 'No wunder.rip account for this Google account',
+    })
     return
   }
 

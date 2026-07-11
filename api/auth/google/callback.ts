@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { getUidByEmail } from '../../_lib/firebase-admin.js'
 import { exchangeCodeForUserInfo } from '../../_lib/google-oauth.js'
 import { getBaseUrl } from '../../_lib/http.js'
 import { AUTH_CODE_TTL_MS, type AuthCode } from '../../_lib/oauth-code.js'
@@ -38,11 +39,6 @@ const renderPage = (title: string, body: string): string => `<!doctype html>
   <body>${body}</body>
 </html>`
 
-const isAllowedEmail = (email: string): boolean => {
-  const allowedEmail = process.env.ALLOWED_EMAIL
-  return Boolean(allowedEmail) && email.toLowerCase() === allowedEmail?.toLowerCase()
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const code = typeof req.query.code === 'string' ? req.query.code : undefined
   const stateParam = typeof req.query.state === 'string' ? req.query.state : undefined
@@ -65,14 +61,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const redirectUri = `${getBaseUrl(req)}/api/auth/google/callback`
     const userInfo = await exchangeCodeForUserInfo(code, redirectUri)
+    const uid = await getUidByEmail(userInfo.email)
 
-    if (!isAllowedEmail(userInfo.email)) {
+    if (!uid) {
       if (bundle) {
         const target = new URL(bundle.redirectUri)
         target.searchParams.set('error', 'access_denied')
         target.searchParams.set(
           'error_description',
-          'This Google account is not allowed to use this server',
+          'No wunder.rip account for this Google account',
         )
         if (bundle.state) target.searchParams.set('state', bundle.state)
         res.writeHead(302, { Location: target.toString() })
@@ -83,8 +80,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .status(403)
         .send(
           renderPage(
-            'Access denied',
-            `<h1>Access denied</h1><p>${escapeHtml(userInfo.email)} is not allowed to use this MCP server.</p>`,
+            'No account found',
+            `<h1>No account found</h1><p>${escapeHtml(userInfo.email)} doesn't have a wunder.rip account. Sign in to the app first, then come back here.</p>`,
           ),
         )
       return

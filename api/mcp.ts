@@ -3,7 +3,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { z } from 'zod'
 import * as data from './_lib/db.js'
-import { getUid } from './_lib/firebase-admin.js'
+import { getUidByEmail } from './_lib/firebase-admin.js'
 import { getBaseUrl, getBearerToken } from './_lib/http.js'
 import { parseSession } from './_lib/token.js'
 
@@ -215,14 +215,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const allowedEmail = process.env.ALLOWED_EMAIL
-  if (!allowedEmail || email.toLowerCase() !== allowedEmail.toLowerCase()) {
-    res.status(403).json(jsonRpcError(-32001, 'Not authorized'))
+  let uid: string | undefined
+  try {
+    uid = await getUidByEmail(email)
+  } catch (error) {
+    console.error('Error resolving uid:', error)
+    res.status(500).json(jsonRpcError(-32603, 'Internal server error'))
+    return
+  }
+  if (!uid) {
+    res.status(403).json(jsonRpcError(-32001, 'No wunder.rip account for this Google account'))
     return
   }
 
   try {
-    const uid = getUid()
     const server = buildServer(uid)
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
     res.on('close', () => {
