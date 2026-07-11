@@ -13,32 +13,152 @@ const jsonRpcError = (code: number, message: string) => ({
   id: null,
 })
 
+const escapeHtml = (value: string): string =>
+  value.replace(/[&<>"']/g, char => {
+    switch (char) {
+      case '&':
+        return '&amp;'
+      case '<':
+        return '&lt;'
+      case '>':
+        return '&gt;'
+      case '"':
+        return '&quot;'
+      default:
+        return '&#39;'
+    }
+  })
+
+const copyRow = (id: string, code: string): string => `
+  <div class="row">
+    <code id="${id}">${escapeHtml(code)}</code>
+    <button type="button" class="copy" data-target="${id}">Copy</button>
+  </div>`
+
 const renderInfoPage = (baseUrl: string): string => `<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>wunder.rip MCP server</title>
+    <title>wunder.rip MCP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      body { font-family: -apple-system, system-ui, sans-serif; max-width: 640px; margin: 10vh auto; padding: 0 24px; color: #1a1a1a; line-height: 1.5; }
-      code, pre { background: #f4f4f5; border-radius: 8px; padding: 12px; display: block; overflow-x: auto; word-break: break-all; white-space: pre-wrap; }
-      code.inline { display: inline; padding: 2px 6px; }
-      h1 { font-size: 1.35rem; }
-      ol { padding-left: 1.2em; }
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        max-width: 480px;
+        margin: 10vh auto;
+        padding: 0 24px;
+        color: #323338;
+        background: #f6f7fb;
+      }
+      @media (prefers-color-scheme: dark) {
+        body { color: #fff; background: #1a1b23; }
+        .card { background: #2d2e3a !important; border-color: #3d3e4a !important; }
+        code { background: #1a1b2333 !important; color: #fff !important; }
+        .step { color: #a0a0b0 !important; }
+        a { color: #cce5ff !important; }
+      }
+      .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+      .logo {
+        width: 32px; height: 32px; border-radius: 8px;
+        background: linear-gradient(to bottom right, #0073ea, #0060b9);
+        color: #fff; display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 0.9rem;
+      }
+      .brand span.name { font-weight: 600; font-size: 1.1rem; }
+      .brand span.accent { color: #0073ea; }
+      .card {
+        border: 1px solid #d0d4e4;
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin: 12px 0;
+        background: #fff;
+      }
+      .card h2 { font-size: 0.95rem; margin: 0 0 10px; }
+      .row { display: flex; align-items: center; gap: 8px; }
+      code {
+        flex: 1;
+        background: #f6f7fb;
+        border-radius: 8px;
+        padding: 10px 12px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        font-size: 0.8rem;
+      }
+      .copy {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        background: #0073ea;
+        color: #fff;
+        white-space: nowrap;
+      }
+      .copy:hover { background: #0060b9; }
+      .step { color: #676879; font-size: 0.85rem; margin: 8px 0 0; }
+      details { margin-top: 16px; }
+      summary { cursor: pointer; font-size: 0.85rem; color: #676879; }
+      details .card { margin-top: 10px; }
+      ol { padding-left: 1.1em; margin: 8px 0 0; font-size: 0.85rem; }
+      li { margin: 6px 0; }
     </style>
   </head>
   <body>
-    <h1>wunder.rip MCP server</h1>
-    <p>Lets an MCP client (Claude Code, Claude Desktop, etc.) create and manage your wunder.rip tasks and lists, authorized as you via Google sign-in.</p>
-    <p>Most clients support remote MCP OAuth — just add the URL, no token to copy:</p>
-    <pre>claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp</pre>
-    <p>The client will open a browser to sign in with Google the first time. If your client doesn't support OAuth discovery, use a manually-minted bearer token instead:</p>
-    <ol>
-      <li>Open <a href="/api/auth/google">/api/auth/google</a> and sign in with your Google account.</li>
-      <li>Copy the bearer token shown on the resulting page.</li>
-      <li><pre>claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp --header "Authorization: Bearer &lt;token&gt;"</pre></li>
-    </ol>
-    <p>Endpoint: <code class="inline">POST ${baseUrl}/api/mcp</code> (Streamable HTTP).</p>
+    <div class="brand">
+      <span class="logo">W</span>
+      <span class="name">Wunder<span class="accent">.rip</span> MCP</span>
+    </div>
+
+    <div class="card">
+      <h2>Claude Code</h2>
+      ${copyRow('cc-cmd', `claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp`)}
+      <p class="step">Run this, then sign in with Google when the browser opens.</p>
+    </div>
+
+    <div class="card">
+      <h2>Claude Desktop</h2>
+      ${copyRow('cd-url', `${baseUrl}/api/mcp`)}
+      <p class="step">Settings → Connectors → Add custom connector → paste this URL.</p>
+    </div>
+
+    <details>
+      <summary>Other ways to connect</summary>
+      <div class="card">
+        <h2>Claude Desktop via config file</h2>
+        ${copyRow(
+          'cd-json',
+          `{"mcpServers":{"wunder-rip":{"command":"npx","args":["-y","mcp-remote","${baseUrl}/api/mcp"]}}}`,
+        )}
+      </div>
+      <div class="card">
+        <h2>No OAuth support</h2>
+        <ol>
+          <li>Sign in at <a href="/api/auth/google">/api/auth/google</a></li>
+          <li>Copy the token shown there</li>
+          <li>${copyRow(
+            'manual-cmd',
+            `claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp --header "Authorization: Bearer <token>"`,
+          )}</li>
+        </ol>
+      </div>
+    </details>
+
+    <script>
+      document.querySelectorAll('.copy').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var target = document.getElementById(button.dataset.target)
+          navigator.clipboard.writeText(target.textContent).then(function () {
+            var original = button.textContent
+            button.textContent = 'Copied!'
+            setTimeout(function () { button.textContent = original }, 1200)
+          })
+        })
+      })
+    </script>
   </body>
 </html>`
 
