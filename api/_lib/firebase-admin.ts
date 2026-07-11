@@ -1,5 +1,4 @@
 import { cert, getApps, initializeApp } from 'firebase-admin/app'
-import { getAuth } from 'firebase-admin/auth'
 import { getDatabase } from 'firebase-admin/database'
 
 const DATABASE_URL = 'https://wundertodo-app.firebaseio.com'
@@ -23,7 +22,10 @@ const getApp = () => {
 
 export const db = () => getDatabase(getApp())
 
-export const getUidByEmail = async (email: string): Promise<string> => {
-  const user = await getAuth(getApp()).getUserByEmail(email)
-  return user.uid
+export const getUid = (): string => {
+  const uid = process.env.WUNDER_UID
+  if (!uid) {
+    throw new Error('WUNDER_UID is not set')
+  }
+  return uid
 }

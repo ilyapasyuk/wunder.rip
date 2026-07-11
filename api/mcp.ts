@@ -3,7 +3,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { z } from 'zod'
 import * as data from './_lib/db.js'
-import { getUidByEmail } from './_lib/firebase-admin.js'
+import { getUid } from './_lib/firebase-admin.js'
 import { getBaseUrl, getBearerToken } from './_lib/http.js'
 import { parseSession } from './_lib/token.js'
 
@@ -217,7 +217,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const uid = await getUidByEmail(email)
+    const uid = getUid()
     const server = buildServer(uid)
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
     res.on('close', () => {
