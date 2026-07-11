@@ -46,8 +46,8 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
       * { box-sizing: border-box; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        max-width: 480px;
-        margin: 10vh auto;
+        max-width: 720px;
+        margin: 8vh auto;
         padding: 0 24px;
         color: #323338;
         background: #f6f7fb;
