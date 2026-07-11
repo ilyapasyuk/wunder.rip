@@ -28,11 +28,20 @@ Visit `/api/mcp` in a browser for a live version of the steps below.
 
 ### Connecting a client
 
+Most MCP clients (Claude Code, Claude Desktop) support remote MCP OAuth discovery — just add the URL, no token to copy:
+
+```
+claude mcp add --transport http wunder-rip https://<your-deployment-domain>/api/mcp
+```
+
+The client opens a browser, you sign in with Google, and it's connected. Under the hood: the client dynamically registers itself (`/api/oauth/register`), redirects through `/api/oauth/authorize` → Google → `/api/auth/google/callback` → back to the client with a PKCE-bound authorization code, then exchanges it at `/api/oauth/token` for an access token — all stateless (every intermediate value is a signed, expiring token; nothing is persisted server-side).
+
+For clients without OAuth support, mint a bearer token manually instead:
+
 1. Open `https://<your-deployment-domain>/api/auth/google` and sign in with the allowed Google account.
 2. Copy the bearer token shown on the result page.
-3. Add the server to your MCP client, e.g. for Claude Code:
-   ```
+3. ```
    claude mcp add --transport http wunder-rip https://<your-deployment-domain>/api/mcp --header "Authorization: Bearer <token>"
    ```
 
-The token expires after `MCP_TOKEN_TTL_DAYS` — repeat step 1 to mint a new one.
+Either way, the token expires after `MCP_TOKEN_TTL_DAYS` — reconnect (or repeat step 1) to mint a new one.

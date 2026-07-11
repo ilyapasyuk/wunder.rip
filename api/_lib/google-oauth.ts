@@ -10,7 +10,7 @@ const getEnv = (name: string): string => {
   return value
 }
 
-export const buildGoogleAuthUrl = (redirectUri: string): string => {
+export const buildGoogleAuthUrl = (redirectUri: string, state?: string): string => {
   const params = new URLSearchParams({
     client_id: getEnv('GOOGLE_CLIENT_ID'),
     redirect_uri: redirectUri,
@@ -20,6 +20,9 @@ export const buildGoogleAuthUrl = (redirectUri: string): string => {
     access_type: 'online',
     prompt: 'select_account',
   })
+  if (state) {
+    params.set('state', state)
+  }
   return `${AUTH_URL}?${params.toString()}`
 }
 
