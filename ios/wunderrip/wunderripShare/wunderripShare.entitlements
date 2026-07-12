@@ -4,6 +4,7 @@
 <dict>
 	<key>keychain-access-groups</key>
 	<array>
+		<string>$(AppIdentifierPrefix)com.ilyapasyuk.wunderrip.Share</string>
 		<string>26VYTSFAG2.com.ilyapasyuk.wunderrip.shared</string>
 	</array>
 </dict>
