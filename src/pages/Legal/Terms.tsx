@@ -5,14 +5,14 @@ const Terms = () => {
     <main className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-10 text-text-primary dark:text-text-dark-primary">
       <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">Terms of Service</h1>
       <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-8">
-        Last updated: May 2026
+        Last updated: July 2026 · Applies to wunder.rip on the web and the wunder.rip iOS app
       </p>
 
       <Section title="1. The service">
         <p>
-          Wunder.rip is a personal task manager. You can create tasks and lists, attach images, and
-          access them from any device. The service is provided as-is, free of charge, with no
-          guarantees of availability or data preservation.
+          Wunder.rip is a personal task manager, available on the web and as a native iOS app. You
+          can create tasks and lists, attach images, and access them from any device. The service is
+          provided as-is, free of charge, with no guarantees of availability or data preservation.
         </p>
       </Section>
 
@@ -55,8 +55,15 @@ const Terms = () => {
 
       <Section title="6. Deleting your account">
         <p>
-          To delete your account and associated data, contact us (see the footer). Signing out does
-          not delete your data.
+          Delete your account and associated data yourself from the{' '}
+          <Link to="/account" className="text-primary hover:underline">
+            Account page
+          </Link>
+          , or contact us via{' '}
+          <Link to="/support" className="text-primary hover:underline">
+            Support
+          </Link>
+          . Signing out does not delete your data.
         </p>
       </Section>
 

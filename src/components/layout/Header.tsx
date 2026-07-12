@@ -4,12 +4,14 @@ import {
   ChevronDownIcon,
   Cog6ToothIcon,
   CommandLineIcon,
+  DevicePhoneMobileIcon,
   MoonIcon,
   SunIcon,
 } from '@heroicons/react/20/solid'
 import { getCurrentTheme, toggleTheme } from 'lib/theme'
 import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ROUTE } from 'routes'
 import { User } from 'services/auth'
 
 interface IHeaderProps {
@@ -55,6 +57,20 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
         </div>
         <div className="flex-1 min-w-0 flex items-center justify-end px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
+            <Link
+              to={ROUTE.IOS}
+              aria-label="Get the iOS app"
+              className="sm:hidden p-1.5 rounded-md text-white/80 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors"
+            >
+              <DevicePhoneMobileIcon className="size-5 shrink-0" aria-hidden="true" />
+            </Link>
+            <Link
+              to={ROUTE.IOS}
+              className="hidden sm:inline-flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 rounded-full text-sm font-medium text-white bg-white/10 hover:bg-white/20 dark:bg-primary/20 dark:hover:bg-primary/30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors whitespace-nowrap"
+            >
+              <DevicePhoneMobileIcon className="size-4 shrink-0" aria-hidden="true" />
+              Get the iOS app
+            </Link>
             <button
               onClick={handleToggleTheme}
               className="p-1.5 rounded-md text-white/80 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors"

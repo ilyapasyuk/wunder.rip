@@ -5,7 +5,7 @@ const Privacy = () => {
     <main className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-10 text-text-primary dark:text-text-dark-primary">
       <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">Privacy Policy</h1>
       <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-8">
-        Last updated: May 2026
+        Last updated: July 2026 · Applies to wunder.rip on the web and the wunder.rip iOS app
       </p>
 
       <Section title="What we collect">
@@ -19,12 +19,20 @@ const Privacy = () => {
             and references to images you upload.
           </li>
           <li>
+            <span className="font-medium">Content you share (iOS only):</span> text, links, or
+            photos you send to the app via the iOS share sheet, so we can create a task from them.
+          </li>
+          <li>
             <span className="font-medium">Usage events:</span> anonymized analytics about app
             interactions (e.g. logins, task created/viewed) so we can improve the app.
           </li>
           <li>
             <span className="font-medium">Local preferences:</span> theme and sidebar width are
             stored in your browser&apos;s local storage. We do not read this from the server.
+          </li>
+          <li>
+            <span className="font-medium">Camera (iOS only):</span> only accessed if you choose to
+            attach a photo to a task — we never access the camera otherwise.
           </li>
         </ul>
       </Section>
@@ -50,6 +58,22 @@ const Privacy = () => {
           </li>
           <li>
             <span className="font-medium">Vercel</span> — hosts the application itself.
+          </li>
+        </ul>
+      </Section>
+
+      <Section title="On the iOS app">
+        <ul className="list-disc pl-6 space-y-1">
+          <li>
+            <span className="font-medium">Keychain:</span> your sign-in session is stored in the iOS
+            Keychain, shared between the main app and the share extension via an app-group/Keychain
+            Sharing entitlement, so you stay signed in across launches. It never leaves your device.
+          </li>
+          <li>
+            <span className="font-medium">Share extension:</span> when you share something into
+            wunder.rip from another app, the extension only reads the content you chose to share
+            (text, a link, or a photo) to create a task. It does not access anything else from the
+            source app.
           </li>
         </ul>
       </Section>
@@ -80,8 +104,8 @@ const Privacy = () => {
 
       <Section title="Your rights">
         <p>
-          You can sign out at any time. You can also permanently delete your account and all
-          stored data from the{' '}
+          You can sign out at any time. You can also permanently delete your account and all stored
+          data from the{' '}
           <Link to="/account" className="text-primary hover:underline">
             Account page
           </Link>

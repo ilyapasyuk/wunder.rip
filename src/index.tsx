@@ -1,18 +1,19 @@
-import { StoreProvider } from 'store/store'
+import { Layout } from 'components/layout/Layout'
+import { applyTheme, getInitialTheme, watchSystemTheme } from 'lib/theme'
+import { Account } from 'pages/Account/Account'
+import { Auth } from 'pages/Auth'
+import { Ios } from 'pages/Ios/Ios'
+import { Privacy } from 'pages/Legal/Privacy'
+import { Terms } from 'pages/Legal/Terms'
+import { NotFound } from 'pages/NotFound'
+import { Support } from 'pages/Support/Support'
+import { TaskPreview } from 'pages/TaskPreview/TaskPreview'
 import { Workspace } from 'pages/Workspace/Workspace'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { ROUTE } from 'routes'
-import { applyTheme, getInitialTheme, watchSystemTheme } from 'lib/theme'
-
-import { Account } from 'pages/Account/Account'
-import { Auth } from 'pages/Auth'
-import { Layout } from 'components/layout/Layout'
-import { Privacy } from 'pages/Legal/Privacy'
-import { Terms } from 'pages/Legal/Terms'
-import { NotFound } from 'pages/NotFound'
-import { TaskPreview } from 'pages/TaskPreview/TaskPreview'
+import { StoreProvider } from 'store/store'
 import './index.css'
 
 const container = document.getElementById('wunderTodo')
@@ -42,6 +43,14 @@ const router = createBrowserRouter([
       {
         path: ROUTE.PRIVACY,
         element: <Privacy />,
+      },
+      {
+        path: ROUTE.IOS,
+        element: <Ios />,
+      },
+      {
+        path: ROUTE.SUPPORT,
+        element: <Support />,
       },
       {
         element: (
