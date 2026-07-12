@@ -5,6 +5,7 @@
 //  Created by Ilya Pasyuk on 12/07/2026.
 //
 
+import FirebaseAuth
 import FirebaseCore
 import GoogleSignIn
 import SwiftUI
@@ -16,6 +17,7 @@ struct wunderripApp: App {
 
     init() {
         FirebaseApp.configure()
+        try? Auth.auth().useUserAccessGroup(SharedConfig.keychainAccessGroup)
     }
 
     var body: some Scene {

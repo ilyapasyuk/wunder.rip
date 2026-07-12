@@ -107,6 +107,14 @@ final class DatabaseService {
         db.child(path).updateChildValues(payload)
     }
 
+    func updateTasksOrder(_ todos: [Todo], userId: String) {
+        var updates: [String: Any] = [:]
+        for todo in todos {
+            updates["\(DBPaths.task(todo.id, for: userId))/order"] = todo.order
+        }
+        db.updateChildValues(updates)
+    }
+
     func moveTask(_ taskId: String, toFolder folderId: String?, userId: String) {
         let updates: [String: Any] = [
             "\(DBPaths.task(taskId, for: userId))/folderId": folderId ?? NSNull(),

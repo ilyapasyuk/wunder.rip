@@ -8,15 +8,6 @@ struct TaskListView: View {
     var body: some View {
         List {
             Section {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundStyle(.tint)
-                    TextField("New task...", text: $newTaskText)
-                        .onSubmit(addTask)
-                }
-            }
-
-            Section {
                 if appState.visibleTodos.isEmpty {
                     Text("No tasks yet")
                         .foregroundStyle(.secondary)
@@ -46,6 +37,16 @@ struct TaskListView: View {
                     .contextMenu {
                         moveMenu(for: todo)
                     }
+                    .draggable(todo.id) {
+                        TaskRowView(todo: todo, onToggle: {})
+                            .padding(8)
+                            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
+                    }
+                    .dropDestination(for: String.self) { draggedIds, _ in
+                        guard let draggedId = draggedIds.first else { return false }
+                        reorder(draggedId: draggedId, target: todo.id)
+                        return true
+                    }
                 }
             }
         }
@@ -55,6 +56,29 @@ struct TaskListView: View {
                 TaskDetailView(todo: todo)
             }
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            composeBar
+        }
+    }
+
+    private var composeBar: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "plus.circle.fill")
+                .font(.title2)
+                .foregroundStyle(.tint)
+            TextField("New task...", text: $newTaskText)
+                .onSubmit(addTask)
+            if !newTaskText.isEmpty {
+                Button("Add", action: addTask)
+                    .fontWeight(.semibold)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
+        .padding(.horizontal, 12)
+        .padding(.top, 8)
+        .background(.bar)
     }
 
     @ViewBuilder
@@ -97,5 +121,20 @@ struct TaskListView: View {
     private func move(_ todo: Todo, to folderId: String?) {
         guard let userId = auth.user?.id else { return }
         DatabaseService.shared.moveTask(todo.id, toFolder: folderId, userId: userId)
+    }
+
+    private func reorder(draggedId: String, target targetId: String) {
+        guard draggedId != targetId, let userId = auth.user?.id else { return }
+        var items = appState.visibleTodos
+        guard
+            let fromIndex = items.firstIndex(where: { $0.id == draggedId }),
+            let toIndex = items.firstIndex(where: { $0.id == targetId })
+        else { return }
+        let item = items.remove(at: fromIndex)
+        items.insert(item, at: toIndex)
+        for index in items.indices {
+            items[index].order = Double(index)
+        }
+        DatabaseService.shared.updateTasksOrder(items, userId: userId)
     }
 }
