@@ -138,7 +138,6 @@
 				036D6A64549BB321C4D62575 /* wunderripShare.entitlements */,
 				4A528A283E527D3C66859E3A /* GoogleService-Info.plist */,
 			);
-			name = wunderripShare;
 			path = wunderripShare;
 			sourceTree = "<group>";
 		};
