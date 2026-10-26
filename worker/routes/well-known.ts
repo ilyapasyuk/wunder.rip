@@ -1,9 +1,8 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { getBaseUrl } from '../_lib/http.js'
+import { getBaseUrl } from '../lib/http.js'
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export const authorizationServer = (req: Request): Response => {
   const issuer = getBaseUrl(req)
-  res.status(200).json({
+  return Response.json({
     issuer,
     authorization_endpoint: `${issuer}/api/oauth/authorize`,
     token_endpoint: `${issuer}/api/oauth/token`,
@@ -12,5 +11,13 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     grant_types_supported: ['authorization_code'],
     code_challenge_methods_supported: ['S256'],
     token_endpoint_auth_methods_supported: ['none'],
+  })
+}
+
+export const protectedResource = (req: Request): Response => {
+  const issuer = getBaseUrl(req)
+  return Response.json({
+    resource: `${issuer}/api/mcp`,
+    authorization_servers: [issuer],
   })
 }

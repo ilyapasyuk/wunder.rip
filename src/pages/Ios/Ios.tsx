@@ -66,7 +66,7 @@ const Ios = () => {
             Coming soon on the App Store
           </span>
           <a
-            href="https://wunderrip.vercel.app"
+            href="https://notes.pasyuk.com"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-background-dark transition-colors whitespace-nowrap"
           >
             Try it on the web

@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "wunderrip",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*", "/.well-known/*"]
+  },
+  "routes": [{ "pattern": "notes.pasyuk.com", "custom_domain": true }],
+  "observability": { "enabled": true }
+  // Secrets (wrangler secret put): FIREBASE_SERVICE_ACCOUNT, GOOGLE_CLIENT_ID,
+  // GOOGLE_CLIENT_SECRET, MCP_TOKEN_SECRET, VITE_APP_DB_TASK_NAME,
+  // VITE_APP_DB_FOLDER_NAME, VITE_CLOUDINARY_ORG_ID.
+}

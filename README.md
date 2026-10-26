@@ -7,20 +7,20 @@ The killed ~Kenny~ Wunderlist
 
 wunder.rip has an MCP server, so an MCP client (Claude Code, Claude Desktop, etc.) can create, read, update, and delete your tasks and lists for you — authorized as you, via Google sign-in. Works with any Google account that already has a wunder.rip account.
 
-Visit [wunderrip.vercel.app/api/mcp](https://wunderrip.vercel.app/api/mcp) for live, copy-pasteable instructions, or use the commands below.
+Visit [notes.pasyuk.com/api/mcp](https://notes.pasyuk.com/api/mcp) for live, copy-pasteable instructions, or use the commands below.
 
 **Claude Code:**
 ```
-claude mcp add --transport http wunder-rip https://wunderrip.vercel.app/api/mcp
+claude mcp add --transport http wunder-rip https://notes.pasyuk.com/api/mcp
 ```
 
-**Claude Desktop:** add via Settings → Connectors → Add custom connector, pasting `https://wunderrip.vercel.app/api/mcp` — or edit `claude_desktop_config.json` directly:
+**Claude Desktop:** add via Settings → Connectors → Add custom connector, pasting `https://notes.pasyuk.com/api/mcp` — or edit `claude_desktop_config.json` directly:
 ```json
 {
   "mcpServers": {
     "wunder-rip": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://wunderrip.vercel.app/api/mcp"]
+      "args": ["-y", "mcp-remote", "https://notes.pasyuk.com/api/mcp"]
     }
   }
 }

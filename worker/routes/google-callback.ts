@@ -1,10 +1,9 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { getUidByEmail } from '../../_lib/firebase-admin.js'
-import { exchangeCodeForUserInfo } from '../../_lib/google-oauth.js'
-import { getBaseUrl } from '../../_lib/http.js'
-import { AUTH_CODE_TTL_MS, type AuthCode } from '../../_lib/oauth-code.js'
-import { sign, verify } from '../../_lib/token.js'
-import type { AuthorizeBundle } from '../../oauth/authorize.js'
+import { getUidByEmail } from '../lib/firebase.js'
+import { exchangeCodeForUserInfo } from '../lib/google-oauth.js'
+import { getBaseUrl, html, redirect } from '../lib/http.js'
+import { AUTH_CODE_TTL_MS, type AuthCode } from '../lib/oauth-code.js'
+import { sign, verify } from '../lib/token.js'
+import type { AuthorizeBundle } from './oauth-authorize.js'
 
 const escapeHtml = (value: string): string =>
   value.replace(/[&<>"']/g, char => {
@@ -40,9 +39,10 @@ const renderPage = (title: string, body: string): string => `<!doctype html>
 
 // This route only ever runs as the redirect target of /api/oauth/authorize (registered as
 // the Google OAuth client's redirect_uri) — `state` always carries our signed bundle then.
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const code = typeof req.query.code === 'string' ? req.query.code : undefined
-  const stateParam = typeof req.query.state === 'string' ? req.query.state : undefined
+export default async function handler(req: Request): Promise<Response> {
+  const params = new URL(req.url).searchParams
+  const code = params.get('code') ?? undefined
+  const stateParam = params.get('state') ?? undefined
 
   let bundle: AuthorizeBundle | undefined
   if (stateParam) {
@@ -54,15 +54,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (!code || !bundle) {
-    res
-      .status(400)
-      .send(
-        renderPage(
-          'Not part of a sign-in',
-          `<h1>Not part of a sign-in</h1><p>This link only works as part of connecting an MCP client. Visit <a href="/api/mcp">/api/mcp</a> for instructions.</p>`,
-        ),
-      )
-    return
+    return html(
+      renderPage(
+        'Not part of a sign-in',
+        `<h1>Not part of a sign-in</h1><p>This link only works as part of connecting an MCP client. Visit <a href="/api/mcp">/api/mcp</a> for instructions.</p>`,
+      ),
+      400,
+    )
   }
 
   try {
@@ -84,13 +82,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       target.searchParams.set('code', authCode)
     }
 
-    res.writeHead(302, { Location: target.toString() })
-    res.end()
+    return redirect(target.toString())
   } catch (error) {
-    res
-      .status(500)
-      .send(
-        renderPage('Sign-in failed', `<h1>Sign-in failed</h1><p>${escapeHtml(String(error))}</p>`),
-      )
+    return html(
+      renderPage('Sign-in failed', `<h1>Sign-in failed</h1><p>${escapeHtml(String(error))}</p>`),
+      500,
+    )
   }
 }

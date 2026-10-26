@@ -1,8 +1,7 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { buildGoogleAuthUrl } from '../_lib/google-oauth.js'
-import { getBaseUrl } from '../_lib/http.js'
-import { getClient } from '../_lib/oauth-client.js'
-import { sign } from '../_lib/token.js'
+import { buildGoogleAuthUrl } from '../lib/google-oauth.js'
+import { getBaseUrl, html, redirect } from '../lib/http.js'
+import { getClient } from '../lib/oauth-client.js'
+import { sign } from '../lib/token.js'
 
 const BUNDLE_TTL_MS = 10 * 60 * 1000
 
@@ -22,24 +21,26 @@ const renderError = (title: string, description: string): string => `<!doctype h
   </body>
 </html>`
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  const query = req.query as Record<string, string | undefined>
+export default function handler(req: Request): Response {
+  const query = Object.fromEntries(new URL(req.url).searchParams) as Record<
+    string,
+    string | undefined
+  >
   const { client_id: clientId, redirect_uri: redirectUri, response_type: responseType } = query
   const codeChallenge = query.code_challenge
   const codeChallengeMethod = query.code_challenge_method
   const state = query.state ?? null
 
   if (!clientId || !redirectUri) {
-    res.status(400).send(renderError('Invalid request', 'Missing client_id or redirect_uri.'))
-    return
+    return html(renderError('Invalid request', 'Missing client_id or redirect_uri.'), 400)
   }
 
   const client = getClient(clientId)
   if (!client || !client.redirectUris.includes(redirectUri)) {
-    res
-      .status(400)
-      .send(renderError('Invalid client', 'Unknown client_id or unregistered redirect_uri.'))
-    return
+    return html(
+      renderError('Invalid client', 'Unknown client_id or unregistered redirect_uri.'),
+      400,
+    )
   }
 
   const redirectWithError = (error: string, description: string) => {
@@ -47,23 +48,19 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     target.searchParams.set('error', error)
     target.searchParams.set('error_description', description)
     if (state) target.searchParams.set('state', state)
-    res.writeHead(302, { Location: target.toString() })
-    res.end()
+    return redirect(target.toString())
   }
 
   if (responseType !== 'code') {
-    redirectWithError('unsupported_response_type', 'Only response_type=code is supported')
-    return
+    return redirectWithError('unsupported_response_type', 'Only response_type=code is supported')
   }
   if (!codeChallenge || codeChallengeMethod !== 'S256') {
-    redirectWithError('invalid_request', 'PKCE with S256 is required')
-    return
+    return redirectWithError('invalid_request', 'PKCE with S256 is required')
   }
 
   const bundle: AuthorizeBundle = { clientId, redirectUri, codeChallenge, state }
   const googleState = sign<AuthorizeBundle>(bundle, BUNDLE_TTL_MS)
   const googleRedirectUri = `${getBaseUrl(req)}/api/auth/google/callback`
 
-  res.writeHead(302, { Location: buildGoogleAuthUrl(googleRedirectUri, googleState) })
-  res.end()
+  return redirect(buildGoogleAuthUrl(googleRedirectUri, googleState))
 }

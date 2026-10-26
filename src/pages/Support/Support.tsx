@@ -30,8 +30,8 @@ const Support = () => {
             <h3 className="font-medium">Do I need an account?</h3>
             <p>
               Yes — sign in with the same Google account on the iOS app and the web app at{' '}
-              <a href="https://wunderrip.vercel.app" className="text-primary hover:underline">
-                wunderrip.vercel.app
+              <a href="https://notes.pasyuk.com" className="text-primary hover:underline">
+                notes.pasyuk.com
               </a>
               . Your tasks and lists stay in sync between them.
             </p>

@@ -1,12 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
-import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js'
 import { z } from 'zod'
-import { getImageUrls, uploadImageFromBase64, uploadImageFromUrl } from './_lib/cloudinary.js'
-import * as data from './_lib/db.js'
-import { getUidByEmail } from './_lib/firebase-admin.js'
-import { getBaseUrl, getBearerToken } from './_lib/http.js'
-import { parseSession } from './_lib/token.js'
+import { getImageUrls, uploadImageFromBase64, uploadImageFromUrl } from '../lib/cloudinary.js'
+import * as data from '../lib/db.js'
+import { getUidByEmail } from '../lib/firebase.js'
+import { getBaseUrl, getBearerToken, html } from '../lib/http.js'
+import { parseSession } from '../lib/token.js'
 
 const jsonRpcError = (code: number, message: string) => ({
   jsonrpc: '2.0' as const,
@@ -361,43 +360,37 @@ const buildServer = (uid: string): McpServer => {
   return server
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: Request): Promise<Response> {
   if (req.method === 'GET') {
-    const accept = req.headers.accept || ''
+    const accept = req.headers.get('accept') || ''
     if (accept.includes('text/html')) {
-      res.status(200).send(renderInfoPage(getBaseUrl(req)))
-      return
+      return html(renderInfoPage(getBaseUrl(req)))
     }
-    res.status(405).json(jsonRpcError(-32000, 'Method not allowed.'))
-    return
-  }
-
-  if (req.method === 'DELETE') {
-    res.status(405).json(jsonRpcError(-32000, 'Method not allowed.'))
-    return
+    return Response.json(jsonRpcError(-32000, 'Method not allowed.'), { status: 405 })
   }
 
   if (req.method !== 'POST') {
-    res.status(405).json(jsonRpcError(-32000, 'Method not allowed.'))
-    return
+    return Response.json(jsonRpcError(-32000, 'Method not allowed.'), { status: 405 })
   }
 
-  const wwwAuthenticate = `Bearer resource_metadata="${getBaseUrl(req)}/.well-known/oauth-protected-resource"`
+  const unauthorized = (message: string) =>
+    Response.json(jsonRpcError(-32001, message), {
+      status: 401,
+      headers: {
+        'WWW-Authenticate': `Bearer resource_metadata="${getBaseUrl(req)}/.well-known/oauth-protected-resource"`,
+      },
+    })
 
   const token = getBearerToken(req)
   if (!token) {
-    res.setHeader('WWW-Authenticate', wwwAuthenticate)
-    res.status(401).json(jsonRpcError(-32001, 'Missing bearer token'))
-    return
+    return unauthorized('Missing bearer token')
   }
 
   let email: string
   try {
     email = parseSession(token).email
   } catch {
-    res.setHeader('WWW-Authenticate', wwwAuthenticate)
-    res.status(401).json(jsonRpcError(-32001, 'Invalid or expired token'))
-    return
+    return unauthorized('Invalid or expired token')
   }
 
   let uid: string | undefined
@@ -405,27 +398,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     uid = await getUidByEmail(email)
   } catch (error) {
     console.error('Error resolving uid:', error)
-    res.status(500).json(jsonRpcError(-32603, 'Internal server error'))
-    return
+    return Response.json(jsonRpcError(-32603, 'Internal server error'), { status: 500 })
   }
   if (!uid) {
-    res.status(403).json(jsonRpcError(-32001, 'No wunder.rip account for this Google account'))
-    return
+    return Response.json(jsonRpcError(-32001, 'No wunder.rip account for this Google account'), {
+      status: 403,
+    })
   }
 
   try {
     const server = buildServer(uid)
-    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
-    res.on('close', () => {
-      transport.close()
-      server.close()
+    // Stateless and JSON-only: each POST gets one complete response, nothing outlives the request.
+    const transport = new WebStandardStreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+      enableJsonResponse: true,
     })
     await server.connect(transport)
-    await transport.handleRequest(req, res, req.body)
+    return await transport.handleRequest(req)
   } catch (error) {
     console.error('Error handling MCP request:', error)
-    if (!res.headersSent) {
-      res.status(500).json(jsonRpcError(-32603, 'Internal server error'))
-    }
+    return Response.json(jsonRpcError(-32603, 'Internal server error'), { status: 500 })
   }
 }
