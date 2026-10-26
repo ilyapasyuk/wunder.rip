@@ -5,39 +5,34 @@ interface CheckboxProps {
 
 const Checkbox = ({ checked, onChange }: CheckboxProps) => {
   return (
-    <label className="relative inline-flex items-center cursor-pointer">
+    <label className="relative inline-flex size-10 shrink-0 items-center justify-center cursor-pointer -m-2">
       <input
         type="checkbox"
         checked={checked}
         onChange={({ target }) => onChange(target.checked)}
         className="sr-only peer"
+        aria-label={checked ? 'Mark as not done' : 'Mark as done'}
       />
       <span
-        className={`
-          relative flex items-center justify-center
-          w-6 h-6 rounded-full
-          border-2 transition-all duration-200 ease-in-out
-          peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary peer-focus:ring-offset-1
-          ${
-            checked
-              ? 'bg-primary dark:bg-primary border-primary dark:border-primary shadow-sm'
-              : 'bg-transparent border-border dark:border-border-dark hover:border-primary dark:hover:border-primary hover:bg-primary/10 dark:hover:bg-primary/20'
-          }
-        `}
+        className={`flex items-center justify-center size-6 rounded-[7px] border-2 transition-all duration-150 ease-out peer-focus-visible:ring-2 peer-focus-visible:ring-accent/40 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-muted active:scale-90 ${
+          checked
+            ? 'bg-accent border-accent text-white'
+            : 'border-text-tertiary hover:border-text-primary'
+        }`}
       >
         <svg
-          className={`w-4 h-4 text-white transition-all duration-200 ease-in-out ${
-            checked ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+          className={`size-4 transition-all duration-150 ease-out ${
+            checked ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
           }`}
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="2.5"
+          strokeWidth="3"
           viewBox="0 0 24 24"
           stroke="currentColor"
           aria-hidden="true"
         >
-          <path d="M5 13l4 4L19 7" />
+          <path d="M5 12.5l4.5 4.5L19 7.5" />
         </svg>
       </span>
     </label>

@@ -11,5 +11,10 @@ export default defineConfig({
   server: {
     open: true,
     port: 3000,
+    // API routes live in the Worker (worker/index.ts); run `bun run dev:api` alongside.
+    proxy: {
+      '/api': 'http://localhost:8787',
+      '/.well-known': 'http://localhost:8787',
+    },
   },
 })
