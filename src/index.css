@@ -2,7 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Default sidebar width — Sidebar component overrides this on <html> at runtime. */
+/* Palette: white canvas, soft grey cards, slate text, one red-orange accent. */
 :root {
-  --sidebar-w: 16rem;
+  --bg: 255 255 255;
+  --surface: 255 255 255;
+  --muted: 243 244 246;
+  --muted-strong: 229 231 235;
+  --ink: 17 17 20;
+  --ink-soft: 55 58 66;
+  --on-ink: 255 255 255;
+  --text: 17 17 20;
+  --text-2: 156 163 175;
+  --text-3: 100 116 139;
+  --line: 229 231 235;
+  --accent: 240 74 44;
+  --success: 22 163 74;
+  --danger: 220 38 38;
+
+  /* Default sidebar width — Sidebar component overrides this on <html> at runtime. */
+  --sidebar-w: 17rem;
+}
+
+.dark {
+  --bg: 11 11 14;
+  --surface: 24 24 29;
+  --muted: 28 28 33;
+  --muted-strong: 42 42 49;
+  --ink: 244 244 246;
+  --ink-soft: 210 212 218;
+  --on-ink: 17 17 20;
+  --text: 244 244 246;
+  --text-2: 110 115 128;
+  --text-3: 150 158 175;
+  --line: 38 38 45;
+  --accent: 255 99 71;
+  --success: 74 222 128;
+  --danger: 248 113 113;
+}
+
+@layer base {
+  html {
+    font-family: theme("fontFamily.sans");
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-background text-text-primary;
+  }
+  ::selection {
+    background: rgb(var(--accent) / 0.35);
+  }
 }

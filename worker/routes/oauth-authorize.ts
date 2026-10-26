@@ -1,6 +1,7 @@
 import { buildGoogleAuthUrl } from '../lib/google-oauth.js'
 import { getBaseUrl, html, redirect } from '../lib/http.js'
 import { getClient } from '../lib/oauth-client.js'
+import { renderMessage } from '../lib/page.js'
 import { sign } from '../lib/token.js'
 
 const BUNDLE_TTL_MS = 10 * 60 * 1000
@@ -11,15 +12,6 @@ export type AuthorizeBundle = {
   codeChallenge: string
   state: string | null
 }
-
-const renderError = (title: string, description: string): string => `<!doctype html>
-<html>
-  <head><meta charset="utf-8" /><title>${title}</title></head>
-  <body style="font-family: -apple-system, system-ui, sans-serif; max-width: 640px; margin: 10vh auto; padding: 0 24px;">
-    <h1>${title}</h1>
-    <p>${description}</p>
-  </body>
-</html>`
 
 export default function handler(req: Request): Response {
   const query = Object.fromEntries(new URL(req.url).searchParams) as Record<
@@ -32,13 +24,13 @@ export default function handler(req: Request): Response {
   const state = query.state ?? null
 
   if (!clientId || !redirectUri) {
-    return html(renderError('Invalid request', 'Missing client_id or redirect_uri.'), 400)
+    return html(renderMessage('Invalid request', 'Missing client_id or redirect_uri.'), 400)
   }
 
   const client = getClient(clientId)
   if (!client || !client.redirectUris.includes(redirectUri)) {
     return html(
-      renderError('Invalid client', 'Unknown client_id or unregistered redirect_uri.'),
+      renderMessage('Invalid client', 'Unknown client_id or unregistered redirect_uri.'),
       400,
     )
   }

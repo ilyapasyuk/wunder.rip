@@ -28,9 +28,9 @@
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
-    "dev:worker": "vite build && wrangler dev",
     "deploy": "tsc && tsc -p worker && vite build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "dev:api": "wrangler dev --port 8787 --local-upstream localhost:3000"
   },
   "browserslist": {
     "production": [

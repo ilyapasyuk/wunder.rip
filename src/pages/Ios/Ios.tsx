@@ -50,7 +50,7 @@ const Ios = () => {
       <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
         <span
           aria-hidden="true"
-          className="mx-auto size-16 rounded-2xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-bold text-2xl tracking-tight shadow-md"
+          className="mx-auto size-16 rounded-3xl bg-ink flex items-center justify-center text-on-ink font-medium text-2xl tracking-tight shadow-md"
         >
           W
         </span>
@@ -67,7 +67,7 @@ const Ios = () => {
           </span>
           <a
             href="https://notes.pasyuk.com"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-background-dark transition-colors whitespace-nowrap"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium bg-ink text-on-ink hover:bg-ink-soft focus:outline-none focus:ring-2 focus:ring-ink/25 focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-background-dark transition-colors whitespace-nowrap"
           >
             Try it on the web
           </a>
@@ -100,7 +100,7 @@ const Ios = () => {
           <div className="mt-6 flex items-center justify-center gap-2 flex-wrap">
             <Link
               to={ROUTE.SUPPORT}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-surface-dark transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-ink text-on-ink hover:bg-ink-soft focus:outline-none focus:ring-2 focus:ring-ink/25 focus:ring-offset-2 focus:ring-offset-surface dark:focus:ring-offset-surface-dark transition-colors"
             >
               Support
             </Link>

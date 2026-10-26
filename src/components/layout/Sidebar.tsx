@@ -1,5 +1,3 @@
-import { StoreContext } from 'store/store'
-import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import { useDroppable } from '@dnd-kit/core'
 import {
   CheckIcon,
@@ -9,7 +7,9 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
-import { onValue, ref } from 'firebase/database'
+import { Skeleton } from 'components/ui/Skeleton'
+import { LoadStatus } from 'hooks/useRealtimeData'
+import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import {
   KeyboardEvent,
   ReactNode,
@@ -21,13 +21,15 @@ import {
   useState,
 } from 'react'
 import { Link } from 'react-router-dom'
-import { db } from 'services/firebase'
 import { createFolder, deleteFolder, Folder, renameFolder } from 'services/folder'
-import { getFoldersRoute } from 'services/db-paths'
 import { Todo } from 'services/task'
+import { StoreContext } from 'store/store'
 
 interface SidebarProps {
   todos: Todo[]
+  todosStatus: LoadStatus
+  folders: Folder[]
+  foldersStatus: LoadStatus
 }
 
 const SIDEBAR_WIDTH_KEY = 'sidebar:width'
@@ -45,11 +47,10 @@ interface DroppableRowProps {
 const DroppableRow = ({ id, isActive, isCurrentFolder, children }: DroppableRowProps) => {
   const { isOver, setNodeRef } = useDroppable({ id })
   const itemBase =
-    'w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm transition-colors group min-h-10'
-  const itemIdle = 'text-text-primary dark:text-text-dark-primary hover:bg-overlay-hover'
-  const itemActive =
-    'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
-  const dropTarget = 'ring-2 ring-inset ring-primary bg-primary-light/60 dark:bg-primary/30'
+    'w-full flex items-center justify-between gap-2 rounded-xl pl-3.5 pr-2 py-2 text-[15px] font-semibold transition-[background-color,box-shadow,color] group min-h-11'
+  const itemIdle = 'text-text-tertiary hover:bg-muted hover:text-text-primary'
+  const itemActive = 'bg-surface text-text-primary shadow-tile ring-1 ring-border'
+  const dropTarget = 'ring-2 ring-inset ring-accent bg-accent/15'
   const showDropTarget = isOver && !isCurrentFolder
   return (
     <div
@@ -63,10 +64,18 @@ const DroppableRow = ({ id, isActive, isCurrentFolder, children }: DroppableRowP
   )
 }
 
-const Sidebar = ({ todos }: SidebarProps) => {
+const CountBadge = ({ active, children }: { active: boolean; children: ReactNode }) => (
+  <span
+    className={`inline-flex min-w-7 h-7 items-center justify-end px-1.5 text-sm font-semibold tabular-nums ${
+      active ? 'text-accent' : 'text-text-secondary'
+    }`}
+  >
+    {children}
+  </span>
+)
+
+const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) => {
   const { state, dispatch } = useContext(StoreContext)
-  const [folders, setFolders] = useState<Folder[]>([])
-  const [foldersLoaded, setFoldersLoaded] = useState(false)
   const [newFolderName, setNewFolderName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
@@ -147,34 +156,15 @@ const Sidebar = ({ todos }: SidebarProps) => {
     }
   }
 
+  // The saved folder was deleted elsewhere — fall back to Inbox once we know for sure.
   useEffect(() => {
-    if (!state?.user?.id) {
-      setFolders([])
-      setFoldersLoaded(false)
-      return
-    }
-    const unsubscribe = onValue(ref(db, getFoldersRoute(state.user.id)), snapshot => {
-      const items = snapshot.val() || {}
-      const prepared: Folder[] = Object.keys(items)
-        .map(id => ({
-          id,
-          name: items[id].name,
-          createdAt: items[id].createdAt,
-          order: items[id].order || 0,
-        }))
-        .sort((a, b) => (a.order || 0) - (b.order || 0))
-      setFolders(prepared)
-      setFoldersLoaded(true)
-    })
-    return () => unsubscribe()
-  }, [state.user])
-
-  useEffect(() => {
-    if (!foldersLoaded || !state.currentFolderId) return
+    if (foldersStatus !== 'ready' || !state.currentFolderId) return
     if (!folders.some(f => f.id === state.currentFolderId)) {
       dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId: null } })
     }
-  }, [foldersLoaded, folders, state.currentFolderId, dispatch])
+  }, [foldersStatus, folders, state.currentFolderId, dispatch])
+
+  const countsReady = todosStatus === 'ready'
 
   useEffect(() => {
     if (editingId && editInputRef.current) {
@@ -249,8 +239,9 @@ const Sidebar = ({ todos }: SidebarProps) => {
   }
 
   return (
-    <aside className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 md:border-r border-border dark:border-border-dark bg-surface dark:bg-surface-dark md:h-full flex flex-col">
-      <div className="px-3 py-4 flex flex-col gap-1 flex-1 min-h-0 md:overflow-y-auto">
+    <aside className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 bg-background md:h-full flex flex-col">
+      <div className="px-3 sm:px-4 pt-2 pb-4 flex flex-col gap-1 flex-1 min-h-0 md:overflow-y-auto">
+        <div className="px-3.5 pb-2 pt-5 text-sm font-semibold text-text-secondary">Lists</div>
         <DroppableRow
           id={INBOX_DROPPABLE_ID}
           isActive={state.currentFolderId === null}
@@ -261,17 +252,25 @@ const Sidebar = ({ todos }: SidebarProps) => {
             onClick={() => setCurrent(null)}
             className="flex flex-1 items-center gap-2 min-w-0 text-left"
           >
-            <InboxIcon className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary" />
+            <InboxIcon className="size-5 shrink-0 opacity-60" />
             <span className="truncate">Inbox</span>
           </button>
           <div className="flex items-center justify-end shrink-0 min-w-[3.5rem]">
-            {counts.__inbox__ > 0 && (
-              <span className="text-xs text-text-secondary dark:text-text-dark-secondary">
-                {counts.__inbox__}
-              </span>
+            {countsReady && counts.__inbox__ > 0 && (
+              <CountBadge active={state.currentFolderId === null}>{counts.__inbox__}</CountBadge>
             )}
           </div>
         </DroppableRow>
+
+        {foldersStatus === 'loading' && (
+          <div role="status" aria-label="Loading lists" className="flex flex-col gap-1">
+            {['w-24', 'w-32'].map(width => (
+              <div key={width} className="flex items-center h-11 pl-3.5">
+                <Skeleton className={`h-3.5 rounded-md ${width}`} />
+              </div>
+            ))}
+          </div>
+        )}
 
         {folders.map(folder => {
           const isActive = state.currentFolderId === folder.id
@@ -293,7 +292,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
                     onChange={e => setEditingName(e.target.value)}
                     onKeyDown={handleEditKey}
                     onBlur={commitEdit}
-                    className="flex-1 min-w-0 h-6 leading-6 p-0 bg-transparent border-0 outline-none focus:ring-0 text-sm text-text-primary dark:text-text-dark-primary"
+                    className="flex-1 min-w-0 h-6 leading-6 p-0 bg-transparent border-0 outline-none focus:ring-0 text-[15px] font-medium text-inherit"
                     maxLength={60}
                   />
                   <button
@@ -301,7 +300,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
                     onMouseDown={e => e.preventDefault()}
                     onClick={commitEdit}
                     aria-label="Save"
-                    className="p-1 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary"
+                    className="inline-flex size-7 items-center justify-center rounded-full opacity-60 hover:opacity-100"
                   >
                     <CheckIcon className="size-4 shrink-0" />
                   </button>
@@ -316,9 +315,9 @@ const Sidebar = ({ todos }: SidebarProps) => {
                     <span className="truncate">{folder.name}</span>
                   </button>
                   <div className="relative flex items-center justify-end gap-1 shrink-0 min-w-[3.5rem] h-6">
-                    {count > 0 && (
-                      <span className="text-xs text-text-secondary dark:text-text-dark-secondary transition-opacity duration-150 ease-out group-hover:opacity-0">
-                        {count}
+                    {countsReady && count > 0 && (
+                      <span className="transition-opacity duration-150 ease-out group-hover:opacity-0">
+                        <CountBadge active={isActive}>{count}</CountBadge>
                       </span>
                     )}
                     <div className="absolute inset-y-0 right-0 flex items-center gap-1 opacity-0 translate-x-1 pointer-events-none transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto">
@@ -326,7 +325,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
                         type="button"
                         onClick={() => startEdit(folder)}
                         aria-label="Rename list"
-                        className="inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary transition-colors hover:text-text-primary dark:hover:text-text-dark-primary"
+                        className="inline-flex size-7 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100"
                       >
                         <PencilSquareIcon className="size-4 shrink-0" />
                       </button>
@@ -334,7 +333,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
                         type="button"
                         onClick={() => handleDelete(folder)}
                         aria-label="Delete list"
-                        className="inline-flex p-1 rounded-md text-text-secondary dark:text-text-dark-secondary transition-colors hover:text-text-primary dark:hover:text-text-dark-primary"
+                        className="inline-flex size-7 items-center justify-center rounded-full opacity-60 transition-opacity hover:opacity-100"
                       >
                         <TrashIcon className="size-4 shrink-0" />
                       </button>
@@ -346,7 +345,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
           )
         })}
 
-        <div className="mt-2 flex items-center gap-2 px-3 py-2 rounded-md ring-1 ring-inset ring-border dark:ring-border-dark">
+        <div className="mt-3 flex items-center gap-2 h-11 pl-3.5 pr-2 rounded-xl bg-muted focus-within:bg-surface focus-within:shadow-tile transition-[background-color,box-shadow]">
           <PlusIcon className="size-4 shrink-0 text-text-secondary dark:text-text-dark-secondary" />
           <input
             type="text"
@@ -355,7 +354,7 @@ const Sidebar = ({ todos }: SidebarProps) => {
             onKeyDown={handleNewFolderKey}
             placeholder="New list..."
             maxLength={60}
-            className="flex-1 min-w-0 bg-transparent border-0 outline-none focus:ring-0 text-sm text-text-primary dark:text-text-dark-primary placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary"
+            className="flex-1 min-w-0 bg-transparent border-0 p-0 outline-none focus:ring-0 text-[15px] font-medium text-text-primary placeholder:text-text-secondary"
           />
           {newFolderName && (
             <button
@@ -369,12 +368,18 @@ const Sidebar = ({ todos }: SidebarProps) => {
           )}
         </div>
       </div>
-      <div className="px-3 py-3 border-t border-border dark:border-border-dark flex items-center gap-3 text-xs text-text-secondary/70 dark:text-text-dark-secondary/70">
-        <Link to="/terms" className="hover:text-text-primary dark:hover:text-text-dark-primary transition-colors">
+      <div className="px-7 py-4 flex items-center gap-3 text-xs font-medium text-text-secondary">
+        <Link
+          to="/terms"
+          className="hover:text-text-primary dark:hover:text-text-dark-primary transition-colors"
+        >
           Terms
         </Link>
         <span aria-hidden="true">·</span>
-        <Link to="/privacy" className="hover:text-text-primary dark:hover:text-text-dark-primary transition-colors">
+        <Link
+          to="/privacy"
+          className="hover:text-text-primary dark:hover:text-text-dark-primary transition-colors"
+        >
           Privacy
         </Link>
       </div>
@@ -389,8 +394,8 @@ const Sidebar = ({ todos }: SidebarProps) => {
         tabIndex={0}
         onPointerDown={handleResizePointerDown}
         onKeyDown={handleResizeKeyDown}
-        className={`hidden md:block absolute top-0 right-0 h-full w-1.5 -mr-px cursor-col-resize select-none transition-colors focus:outline-none focus:bg-primary/40 ${
-          isResizing ? 'bg-primary/40' : 'hover:bg-primary/30'
+        className={`hidden md:block absolute top-0 right-0 h-full w-1.5 -mr-px cursor-col-resize select-none transition-colors focus:outline-none focus:bg-border ${
+          isResizing ? 'bg-border' : 'hover:bg-border'
         }`}
       />
     </aside>

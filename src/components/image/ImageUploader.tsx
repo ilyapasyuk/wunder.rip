@@ -1,8 +1,7 @@
 import { CLOUDINARY_UPLOAD_PRESET } from 'config/cloudinary'
-import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
-
-import { uploadImage } from 'services/image'
 import { notify } from 'lib/notify'
+import { DragEvent, KeyboardEvent, useRef, useState } from 'react'
+import { uploadImage } from 'services/image'
 
 interface ImageUploaderProps {
   onFileUploaded: (cloudinaryId: string) => void
@@ -88,10 +87,8 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`mt-2 flex justify-center rounded-lg border border-dashed px-6 py-10 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
-        isDragOver
-          ? 'border-primary bg-primary/5 dark:bg-primary/10'
-          : 'border-border dark:border-border-dark hover:bg-overlay-hover'
+      className={`mt-2 flex justify-center rounded-2xl border-2 border-dashed px-6 py-10 cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 ${
+        isDragOver ? 'border-accent bg-accent/10' : 'border-border hover:bg-muted'
       }`}
     >
       <div className="text-center">
@@ -114,7 +111,7 @@ const ImageUploader = ({ onFileUploaded }: ImageUploaderProps) => {
               aria-disabled={isLoading}
               htmlFor="img"
               onClick={e => e.stopPropagation()}
-              className="relative cursor-pointer rounded-md bg-surface dark:bg-surface-dark font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primary-hover"
+              className="relative cursor-pointer rounded-md font-semibold text-text-primary underline decoration-accent decoration-2 text-accent underline-offset-4 focus-within:outline-none focus-within:ring-2 focus-within:ring-ink/20"
             >
               <span>Upload a file</span>
               <input

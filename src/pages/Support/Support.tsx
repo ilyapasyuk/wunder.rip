@@ -18,7 +18,7 @@ const Support = () => {
           href="https://github.com/ilyapasyuk/wunder.rip/issues"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-primary text-white hover:bg-primary-hover transition-colors"
+          className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-ink text-on-ink hover:bg-ink-soft transition-colors"
         >
           github.com/ilyapasyuk/wunder.rip/issues
         </a>

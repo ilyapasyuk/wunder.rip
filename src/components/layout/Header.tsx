@@ -39,41 +39,46 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
     setIsDark(newTheme === 'dark')
   }
 
+  const menuItemClass = (active: boolean) =>
+    `${
+      active ? 'bg-muted' : ''
+    } group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-text-primary transition-colors`
+
   return (
-    <div className="w-full md:shrink-0 sticky top-0 z-30 bg-header dark:bg-header-dark border-b border-border-light dark:border-border-dark">
-      <div className="h-14 flex items-stretch">
-        <div className="md:w-[var(--sidebar-w)] md:shrink-0 flex items-center px-4 sm:px-6 lg:px-8">
-          <a href="/" className="group flex items-center gap-2.5 focus:outline-none">
-            <span
-              aria-hidden="true"
-              className="size-8 rounded-lg bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center text-white font-bold text-sm tracking-tight shadow-sm transition-transform group-hover:scale-105 group-focus-visible:ring-2 group-focus-visible:ring-primary group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-header dark:group-focus-visible:ring-offset-header-dark"
-            >
-              W
+    <div className="w-full md:shrink-0 sticky top-0 z-30 bg-background/85 backdrop-blur-xl">
+      <div className="h-16 flex items-stretch">
+        <div className="md:w-[var(--sidebar-w)] md:shrink-0 flex items-center px-4 sm:px-6">
+          <a
+            href="/"
+            className="group flex items-baseline rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+          >
+            <span className="font-display text-[1.375rem] font-bold tracking-[-0.03em] text-text-primary leading-none">
+              Wunder
             </span>
-            <span className="text-white dark:text-text-dark-primary font-medium text-lg tracking-tight">
-              Wunder<span className="text-primary-light/90 dark:text-primary/90">.rip</span>
+            <span className="font-display text-[1.375rem] font-bold tracking-[-0.03em] text-accent leading-none">
+              .rip
             </span>
           </a>
         </div>
-        <div className="flex-1 min-w-0 flex items-center justify-end px-4 sm:px-6 lg:px-8">
+        <div className="flex-1 min-w-0 flex items-center justify-end px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <Link
               to={ROUTE.IOS}
               aria-label="Get the iOS app"
-              className="sm:hidden p-1.5 rounded-md text-white/80 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors"
+              className="sm:hidden size-10 inline-flex items-center justify-center rounded-full bg-muted text-text-primary hover:bg-muted-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 transition-colors"
             >
               <DevicePhoneMobileIcon className="size-5 shrink-0" aria-hidden="true" />
             </Link>
             <Link
               to={ROUTE.IOS}
-              className="hidden sm:inline-flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 rounded-full text-sm font-medium text-white bg-white/10 hover:bg-white/20 dark:bg-primary/20 dark:hover:bg-primary/30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors whitespace-nowrap"
+              className="hidden sm:inline-flex h-10 items-center gap-2 px-4 rounded-full text-sm font-semibold text-text-primary bg-muted hover:bg-muted-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 transition-colors whitespace-nowrap"
             >
               <DevicePhoneMobileIcon className="size-4 shrink-0" aria-hidden="true" />
-              Get the iOS app
+              iOS app
             </Link>
             <button
               onClick={handleToggleTheme}
-              className="p-1.5 rounded-md text-white/80 dark:text-text-dark-secondary hover:text-white dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-header dark:focus:ring-offset-header-dark transition-colors"
+              className="size-10 inline-flex items-center justify-center rounded-full bg-muted text-text-primary hover:bg-muted-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 transition-colors"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               type="button"
             >
@@ -83,101 +88,83 @@ const Header = ({ user, onLogout }: IHeaderProps) => {
                 <MoonIcon className="size-5 shrink-0" />
               )}
             </button>
-            {user?.avatar && (
-              <img
-                src={user.avatar}
-                width={50}
-                alt="avatar"
-                className="inline-block h-10 w-10 rounded-full ring-2 ring-white dark:ring-surface-dark"
-              />
-            )}
             {user && (
-              <div className="text-right ml-4">
-                <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <Menu.Button className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-transparent px-4 py-2 text-sm font-medium text-white dark:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75 transition-colors">
-                      {user?.fullName}
-                      <ChevronDownIcon
-                        className="size-4 shrink-0 text-white/70 dark:text-text-dark-secondary"
-                        aria-hidden="true"
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-border-light dark:divide-border-dark rounded-lg bg-surface dark:bg-surface-dark shadow-lg ring-1 ring-border dark:ring-border-dark focus:outline-none">
-                      <div className="px-1 py-1">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <Link
-                              to="/account"
-                              className={`${
-                                active
-                                  ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
-                                  : 'text-text-primary dark:text-text-dark-primary'
-                              } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors`}
-                            >
-                              <Cog6ToothIcon
-                                className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
-                                aria-hidden="true"
-                              />
-                              <span className="truncate">Account</span>
-                            </Link>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="/api/mcp"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`${
-                                active
-                                  ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
-                                  : 'text-text-primary dark:text-text-dark-primary'
-                              } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors`}
-                            >
-                              <CommandLineIcon
-                                className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
-                                aria-hidden="true"
-                              />
-                              <span className="truncate">Connect via MCP</span>
-                            </a>
-                          )}
-                        </Menu.Item>
+              <Menu as="div" className="relative inline-block text-left">
+                <Menu.Button className="inline-flex h-10 items-center gap-2 rounded-full bg-muted pl-1 pr-3 text-sm font-semibold text-text-primary hover:bg-muted-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 transition-colors">
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      width={32}
+                      height={32}
+                      alt=""
+                      className="size-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="size-8 rounded-full bg-muted-strong" aria-hidden="true" />
+                  )}
+                  <span className="hidden sm:inline max-w-[10rem] truncate">
+                    {user.fullName.split(' ')[0]}
+                  </span>
+                  <ChevronDownIcon className="size-4 shrink-0 opacity-60" aria-hidden="true" />
+                </Menu.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-150"
+                  enterFrom="transform opacity-0 scale-95 -translate-y-1"
+                  enterTo="transform opacity-100 scale-100 translate-y-0"
+                  leave="transition ease-in duration-100"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute right-0 mt-2 w-60 origin-top-right rounded-2xl bg-surface p-1.5 shadow-lift ring-1 ring-border focus:outline-none">
+                    <div className="px-3 pt-2 pb-3">
+                      <div className="text-sm font-medium text-text-primary truncate">
+                        {user.fullName}
                       </div>
-                      <div className="px-1 py-1">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              type="button"
-                              onClick={onLogout}
-                              className={`${
-                                active
-                                  ? 'bg-primary-light dark:bg-primary/20 text-text-primary dark:text-text-dark-primary'
-                                  : 'text-text-primary dark:text-text-dark-primary'
-                              } group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors`}
-                            >
-                              <ArrowRightOnRectangleIcon
-                                className="size-5 shrink-0 text-text-secondary dark:text-text-dark-secondary"
-                                aria-hidden="true"
-                              />
-                              Log out
-                            </button>
-                          )}
-                        </Menu.Item>
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
+                      <div className="text-xs text-text-secondary truncate">{user.email}</div>
+                    </div>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link to="/account" className={menuItemClass(active)}>
+                          <Cog6ToothIcon
+                            className="size-5 shrink-0 text-text-secondary"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">Account</span>
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <a
+                          href="/api/mcp"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={menuItemClass(active)}
+                        >
+                          <CommandLineIcon
+                            className="size-5 shrink-0 text-text-secondary"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">Connect via MCP</span>
+                        </a>
+                      )}
+                    </Menu.Item>
+                    <div className="my-1 h-px bg-border" />
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button type="button" onClick={onLogout} className={menuItemClass(active)}>
+                          <ArrowRightOnRectangleIcon
+                            className="size-5 shrink-0 text-text-secondary"
+                            aria-hidden="true"
+                          />
+                          Log out
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
             )}
           </div>
         </div>

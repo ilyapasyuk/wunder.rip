@@ -1,16 +1,17 @@
-import { StoreContext } from 'store/store'
+import { ArrowDownTrayIcon, CalendarIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { ImageLightbox } from 'components/image/ImageLightbox'
 import { ImageUploader } from 'components/image/ImageUploader'
-import { ArrowDownTrayIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { Skeleton } from 'components/ui/Skeleton'
 import { onValue, ref } from 'firebase/database'
+import { trackTaskViewed } from 'lib/analytics'
+import { notify } from 'lib/notify'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { trackTaskViewed } from 'lib/analytics'
+import { getUserRoute } from 'services/db-paths'
 import { db } from 'services/firebase'
 import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
-import { notify } from 'lib/notify'
-import { getUserRoute } from 'services/db-paths'
 import { Todo, updateTask } from 'services/task'
+import { StoreContext } from 'store/store'
 
 interface TaskPreviewProps {
   onClose: () => void
@@ -23,6 +24,8 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
   const { id } = useParams()
   const { state } = useContext(StoreContext)
   const [todo, setTodo] = useState<Todo | null>(null)
+  // 'missing' = the first snapshot came back empty: a stale link or a task deleted elsewhere.
+  const [status, setStatus] = useState<'loading' | 'ready' | 'missing'>('loading')
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -88,12 +91,15 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
         const item = snapshot.val()
         if (item) {
           setTodo({ ...item, id })
+          setStatus('ready')
           if (!wasLoaded) trackTaskViewed()
           wasLoaded = true
         } else {
           setTodo(null)
           if (wasLoaded) {
             handleClose()
+          } else {
+            setStatus('missing')
           }
         }
       })
@@ -127,132 +133,163 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
         type="button"
         aria-label="Close panel"
         onClick={handleClose}
-        className={`fixed inset-0 z-40 bg-overlay md:hidden transition-opacity duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`fixed inset-0 z-40 bg-overlay backdrop-blur-[2px] md:hidden transition-opacity duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       />
-      {/* Panel — fixed overlay (not in flex flow), slides in from the right.
-          Sits below the header on desktop; covers the whole screen on mobile. */}
+      {/* Panel — a bottom sheet on mobile, a floating card on the right on desktop. */}
       <div
         ref={panelRef}
-        className={`fixed top-0 md:top-14 right-0 bottom-0 z-50 w-full md:w-[28rem] md:max-w-[min(28rem,calc(100vw-var(--sidebar-w)-2rem))] bg-surface dark:bg-surface-dark md:border-l border-border dark:border-border-dark shadow-2xl will-change-transform transition-transform duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed z-50 inset-x-0 bottom-0 top-10 rounded-t-4xl md:inset-x-auto md:top-20 md:right-4 md:bottom-4 md:rounded-4xl md:w-[30rem] md:max-w-[min(30rem,calc(100vw-var(--sidebar-w)-2rem))] bg-surface md:ring-1 md:ring-border shadow-lift will-change-transform transition-transform duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          isOpen
+            ? 'translate-y-0 md:translate-x-0'
+            : 'translate-y-full md:translate-y-0 md:translate-x-[calc(100%+2rem)]'
         }`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="task-preview-title"
       >
-        <div className="flex h-full flex-col overflow-y-scroll">
-          <div className="relative px-4 sm:px-6 pt-6 pb-4 border-b border-border dark:border-border-dark">
-            <div className="flex items-center justify-between gap-2">
-              {todo ? (
-                <input
-                  id="task-preview-title"
-                  className="flex-1 text-lg font-medium leading-6 text-text-primary dark:text-text-dark-primary bg-transparent border-0 outline-none placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-0"
-                  type="text"
-                  placeholder="Task name"
-                  value={todo.task}
-                  onChange={({ target }) =>
-                    handleEditTask({
-                      ...todo,
-                      task: target.value,
-                    })
-                  }
-                />
-              ) : (
+        <div className="flex h-full flex-col overflow-y-auto overscroll-contain">
+          <div
+            aria-hidden="true"
+            className="md:hidden mx-auto mt-3 h-1 w-10 rounded-full bg-muted-strong"
+          />
+          <div className="flex items-center justify-between px-5 sm:px-7 pt-4 md:pt-6">
+            <button
+              type="button"
+              className="size-12 inline-flex items-center justify-center rounded-full bg-muted text-text-primary hover:bg-muted-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 transition-colors"
+              onClick={handleClose}
+            >
+              <span className="sr-only">Close panel</span>
+              <XMarkIcon className="size-5 shrink-0" aria-hidden="true" />
+            </button>
+            {todo?.createdAt ? (
+              <span className="inline-flex h-10 items-center gap-2 rounded-full bg-muted px-4 text-sm font-semibold tabular-nums text-text-primary">
+                <CalendarIcon className="size-4 text-text-tertiary" aria-hidden="true" />
+                {new Date(todo.createdAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+            ) : null}
+          </div>
+          <div className="px-5 sm:px-7 pt-6 pb-2">
+            {todo ? (
+              <textarea
+                id="task-preview-title"
+                rows={1}
+                className="block w-full resize-none [field-sizing:content] font-display text-3xl font-bold leading-tight tracking-[-0.02em] text-text-primary bg-transparent border-0 p-0 outline-none placeholder:text-text-secondary focus:ring-0"
+                placeholder="Task name"
+                value={todo.task}
+                onChange={({ target }) =>
+                  handleEditTask({
+                    ...todo,
+                    task: target.value,
+                  })
+                }
+              />
+            ) : status === 'missing' ? (
+              <div className="motion-safe:animate-fade-in">
                 <div
                   id="task-preview-title"
-                  className="flex-1 text-lg font-medium leading-6 text-text-secondary dark:text-text-dark-secondary"
+                  className="font-display text-3xl font-bold tracking-[-0.02em] text-text-primary"
                 >
-                  Task Preview
+                  Task not found
                 </div>
-              )}
-              <button
-                type="button"
-                className="rounded-md p-1.5 text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary transition-colors shrink-0"
-                onClick={handleClose}
-              >
-                <span className="sr-only">Close panel</span>
-                <XMarkIcon className="size-5 shrink-0" aria-hidden="true" />
-              </button>
-            </div>
+                <p className="mt-2 text-base font-medium text-text-secondary">
+                  It may have been deleted on another device.
+                </p>
+              </div>
+            ) : (
+              <div role="status" aria-label="Loading task">
+                <span id="task-preview-title" className="sr-only">
+                  Loading task
+                </span>
+                <Skeleton className="h-8 w-4/5 rounded-lg" />
+                <Skeleton className="mt-3 h-4 w-28 rounded-md" />
+                <Skeleton className="mt-8 h-44 w-full rounded-2xl" />
+              </div>
+            )}
+            {todo && (
+              <p className="mt-2 text-base font-medium text-text-secondary">
+                {todo.done ? 'Done' : 'In progress'}
+                {todo.files?.length ? ` · ${todo.files.length} attached` : ''}
+              </p>
+            )}
           </div>
           {todo && (
-            <div className="flex-1 px-4 sm:px-6 py-6">
-              <div>
-                <div>
-                  <textarea
-                    className="block w-full rounded-lg border-0 py-3 px-4 text-text-primary dark:text-text-dark-primary bg-surface dark:bg-surface-dark ring-1 ring-inset ring-border dark:ring-border-dark placeholder:text-text-secondary dark:placeholder:text-text-dark-secondary focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-overlay-hover/30 dark:focus:bg-overlay-hover/20 sm:text-base leading-6 mb-6 transition-colors duration-200"
-                    rows={8}
-                    placeholder="Note"
-                    value={todo.note}
-                    onChange={({ target }) =>
-                      handleEditTask({
-                        ...todo,
-                        note: target.value,
-                      })
-                    }
-                  />
-                </div>
-                {Boolean(todo.files?.length) && (
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-4 mb-8">
-                    {todo.files?.map((file, idx) => (
-                      <div
-                        key={`${file}?alt=media`}
-                        className="relative group block w-full aspect-[10/7] rounded-lg bg-background dark:bg-background-dark focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-surface dark:focus-within:ring-offset-surface-dark focus-within:ring-primary overflow-hidden"
-                      >
-                        <img
-                          className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-200 group-hover:opacity-75"
-                          src={getCloudinaryThumb(file, { width: 240, height: 160 })}
-                          alt=""
-                          loading="lazy"
-                          decoding="async"
-                        />
+            <div className="flex-1 px-5 sm:px-7 pt-4 pb-8">
+              <textarea
+                className="block w-full rounded-2xl border-0 py-4 px-5 text-[17px] leading-relaxed text-text-primary bg-muted shadow-card placeholder:text-text-secondary focus:ring-0 focus:bg-surface focus:shadow-tile mb-6 transition-colors duration-200"
+                rows={7}
+                placeholder="Add a note…"
+                value={todo.note}
+                onChange={({ target }) =>
+                  handleEditTask({
+                    ...todo,
+                    note: target.value,
+                  })
+                }
+              />
+              {Boolean(todo.files?.length) && (
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  {todo.files?.map((file, idx) => (
+                    <div
+                      key={`${file}?alt=media`}
+                      className="relative group block w-full aspect-[4/3] rounded-2xl bg-muted focus-within:ring-2 focus-within:ring-accent/40 overflow-hidden"
+                    >
+                      <img
+                        className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-300 group-hover:scale-[1.03]"
+                        src={getCloudinaryThumb(file, { width: 320, height: 240 })}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-0 focus:outline-none cursor-zoom-in"
+                        onClick={() => setLightboxIndex(idx)}
+                        aria-label="Open image"
+                      />
+                      <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+                        <a
+                          href={getCloudinaryDownloadUrl(file)}
+                          download
+                          onClick={e => e.stopPropagation()}
+                          className="size-8 inline-flex items-center justify-center rounded-full bg-black/55 backdrop-blur-md hover:bg-black/75 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                          aria-label="Download image"
+                        >
+                          <ArrowDownTrayIcon className="size-4 shrink-0" />
+                        </a>
                         <button
                           type="button"
-                          className="absolute inset-0 focus:outline-none cursor-zoom-in"
-                          onClick={() => setLightboxIndex(idx)}
-                          aria-label="Open image"
-                        />
-                        <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
-                          <a
-                            href={getCloudinaryDownloadUrl(file)}
-                            download
-                            onClick={e => e.stopPropagation()}
-                            className="p-1.5 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
-                            aria-label="Download image"
-                          >
-                            <ArrowDownTrayIcon className="size-4 shrink-0" />
-                          </a>
-                          <button
-                            type="button"
-                            onClick={e => {
-                              e.stopPropagation()
-                              handleDeleteFile(file, todo)
-                            }}
-                            className="p-1.5 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
-                            aria-label="Delete image"
-                          >
-                            <XMarkIcon className="size-4 shrink-0" />
-                          </button>
-                        </div>
+                          onClick={e => {
+                            e.stopPropagation()
+                            handleDeleteFile(file, todo)
+                          }}
+                          className="size-8 inline-flex items-center justify-center rounded-full bg-black/55 backdrop-blur-md hover:bg-black/75 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/40"
+                          aria-label="Delete image"
+                        >
+                          <XMarkIcon className="size-4 shrink-0" />
+                        </button>
                       </div>
-                    ))}
-                  </div>
-                )}
-                {todo.id && (
-                  <ImageUploader
-                    onFileUploaded={fileUrl => {
-                      const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
+                    </div>
+                  ))}
+                </div>
+              )}
+              {todo.id && (
+                <ImageUploader
+                  onFileUploaded={fileUrl => {
+                    const files = todo.files ? [...todo.files, fileUrl] : [fileUrl]
 
-                      handleEditTask({
-                        ...todo,
-                        files,
-                      })
-                    }}
-                  />
-                )}
-              </div>
+                    handleEditTask({
+                      ...todo,
+                      files,
+                    })
+                  }}
+                />
+              )}
             </div>
           )}
         </div>

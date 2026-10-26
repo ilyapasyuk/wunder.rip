@@ -1,10 +1,10 @@
-import { StoreContext } from 'store/store'
-import { LoginForm } from 'pages/LoginForm/LoginForm'
 import { onAuthStateChanged } from 'firebase/auth'
+import { notify } from 'lib/notify'
+import { LoginForm } from 'pages/LoginForm/LoginForm'
 import { ReactNode, useContext, useEffect, useState } from 'react'
 import { PROVIDER, signIn, User } from 'services/auth'
 import { auth } from 'services/firebase'
-import { notify } from 'lib/notify'
+import { StoreContext } from 'store/store'
 
 interface AuthProps {
   children: ReactNode
@@ -44,11 +44,14 @@ const Auth = ({ children }: AuthProps) => {
   }, [])
 
   if (!isReady) {
+    // Firebase usually restores the session in well under a second; the spinner only
+    // fades in after 400ms so fast loads don't flash it.
     return (
-      <div className="min-h-full flex items-center justify-center py-12">
+      <div className="min-h-full flex items-center justify-center py-24">
         <div
+          role="status"
           aria-label="Loading"
-          className="size-8 rounded-full border-2 border-border dark:border-border-dark border-t-primary animate-spin"
+          className="size-7 rounded-full border-[2.5px] border-muted-strong border-t-accent animate-spin opacity-0 motion-reduce:opacity-100 motion-safe:animate-[spin_0.8s_linear_infinite,fade-in_200ms_ease-out_400ms_forwards]"
         />
       </div>
     )

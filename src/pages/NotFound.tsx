@@ -22,14 +22,14 @@ const NotFound = () => {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium border border-border dark:border-border-dark text-text-primary dark:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium border border-border dark:border-border-dark text-text-primary dark:text-text-dark-primary hover:bg-overlay-hover focus:outline-none focus:ring-2 focus:ring-ink/25 transition-colors"
           >
             <ArrowLeftIcon className="size-4 shrink-0" aria-hidden="true" />
             Go back
           </button>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-primary text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-background-dark transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-ink text-on-ink hover:bg-ink-soft focus:outline-none focus:ring-2 focus:ring-ink/25 focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-background-dark transition-colors"
           >
             <HomeIcon className="size-4 shrink-0" aria-hidden="true" />
             Back to home

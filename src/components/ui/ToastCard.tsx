@@ -24,21 +24,21 @@ type VariantStyle = {
 
 const VARIANTS: Record<ToastVariant, VariantStyle> = {
   info: {
-    iconBg: 'bg-primary',
+    iconBg: 'bg-ink text-on-ink',
     icon: InformationCircleIcon,
-    tint: 'from-primary/15 dark:from-primary/25',
-    ring: 'ring-primary/20 dark:ring-primary/30',
+    tint: 'from-accent/15',
+    ring: 'ring-border',
     titleClass: 'text-text-primary dark:text-text-dark-primary',
   },
   success: {
-    iconBg: 'bg-emerald-500 dark:bg-emerald-500',
+    iconBg: 'bg-emerald-500 text-white',
     icon: CheckCircleIcon,
     tint: 'from-emerald-500/15 dark:from-emerald-500/25',
     ring: 'ring-emerald-500/20 dark:ring-emerald-500/30',
     titleClass: 'text-text-primary dark:text-text-dark-primary',
   },
   error: {
-    iconBg: 'bg-red-500 dark:bg-red-500',
+    iconBg: 'bg-red-500 text-white',
     icon: ExclamationCircleIcon,
     tint: 'from-red-500/20 dark:from-red-500/30',
     ring: 'ring-red-500/25 dark:ring-red-500/35',
@@ -52,7 +52,7 @@ const ToastCard = ({ variant, title, description, onClose }: ToastCardProps) => 
 
   return (
     <div
-      className={`relative flex items-center gap-3 w-[360px] max-w-[calc(100vw-2rem)] py-3 pl-3 pr-12 rounded-xl shadow-lg overflow-hidden bg-surface dark:bg-surface-dark ring-1 ${style.ring}`}
+      className={`relative flex items-center gap-3 w-[360px] max-w-[calc(100vw-2rem)] py-3 pl-3 pr-12 rounded-3xl shadow-lift overflow-hidden bg-surface ring-1 ${style.ring}`}
       role={variant === 'error' ? 'alert' : 'status'}
     >
       {/* Tinted gradient overlay — fades from the variant color near the icon out to transparent. */}
@@ -63,7 +63,7 @@ const ToastCard = ({ variant, title, description, onClose }: ToastCardProps) => 
 
       {/* Icon plate */}
       <div
-        className={`relative shrink-0 size-10 rounded-lg ${style.iconBg} flex items-center justify-center text-white shadow-inner`}
+        className={`relative shrink-0 size-10 rounded-full ${style.iconBg} flex items-center justify-center`}
       >
         <Icon className="size-5" aria-hidden="true" />
       </div>
@@ -83,7 +83,7 @@ const ToastCard = ({ variant, title, description, onClose }: ToastCardProps) => 
         type="button"
         onClick={onClose}
         aria-label="Close"
-        className="absolute top-1/2 -translate-y-1/2 right-2 p-1.5 rounded-md text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary hover:bg-overlay-hover transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40"
+        className="absolute top-1/2 -translate-y-1/2 right-2 p-1.5 rounded-full text-text-secondary dark:text-text-dark-secondary hover:text-text-primary dark:hover:text-text-dark-primary hover:bg-overlay-hover transition-colors focus:outline-none focus:ring-2 focus:ring-ink/20"
       >
         <XMarkIcon className="size-4" />
       </button>

@@ -5,6 +5,7 @@ import { getImageUrls, uploadImageFromBase64, uploadImageFromUrl } from '../lib/
 import * as data from '../lib/db.js'
 import { getUidByEmail } from '../lib/firebase.js'
 import { getBaseUrl, getBearerToken, html } from '../lib/http.js'
+import { escapeHtml, renderPage } from '../lib/page.js'
 import { parseSession } from '../lib/token.js'
 
 const jsonRpcError = (code: number, message: string) => ({
@@ -13,106 +14,17 @@ const jsonRpcError = (code: number, message: string) => ({
   id: null,
 })
 
-const escapeHtml = (value: string): string =>
-  value.replace(/[&<>"']/g, char => {
-    switch (char) {
-      case '&':
-        return '&amp;'
-      case '<':
-        return '&lt;'
-      case '>':
-        return '&gt;'
-      case '"':
-        return '&quot;'
-      default:
-        return '&#39;'
-    }
-  })
-
 const copyRow = (id: string, code: string): string => `
   <div class="row">
     <code id="${id}">${escapeHtml(code)}</code>
     <button type="button" class="copy" data-target="${id}">Copy</button>
   </div>`
 
-const renderInfoPage = (baseUrl: string): string => `<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>wunder.rip MCP</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      :root { color-scheme: light dark; }
-      * { box-sizing: border-box; }
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        max-width: 720px;
-        margin: 8vh auto;
-        padding: 0 24px;
-        color: #323338;
-        background: #f6f7fb;
-      }
-      @media (prefers-color-scheme: dark) {
-        body { color: #fff; background: #1a1b23; }
-        .card { background: #2d2e3a !important; border-color: #3d3e4a !important; }
-        code { background: #1a1b2333 !important; color: #fff !important; }
-        .step { color: #a0a0b0 !important; }
-        a { color: #cce5ff !important; }
-      }
-      .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
-      .logo {
-        width: 32px; height: 32px; border-radius: 8px;
-        background: linear-gradient(to bottom right, #0073ea, #0060b9);
-        color: #fff; display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 0.9rem;
-      }
-      .brand span.name { font-weight: 600; font-size: 1.1rem; }
-      .brand span.accent { color: #0073ea; }
-      .card {
-        border: 1px solid #d0d4e4;
-        border-radius: 12px;
-        padding: 18px 20px;
-        margin: 12px 0;
-        background: #fff;
-      }
-      .card h2 { font-size: 0.95rem; margin: 0 0 10px; }
-      .row { display: flex; align-items: center; gap: 8px; }
-      code {
-        flex: 1;
-        background: #f6f7fb;
-        border-radius: 8px;
-        padding: 10px 12px;
-        overflow-x: auto;
-        white-space: pre-wrap;
-        word-break: break-all;
-        font-size: 0.8rem;
-      }
-      .copy {
-        border: none;
-        border-radius: 8px;
-        padding: 10px 14px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        cursor: pointer;
-        background: #0073ea;
-        color: #fff;
-        white-space: nowrap;
-      }
-      .copy:hover { background: #0060b9; }
-      code.path { display: inline; background: #f6f7fb; border-radius: 5px; padding: 2px 6px; font-size: 0.85em; white-space: nowrap; }
-      .step { color: #676879; font-size: 0.85rem; margin: 8px 0 0; }
-      details { margin-top: 16px; }
-      summary { cursor: pointer; font-size: 0.85rem; color: #676879; }
-      details .card { margin-top: 10px; }
-      ol { padding-left: 1.1em; margin: 8px 0 0; font-size: 0.85rem; }
-      li { margin: 6px 0; }
-    </style>
-  </head>
-  <body>
-    <div class="brand">
-      <span class="logo">W</span>
-      <span class="name">Wunder<span class="accent">.rip</span> MCP</span>
-    </div>
+const renderInfoPage = (baseUrl: string): string =>
+  renderPage(
+    'Connect via MCP',
+    `<h1>Connect via MCP</h1>
+    <p class="lead">Let Claude read and update your tasks. Sign in with Google once, and you're connected.</p>
 
     <div class="card">
       <h2>Claude Code</h2>
@@ -131,10 +43,11 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
       <div class="card">
         <h2>Claude Desktop via config file</h2>
         <p class="step">Edit <code class="path">claude_desktop_config.json</code>, add a <code class="path">wunder-rip</code> entry under <code class="path">mcpServers</code> (create that key if it's not there yet), then restart Claude Desktop.</p>
-        <p class="step" style="margin-top:10px">
+        <p class="step">
           macOS: <code class="path">~/Library/Application Support/Claude/claude_desktop_config.json</code><br />
           Windows: <code class="path">%APPDATA%\\Claude\\claude_desktop_config.json</code>
         </p>
+        <div style="margin-top:12px">
         ${copyRow(
           'cd-json',
           `{
@@ -146,6 +59,7 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
   }
 }`,
         )}
+        </div>
         <p class="step">If the file already has other servers, merge just the <code class="path">"wunder-rip": {...}</code> entry into the existing <code class="path">mcpServers</code> object instead of replacing the whole file.</p>
       </div>
     </details>
@@ -156,14 +70,13 @@ const renderInfoPage = (baseUrl: string): string => `<!doctype html>
           var target = document.getElementById(button.dataset.target)
           navigator.clipboard.writeText(target.textContent).then(function () {
             var original = button.textContent
-            button.textContent = 'Copied!'
+            button.textContent = 'Copied'
             setTimeout(function () { button.textContent = original }, 1200)
           })
         })
       })
-    </script>
-  </body>
-</html>`
+    </script>`,
+  )
 
 const buildServer = (uid: string): McpServer => {
   const server = new McpServer({ name: 'wunder-rip', version: '1.0.0' })
