@@ -5,7 +5,8 @@ import { Skeleton } from 'components/ui/Skeleton'
 import { LoadStatus } from 'hooks/useRealtimeData'
 import { trackTaskCompleted } from 'lib/analytics'
 import { FormEvent, ReactNode, useContext, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useMatch, useNavigate } from 'react-router-dom'
+import { ROUTE } from 'routes'
 import { Folder } from 'services/folder'
 import { createTodo, deleteTodo, Todo, updateTask } from 'services/task'
 import { StoreContext } from 'store/store'
@@ -21,6 +22,7 @@ const TodoList = ({ visibleTodos, todosStatus, folders, foldersStatus }: TodoLis
   const { state } = useContext(StoreContext)
   const [currentTodo, setCurrentTodo] = useState<string>('')
   const navigate = useNavigate()
+  const openTaskId = useMatch(ROUTE.TASK_PAGE)?.params.id
 
   const handleAddTodo = async (todo: string): Promise<void> => {
     if (state?.user?.id) {
@@ -66,6 +68,7 @@ const TodoList = ({ visibleTodos, todosStatus, folders, foldersStatus }: TodoLis
     <TodoItem
       key={todo.id}
       todo={todo}
+      selected={todo.id === openTaskId}
       toggleDone={handleToggleDone}
       deleteTodo={() => {
         if (state?.user?.id) {

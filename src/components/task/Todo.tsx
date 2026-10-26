@@ -21,7 +21,7 @@ const formatDay = (timestamp: number): string => {
 }
 
 const Chip = ({ children }: { children: ReactNode }) => (
-  <span className="inline-flex h-8 items-center gap-1.5 rounded-full bg-surface px-3 text-sm font-medium tabular-nums text-text-primary">
+  <span className="inline-flex h-8 items-center gap-1.5 rounded-full bg-surface px-3 text-sm font-medium tabular-nums text-text-primary transition-colors group-data-[selected=true]:bg-muted">
     {children}
   </span>
 )
@@ -32,24 +32,30 @@ interface TodoCardProps {
   onSelect?: () => void
   onDelete?: () => void
   lifted?: boolean
+  /** The task currently open in the side panel. */
+  selected?: boolean
 }
 
 /** Presentational card shared by the sortable list item and the drag overlay. */
-const TodoCard = ({ todo, check, onSelect, onDelete, lifted }: TodoCardProps) => {
+const TodoCard = ({ todo, check, onSelect, onDelete, lifted, selected }: TodoCardProps) => {
   const fileCount = todo.files?.length ?? 0
   const hasNote = Boolean(todo.note?.length)
 
   return (
     <div
-      className={`group relative flex items-center gap-4 rounded-2xl bg-muted pl-5 pr-3 min-h-[4.25rem] py-3 transition-colors duration-150 hover:bg-muted-strong/70 ${
-        lifted ? 'shadow-lift' : 'shadow-card motion-safe:animate-fade-up'
+      data-selected={selected}
+      className={`group relative flex items-center gap-4 rounded-2xl pl-5 pr-3 min-h-[4.25rem] py-3 transition-[background-color,box-shadow,transform] duration-150 active:scale-[0.99] has-[.task-title:focus-visible]:ring-2 has-[.task-title:focus-visible]:ring-accent/50 ${
+        selected ? 'bg-surface shadow-tile ring-1 ring-border' : 'bg-muted hover:bg-muted-strong/70'
+      } ${lifted ? 'shadow-lift' : selected ? '' : 'shadow-card'} ${
+        lifted ? '' : 'motion-safe:animate-fade-up'
       }`}
     >
       {check}
       <button
         type="button"
         onClick={onSelect}
-        className="flex-1 min-w-0 self-stretch flex items-center text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded-lg"
+        className="task-title flex-1 min-w-0 self-stretch flex items-center text-left cursor-pointer outline-none"
+        aria-current={selected || undefined}
       >
         <span
           className={`text-[17px] sm:text-lg font-medium leading-snug break-words ${
@@ -86,7 +92,7 @@ const TodoCard = ({ todo, check, onSelect, onDelete, lifted }: TodoCardProps) =>
         {onDelete && (
           <button
             onClick={onDelete}
-            className="size-8 inline-flex items-center justify-center rounded-full text-text-secondary opacity-0 transition-all hover:bg-surface hover:text-text-primary focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 group-hover:opacity-100"
+            className="size-8 inline-flex items-center justify-center rounded-full text-text-secondary opacity-0 transition-all hover:bg-surface group-data-[selected=true]:hover:bg-muted hover:text-text-primary focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 group-hover:opacity-100"
             aria-label="Delete task"
             type="button"
           >
@@ -100,12 +106,13 @@ const TodoCard = ({ todo, check, onSelect, onDelete, lifted }: TodoCardProps) =>
 
 interface TodoItemProps {
   todo: Todo
+  selected: boolean
   toggleDone: (todo: Todo) => void
   deleteTodo: (todo: Todo) => void
   onSelect: (todo: Todo) => void
 }
 
-const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoItemProps) => {
+const TodoItem = ({ todo, selected, toggleDone, deleteTodo, onSelect }: TodoItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: todo.id || '',
   })
@@ -119,9 +126,17 @@ const TodoItem = ({ todo, toggleDone, deleteTodo, onSelect }: TodoItemProps) => 
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    // dnd-kit makes this wrapper focusable for keyboard dragging; show our ring, not the browser's.
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      {...attributes}
+      {...listeners}
+    >
       <TodoCard
         todo={todo}
+        selected={selected}
         onSelect={() => onSelect(todo)}
         onDelete={() => deleteTodo(todo)}
         check={<Checkbox checked={todo.done} onChange={() => toggleDone(todo)} />}
