@@ -81,6 +81,8 @@ targets:
     platform: iOS
     sources:
       - path: WunderRipTests
+      - path: ../shared/model-vectors.json
+        buildPhase: resources
       - path: Core
         excludes: ["CloudinaryService.swift"]
     settings:

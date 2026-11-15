@@ -10,6 +10,14 @@ struct Todo: Identifiable, Equatable, Codable {
     var order: Double
     var isPublic: Bool
     var folderId: String?
+
+    // Planning fields (shared/DATA_MODEL.md). Missing in old data = defaults.
+    var when: When = .anytime
+    var deadline: Day? = nil
+    var repeatRule: RepeatRule? = nil
+    var checklist: [ChecklistItem] = []
+    var tags: [String] = []
+    var completedAt: Double? = nil
 }
 
 extension Todo {
@@ -27,13 +35,48 @@ extension Todo {
             files: dict["files"] as? [String] ?? [],
             order: (dict["order"] as? NSNumber)?.doubleValue ?? 0,
             isPublic: dict["isPublic"] as? Bool ?? false,
-            folderId: dict["folderId"] as? String
+            folderId: dict["folderId"] as? String,
+            when: Self.parseWhen(dict),
+            deadline: (dict["deadline"] as? String).flatMap(Day.init),
+            repeatRule: RepeatRule(dictionary: dict["repeat"] as? [String: Any]),
+            checklist: (dict["checklist"] as? [[String: Any]] ?? []).compactMap(ChecklistItem.init(dictionary:)),
+            tags: (dict["tags"] as? [Any] ?? []).compactMap { $0 as? String },
+            completedAt: (dict["completedAt"] as? NSNumber)?.doubleValue
         )
+    }
+
+    private static func parseWhen(_ dict: [String: Any]) -> When {
+        switch dict["when"] as? String {
+        case "someday": return .someday
+        case let raw?:
+            guard let day = Day(raw) else { return .anytime }
+            return .day(day, evening: dict["evening"] as? Bool ?? false, reminder: (dict["reminder"] as? String).flatMap(TimeOfDay.init))
+        case nil: return .anytime
+        }
+    }
+
+    /// The planning fields in database form; `NSNull` removes a cleared field.
+    var planDictionary: [String: Any] {
+        let whenValue: Any = switch when {
+        case .anytime: NSNull()
+        case .someday: "someday"
+        case let .day(day, _, _): day.string
+        }
+        return [
+            "when": whenValue,
+            "evening": when.isEvening,
+            "reminder": when.reminder?.string ?? NSNull(),
+            "deadline": deadline?.string ?? NSNull(),
+            "repeat": repeatRule?.dictionary ?? NSNull(),
+            "checklist": checklist.map(\.dictionary),
+            "tags": tags,
+            "completedAt": completedAt ?? NSNull(),
+        ]
     }
 
     /// Payload for writing the whole task; `NSNull` clears the folder (Inbox).
     var dictionary: [String: Any] {
-        [
+        planDictionary.merging([
             "task": task,
             "done": done,
             "createdAt": createdAt,
@@ -42,7 +85,7 @@ extension Todo {
             "order": order,
             "isPublic": isPublic,
             "folderId": folderId ?? NSNull(),
-        ]
+        ]) { _, base in base }
     }
 
     /// A fresh task as the web app creates it: newest first (`order = -createdAt`).
