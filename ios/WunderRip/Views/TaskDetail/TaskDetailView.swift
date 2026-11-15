@@ -227,7 +227,15 @@ struct TaskDetailView: View {
     }
 
     private func everyText(_ rule: RepeatRule) -> String {
-        switch rule.unit {
+        if rule.every == 1 {
+            switch rule.unit {
+            case .day: return String(localized: "Every day")
+            case .week: return String(localized: "Every week")
+            case .month: return String(localized: "Every month")
+            case .year: return String(localized: "Every year")
+            }
+        }
+        return switch rule.unit {
         case .day: String(localized: "Every \(rule.every) day(s)")
         case .week: String(localized: "Every \(rule.every) week(s)")
         case .month: String(localized: "Every \(rule.every) month(s)")
