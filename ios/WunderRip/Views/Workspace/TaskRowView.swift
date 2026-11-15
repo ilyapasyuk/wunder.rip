@@ -57,7 +57,7 @@ struct TaskRowView: View {
         case .today:
             Image(systemName: "star.fill").foregroundStyle(Color.todayYellow).font(.caption)
         case .evening:
-            Image(systemName: "moon.fill").foregroundStyle(Color.eveningBlue).font(.caption)
+            Image(systemName: "sunset.fill").foregroundStyle(Color.eveningBlue).font(.caption)
         case .someday:
             Image(systemName: "archivebox.fill").foregroundStyle(SmartList.someday.color).font(.caption)
         case let .day(day):

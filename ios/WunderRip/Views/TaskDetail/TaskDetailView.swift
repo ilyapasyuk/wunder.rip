@@ -156,7 +156,7 @@ struct TaskDetailView: View {
 
             if live.when.day != nil {
                 Toggle(isOn: Binding(get: { live.when.isEvening }, set: { on in save { $0.when = $0.when.withEvening(on) } })) {
-                    Label(live.when.day.map { $0 <= today } == true ? "This Evening" : "Evening", systemImage: "moon")
+                    Label(live.when.day.map { $0 <= today } == true ? "This Evening" : "Evening", systemImage: "sunset")
                 }
                 Toggle(isOn: Binding(
                     get: { live.when.reminder != nil },

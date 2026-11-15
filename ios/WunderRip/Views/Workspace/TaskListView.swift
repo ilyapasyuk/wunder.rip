@@ -140,7 +140,7 @@ struct TaskListView: View {
         case .tasks:
             EmptyView()
         case .evening:
-            Label("This Evening", systemImage: "moon.fill")
+            Label("This Evening", systemImage: "sunset.fill")
                 .foregroundStyle(Color.eveningBlue)
         case let .day(day):
             Text(RelativeDay(day, today: today).header(today: today))

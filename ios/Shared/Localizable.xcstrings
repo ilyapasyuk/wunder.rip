@@ -272,7 +272,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Выполнено"
+            "value": "Выполненные"
           }
         }
       }
@@ -885,6 +885,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Следующая"
+          }
+        }
+      }
+    },
+    "No Date": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без даты"
           }
         }
       }

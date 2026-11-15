@@ -7,36 +7,29 @@ extension SmartList {
         switch self {
         case .today: String(localized: "Today")
         case .upcoming: String(localized: "Upcoming")
-        case .anytime: String(localized: "Anytime")
+        case .anytime: String(localized: "No Date")
         case .someday: String(localized: "Someday")
-        case .logbook: String(localized: "Logbook")
+        case .logbook: String(localized: "Completed")
         }
     }
 
     var symbol: String {
         switch self {
-        case .today: "star.fill"
+        case .today: "sun.max.fill"
         case .upcoming: "calendar"
-        case .anytime: "square.stack.3d.up.fill"
-        case .someday: "archivebox.fill"
-        case .logbook: "checkmark.square.fill"
+        case .anytime: "infinity"
+        case .someday: "hourglass"
+        case .logbook: "checkmark.seal.fill"
         }
     }
 
-    var color: Color {
-        switch self {
-        case .today: .todayYellow
-        case .upcoming: Color(red: 0.93, green: 0.26, blue: 0.33)
-        case .anytime: Color(red: 0.25, green: 0.66, blue: 0.68)
-        case .someday: Color(red: 0.78, green: 0.70, blue: 0.53)
-        case .logbook: Color(red: 0.30, green: 0.72, blue: 0.40)
-        }
-    }
+    /// One brand color for every smart list (our own look, not a per-list palette).
+    var color: Color { .brand }
 }
 
 extension Color {
-    static let todayYellow = Color(red: 0.98, green: 0.78, blue: 0.10)
-    static let eveningBlue = Color(red: 0.42, green: 0.55, blue: 0.95)
+    static let todayYellow = Color.brand
+    static let eveningBlue = Color(red: 0.55, green: 0.42, blue: 0.85)
 }
 
 extension Destination {
@@ -51,7 +44,7 @@ extension Destination {
     var color: Color {
         switch self {
         case let .smart(list): list.color
-        case .inbox: Color(red: 0.25, green: 0.55, blue: 0.95)
+        case .inbox: .brand
         case .list: .accentColor
         }
     }
@@ -111,7 +104,7 @@ extension QuickWhen {
     var symbol: String {
         switch self {
         case .today: "star.fill"
-        case .evening: "moon.fill"
+        case .evening: "sunset.fill"
         case .tomorrow: "sunrise.fill"
         case .someday: "archivebox.fill"
         case .anytime: "xmark.circle"
@@ -136,7 +129,7 @@ extension When {
         switch self {
         case .anytime: "square.stack.3d.up"
         case .someday: "archivebox.fill"
-        case let .day(day, evening, _): evening ? "moon.fill" : (day <= today ? "star.fill" : "calendar")
+        case let .day(day, evening, _): evening ? "sunset.fill" : (day <= today ? "sun.max.fill" : "calendar")
         }
     }
 

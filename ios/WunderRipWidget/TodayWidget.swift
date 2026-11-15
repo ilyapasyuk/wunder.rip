@@ -51,13 +51,13 @@ struct TodayWidgetView: View {
     var body: some View {
         switch family {
         case .accessoryCircular:
-            Gauge(value: 0) { Image(systemName: "star.fill") } currentValueLabel: { Text("\(entry.count)") }
+            Gauge(value: 0) { Image(systemName: "sun.max.fill") } currentValueLabel: { Text("\(entry.count)") }
                 .gaugeStyle(.accessoryCircularCapacity)
         case .accessoryInline:
-            Label(entry.count == 0 ? String(localized: "Nothing for today") : String(localized: "\(entry.count) for today"), systemImage: "star.fill")
+            Label(entry.count == 0 ? String(localized: "Nothing for today") : String(localized: "\(entry.count) for today"), systemImage: "sun.max.fill")
         case .accessoryRectangular:
             VStack(alignment: .leading) {
-                Label(String(localized: "Today"), systemImage: "star.fill").font(.headline)
+                Label(String(localized: "Today"), systemImage: "sun.max.fill").font(.headline)
                 Text(entry.main.first?.task ?? entry.evening.first?.task ?? String(localized: "Nothing for today"))
                     .lineLimit(2)
             }
@@ -83,8 +83,8 @@ struct TodayWidgetView: View {
                     ForEach(entry.main.prefix(limit)) { row($0) }
                     let room = max(0, limit - entry.main.count)
                     if room > 0, !entry.evening.isEmpty {
-                        Label(String(localized: "This Evening"), systemImage: "moon.fill")
-                            .font(.caption2.bold()).foregroundStyle(.indigo)
+                        Label(String(localized: "This Evening"), systemImage: "sunset.fill")
+                            .font(.caption2.bold()).foregroundStyle(.purple)
                         ForEach(entry.evening.prefix(room)) { row($0) }
                     }
                     Spacer(minLength: 0)
@@ -96,8 +96,8 @@ struct TodayWidgetView: View {
 
     private var header: some View {
         HStack {
-            Label(String(localized: "Today"), systemImage: "star.fill")
-                .font(.headline).foregroundStyle(.yellow)
+            Label(String(localized: "Today"), systemImage: "sun.max.fill")
+                .font(.headline).foregroundStyle(Color.brand)
             Spacer()
             if family != .systemSmall, entry.count > 0 {
                 Text("\(entry.count)").font(.headline).foregroundStyle(.secondary)
