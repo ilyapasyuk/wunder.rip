@@ -127,11 +127,13 @@ export const listTasks = async (uid: string): Promise<Todo[]> => (await readTask
 export const listSmart = async (uid: string, list: SmartList, today: Day): Promise<Todo[]> =>
   smartList(await readTasks(uid), list, today).map(output)
 
+/** `id` given: written at that key (a retry overwrites instead of duplicating); otherwise a push id. */
 export const createTask = async (
   uid: string,
   task: string,
   folderId?: string | null,
   fields: TaskFieldsInput = {},
+  id?: string,
 ): Promise<Todo> => {
   const timestamp = Date.now()
   const value: TodoBase = {
@@ -147,8 +149,12 @@ export const createTask = async (
   const stored = hasTaskFields(fields)
     ? { ...value, ...serializeTaskFields(applyTaskFields({}, fields, pushId)) }
     : value
-  const id = await push(tasksPath(uid), stored)
-  return output(parseStored(id, stored))
+  if (id) {
+    await send('PUT', taskPath(uid, id), stored)
+    return output(parseStored(id, stored))
+  }
+  const newId = await push(tasksPath(uid), stored)
+  return output(parseStored(newId, stored))
 }
 
 export const updateTask = async (
@@ -264,4 +270,15 @@ export const deleteFolder = async (uid: string, folderId: string): Promise<void>
   }
   // A PATCH at the root with slash-separated keys is an atomic multi-path update.
   await update('', updates)
+}
+
+/** Raw task and list nodes, as clients that parse the database themselves (iOS widgets, watch) expect. */
+export const readSnapshot = async (
+  uid: string,
+): Promise<{ todos: Record<string, unknown>; folders: Record<string, unknown> }> => {
+  const [todos, folders] = await Promise.all([
+    read<Record<string, unknown>>(tasksPath(uid)),
+    read<Record<string, unknown>>(foldersPath(uid)),
+  ])
+  return { todos: todos ?? {}, folders: folders ?? {} }
 }

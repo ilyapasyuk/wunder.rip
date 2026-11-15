@@ -1,3 +1,4 @@
+import device from './routes/device.js'
 import mcp from './routes/mcp.js'
 import oauthAuthorize from './routes/oauth-authorize.js'
 import oauthComplete from './routes/oauth-complete.js'
@@ -23,7 +24,8 @@ type Env = { ASSETS: Fetcher }
 // everything else is served from dist/ with SPA fallback to index.html.
 export default {
   async fetch(req, env) {
-    const route = routes[new URL(req.url).pathname.replace(/\/$/, '')]
+    const pathname = new URL(req.url).pathname.replace(/\/$/, '')
+    const route = routes[pathname] ?? (pathname.startsWith('/api/device/') ? device : undefined)
     if (route) {
       return route(req)
     }

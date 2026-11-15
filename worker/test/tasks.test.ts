@@ -1,85 +1,14 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, test } from 'bun:test'
-import { generateKeyPairSync } from 'node:crypto'
+import { describe, expect, test } from 'bun:test'
 import { parseDay } from '../../shared/task-model.js'
 import * as data from '../lib/db.js'
 import { signSession } from '../lib/token.js'
 import mcp from '../routes/mcp.js'
+import { installFakeFirebase, setAt, type Tree, tree } from './support.js'
 
-const DATABASE = 'https://wundertodo-app.firebaseio.com/'
+installFakeFirebase()
+
 const UID = 'u1'
 const TODAY = parseDay('2026-11-15') as NonNullable<ReturnType<typeof parseDay>>
-
-type Tree = Record<string, unknown>
-
-// A tiny in-memory Realtime Database behind the REST API the worker talks to.
-let tree: Tree = {}
-
-const segments = (path: string) => path.split('/').filter(Boolean)
-
-const getAt = (path: string): unknown =>
-  segments(path).reduce<unknown>(
-    (node, key) => (node && typeof node === 'object' ? (node as Tree)[key] : undefined),
-    tree,
-  ) ?? null
-
-const setAt = (path: string, value: unknown) => {
-  const keys = segments(path)
-  const last = keys.pop() as string
-  let node = tree
-  for (const key of keys) {
-    node[key] = (node[key] as Tree | undefined) ?? {}
-    node = node[key] as Tree
-  }
-  if (value === null) delete node[last]
-  else node[last] = structuredClone(value)
-}
-
-const realFetch = globalThis.fetch
-
-beforeAll(() => {
-  process.env.MCP_TOKEN_SECRET = 'test-secret'
-  const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048 })
-  process.env.FIREBASE_SERVICE_ACCOUNT = JSON.stringify({
-    client_email: 'sa@test',
-    private_key: privateKey.export({ type: 'pkcs8', format: 'pem' }),
-  })
-})
-
-beforeEach(() => {
-  tree = {}
-  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
-    const url = String(input)
-    if (url.startsWith('https://oauth2.googleapis.com/token')) {
-      return Response.json({ access_token: 'sa-token', expires_in: 3600 })
-    }
-    if (!url.startsWith(DATABASE)) throw new Error(`unexpected fetch ${url}`)
-    const path = url.slice(DATABASE.length).replace(/\.json$/, '')
-    const body = init?.body ? JSON.parse(String(init.body)) : undefined
-    switch (init?.method ?? 'GET') {
-      case 'GET':
-        return Response.json(getAt(path), { headers: { ETag: 'e' } })
-      case 'PUT':
-        setAt(path, body)
-        return Response.json(body)
-      case 'POST': {
-        const name = `-N${Object.keys((getAt(path) as Tree | null) ?? {}).length}`
-        setAt(`${path}/${name}`, body)
-        return Response.json({ name })
-      }
-      case 'PATCH':
-        for (const [key, value] of Object.entries(body as Tree)) setAt(`${path}/${key}`, value)
-        return Response.json(body)
-      case 'DELETE':
-        setAt(path, null)
-        return Response.json(null)
-    }
-    throw new Error(`unexpected method ${init?.method}`)
-  }) as typeof fetch
-})
-
-afterEach(() => {
-  globalThis.fetch = realFetch
-})
 
 const tasks = () => (tree.todos_dev as Tree)[UID] as Record<string, Tree>
 

@@ -7,6 +7,7 @@ import * as data from '../lib/db.js'
 import { getBaseUrl, getBearerToken, html } from '../lib/http.js'
 import { escapeHtml, renderPage } from '../lib/page.js'
 import { taskFieldsInput } from '../lib/task-input.js'
+import { resolveToday } from '../lib/today.js'
 import { parseSession, resolveSessionUid, type Session } from '../lib/token.js'
 
 const jsonRpcError = (code: number, message: string) => ({
@@ -84,10 +85,6 @@ const todayInput = z
   .refine(value => parseDay(value) !== null, 'Expected YYYY-MM-DD')
   .optional()
   .describe("The user's local date YYYY-MM-DD; defaults to today's UTC date")
-
-/** The client's local day if it sent one, else the server's UTC date. */
-const resolveToday = (today: string | undefined): Day =>
-  parseDay(today) ?? (parseDay(new Date().toISOString().slice(0, 10)) as Day)
 
 const json = (value: unknown) => ({
   content: [{ type: 'text' as const, text: JSON.stringify(value, null, 2) }],
