@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true
   },
-  "include": ["."],
+  "include": [".", "../shared/task-model.ts"],
   "exclude": ["test"]
 }

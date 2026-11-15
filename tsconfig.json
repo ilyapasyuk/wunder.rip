@@ -15,8 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": { "@shared/*": ["../shared/*"] }
   },
-  "include": ["vite-env.d.ts", "src"],
+  "include": ["vite-env.d.ts", "src", "shared/task-model.ts"],
   "exclude": ["node_modules"]
 }
