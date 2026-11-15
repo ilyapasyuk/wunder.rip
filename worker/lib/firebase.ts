@@ -100,6 +100,26 @@ export const rtdb = async (
     body: body === undefined ? undefined : JSON.stringify(body),
   })
 
+/** Verifies a Firebase ID token (from any sign-in provider) and returns its uid; undefined if invalid or expired. */
+export const getUidByIdToken = async (idToken: string): Promise<string | undefined> => {
+  const response = await fetch(IDENTITY_TOOLKIT_LOOKUP_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${await getAccessToken()}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ idToken }),
+  })
+  if (response.status === 400) {
+    return undefined
+  }
+  if (!response.ok) {
+    throw new Error(`Identity Toolkit lookup failed: ${response.status}`)
+  }
+  const body = (await response.json()) as { users?: { localId: string }[] }
+  return body.users?.[0]?.localId
+}
+
 /** Resolves a Firebase Auth uid for an email via the Identity Toolkit REST API. */
 export const getUidByEmail = async (email: string): Promise<string | undefined> => {
   const response = await fetch(IDENTITY_TOOLKIT_LOOKUP_URL, {

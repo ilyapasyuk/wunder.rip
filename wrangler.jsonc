@@ -12,7 +12,7 @@
   },
   "routes": [{ "pattern": "notes.pasyuk.com", "custom_domain": true }],
   "observability": { "enabled": true }
-  // Secrets (wrangler secret put): FIREBASE_SERVICE_ACCOUNT, GOOGLE_CLIENT_ID,
-  // GOOGLE_CLIENT_SECRET, MCP_TOKEN_SECRET, VITE_APP_DB_TASK_NAME,
+  // Secrets (wrangler secret put): FIREBASE_SERVICE_ACCOUNT,
+  // MCP_TOKEN_SECRET, VITE_APP_DB_TASK_NAME,
   // VITE_APP_DB_FOLDER_NAME, VITE_CLOUDINARY_ORG_ID.
 }

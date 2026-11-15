@@ -3,10 +3,9 @@ import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/
 import { z } from 'zod'
 import { getImageUrls, uploadImageFromBase64, uploadImageFromUrl } from '../lib/cloudinary.js'
 import * as data from '../lib/db.js'
-import { getUidByEmail } from '../lib/firebase.js'
 import { getBaseUrl, getBearerToken, html } from '../lib/http.js'
 import { escapeHtml, renderPage } from '../lib/page.js'
-import { parseSession } from '../lib/token.js'
+import { parseSession, resolveSessionUid, type Session } from '../lib/token.js'
 
 const jsonRpcError = (code: number, message: string) => ({
   jsonrpc: '2.0' as const,
@@ -24,12 +23,12 @@ const renderInfoPage = (baseUrl: string): string =>
   renderPage(
     'Connect via MCP',
     `<h1>Connect via MCP</h1>
-    <p class="lead">Let Claude read and update your tasks. Sign in with Google once, and you're connected.</p>
+    <p class="lead">Let Claude read and update your tasks. Sign in once (Google or Apple), and you're connected.</p>
 
     <div class="card">
       <h2>Claude Code</h2>
       ${copyRow('cc-cmd', `claude mcp add --transport http wunder-rip ${baseUrl}/api/mcp`)}
-      <p class="step">Run this, then sign in with Google when the browser opens.</p>
+      <p class="step">Run this, then sign in when the browser opens.</p>
     </div>
 
     <div class="card">
@@ -299,22 +298,22 @@ export default async function handler(req: Request): Promise<Response> {
     return unauthorized('Missing bearer token')
   }
 
-  let email: string
+  let session: Session
   try {
-    email = parseSession(token).email
+    session = parseSession(token)
   } catch {
     return unauthorized('Invalid or expired token')
   }
 
   let uid: string | undefined
   try {
-    uid = await getUidByEmail(email)
+    uid = await resolveSessionUid(session)
   } catch (error) {
     console.error('Error resolving uid:', error)
     return Response.json(jsonRpcError(-32603, 'Internal server error'), { status: 500 })
   }
   if (!uid) {
-    return Response.json(jsonRpcError(-32001, 'No wunder.rip account for this Google account'), {
+    return Response.json(jsonRpcError(-32001, 'No wunder.rip account for this sign-in'), {
       status: 403,
     })
   }

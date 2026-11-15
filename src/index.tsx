@@ -2,6 +2,7 @@ import { Layout } from 'components/layout/Layout'
 import { applyTheme, getInitialTheme, watchSystemTheme } from 'lib/theme'
 import { Account } from 'pages/Account/Account'
 import { Auth } from 'pages/Auth'
+import { Connect } from 'pages/Connect/Connect'
 import { Ios } from 'pages/Ios/Ios'
 import { Privacy } from 'pages/Legal/Privacy'
 import { Terms } from 'pages/Legal/Terms'
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
           {
             path: ROUTE.ACCOUNT,
             element: <Account />,
+          },
+          {
+            path: ROUTE.CONNECT,
+            element: <Connect />,
           },
           {
             path: ROUTE.ROOT,

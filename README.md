@@ -12,7 +12,7 @@ The killed ~Kenny~ Wunderlist
 
 ## MCP server
 
-wunder.rip has an MCP server, so an MCP client (Claude Code, Claude Desktop, etc.) can create, read, update, and delete your tasks and lists for you — authorized as you, via Google sign-in. Works with any Google account that already has a wunder.rip account.
+wunder.rip has an MCP server, so an MCP client (Claude Code, Claude Desktop, etc.) can create, read, update, and delete your tasks and lists for you — authorized as you, with the same Google or Apple sign-in as the web app.
 
 Visit [notes.pasyuk.com/api/mcp](https://notes.pasyuk.com/api/mcp) for live, copy-pasteable instructions, or use the commands below.
 
@@ -33,4 +33,4 @@ claude mcp add --transport http wunder-rip https://notes.pasyuk.com/api/mcp
 }
 ```
 
-Either way, the client opens a browser to sign in with Google the first time, then it's connected.
+Either way, the client opens notes.pasyuk.com the first time: sign in (Google or Apple), click **Allow**, and it's connected.

@@ -6,6 +6,7 @@ enum ROUTE {
   ACCOUNT = '/account',
   IOS = '/ios',
   SUPPORT = '/support',
+  CONNECT = '/connect',
 }
 
 export { ROUTE }

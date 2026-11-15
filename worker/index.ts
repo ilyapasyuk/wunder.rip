@@ -1,6 +1,6 @@
-import googleCallback from './routes/google-callback.js'
 import mcp from './routes/mcp.js'
 import oauthAuthorize from './routes/oauth-authorize.js'
+import oauthComplete from './routes/oauth-complete.js'
 import oauthRegister from './routes/oauth-register.js'
 import oauthToken from './routes/oauth-token.js'
 import { authorizationServer, protectedResource } from './routes/well-known.js'
@@ -12,7 +12,7 @@ const routes: Record<string, Handler> = {
   '/api/oauth/authorize': oauthAuthorize,
   '/api/oauth/register': oauthRegister,
   '/api/oauth/token': oauthToken,
-  '/api/auth/google/callback': googleCallback,
+  '/api/oauth/complete': oauthComplete,
   '/.well-known/oauth-authorization-server': authorizationServer,
   '/.well-known/oauth-protected-resource': protectedResource,
 }

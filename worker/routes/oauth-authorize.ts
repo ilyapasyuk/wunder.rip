@@ -1,4 +1,3 @@
-import { buildGoogleAuthUrl } from '../lib/google-oauth.js'
 import { getBaseUrl, html, redirect } from '../lib/http.js'
 import { getClient } from '../lib/oauth-client.js'
 import { renderMessage } from '../lib/page.js'
@@ -50,9 +49,10 @@ export default function handler(req: Request): Response {
     return redirectWithError('invalid_request', 'PKCE with S256 is required')
   }
 
+  // The web app's /connect page signs the user in (Google or Apple, via Firebase), asks for consent
+  // and hands the request back to /api/oauth/complete together with a Firebase ID token.
   const bundle: AuthorizeBundle = { clientId, redirectUri, codeChallenge, state }
-  const googleState = sign<AuthorizeBundle>(bundle, BUNDLE_TTL_MS)
-  const googleRedirectUri = `${getBaseUrl(req)}/api/auth/google/callback`
-
-  return redirect(buildGoogleAuthUrl(googleRedirectUri, googleState))
+  const connect = new URL('/connect', getBaseUrl(req))
+  connect.searchParams.set('request', sign<AuthorizeBundle>(bundle, BUNDLE_TTL_MS))
+  return redirect(connect.toString())
 }

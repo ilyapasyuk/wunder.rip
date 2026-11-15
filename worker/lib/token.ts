@@ -1,5 +1,7 @@
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
+import { getUidByEmail } from './firebase.js'
+
 const getSecret = (): string => {
   const secret = process.env.MCP_TOKEN_SECRET
   if (!secret) {
@@ -40,8 +42,13 @@ export const verify = <T>(token: string): Signed<T> => {
   return parsed
 }
 
-export type Session = { email: string }
+/** New sessions carry the Firebase uid; sessions issued before Apple sign-in carry the Google email. */
+export type Session = { uid: string } | { email: string }
 
-export const signSession = (email: string, ttlMs: number): string => sign<Session>({ email }, ttlMs)
+export const signSession = (session: Session, ttlMs: number): string =>
+  sign<Session>(session, ttlMs)
 
 export const parseSession = (token: string): Signed<Session> => verify<Session>(token)
+
+export const resolveSessionUid = async (session: Session): Promise<string | undefined> =>
+  'uid' in session ? session.uid : getUidByEmail(session.email)

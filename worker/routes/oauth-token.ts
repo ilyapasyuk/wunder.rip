@@ -1,4 +1,3 @@
-import { getUidByEmail } from '../lib/firebase.js'
 import { readBody } from '../lib/http.js'
 import type { AuthCode } from '../lib/oauth-code.js'
 import { verifyPkce } from '../lib/pkce.js'
@@ -40,24 +39,7 @@ export default async function handler(req: Request): Promise<Response> {
     )
   }
 
-  let uid: string | undefined
-  try {
-    uid = await getUidByEmail(authCode.email)
-  } catch (error) {
-    console.error('Error resolving uid:', error)
-    return Response.json({ error: 'server_error' }, { status: 500 })
-  }
-  if (!uid) {
-    return Response.json(
-      {
-        error: 'access_denied',
-        error_description: 'No wunder.rip account for this Google account',
-      },
-      { status: 403 },
-    )
-  }
-
-  const accessToken = signSession(authCode.email, TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000)
+  const accessToken = signSession({ uid: authCode.uid }, TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000)
   return Response.json({
     access_token: accessToken,
     token_type: 'bearer',

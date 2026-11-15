@@ -25,6 +25,7 @@
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "test": "bun test worker",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
