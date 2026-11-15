@@ -50,6 +50,7 @@
 		6E0C7BE661A2AED9E9B6875E /* ReminderPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC340C475E3909720795CC92 /* ReminderPlan.swift */; };
 		79F8866E700F9B578518780A /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		7B8F76FFEC8349A1A17724F4 /* CompleteTaskIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E862467A4D3C1314D0028615 /* CompleteTaskIntent.swift */; };
+		7E409098F389FE5F92F4B67F /* AddTaskIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31820DBA9B988A23B58C4709 /* AddTaskIntent.swift */; };
 		8055FDE021254EC45C11E73A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D22093C4BA528ACAEA23DAE /* WidgetKit.framework */; };
 		8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */; };
 		869DCECB9073F01877891F02 /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
@@ -156,6 +157,7 @@
 		22060C0DF4BF958D3B15DE46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		2CFF6FC4D77C89B246F0EE49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2D22093C4BA528ACAEA23DAE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		31820DBA9B988A23B58C4709 /* AddTaskIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskIntent.swift; sourceTree = "<group>"; };
 		34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C3DEBAD884D28D013046133 /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
 		439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				BA7B490AA8374308AEBFFB43 /* App */,
+				53313DAAF6D16DFBF1B10191 /* Intents */,
 				ED87FBA738BB46A371449445 /* Resources */,
 				2D999C9F882A888AB3CE0D1F /* Services */,
 				B2742D507947F8F850DEC979 /* Store */,
@@ -287,6 +290,14 @@
 				A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		53313DAAF6D16DFBF1B10191 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				31820DBA9B988A23B58C4709 /* AddTaskIntent.swift */,
+			);
+			path = Intents;
 			sourceTree = "<group>";
 		};
 		586A4821D00060725CCD7F2E /* WunderRipTests */ = {
@@ -729,6 +740,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6112A0BC5FDCB13EEEFF7A71 /* AccountView.swift in Sources */,
+				7E409098F389FE5F92F4B67F /* AddTaskIntent.swift in Sources */,
 				5AAB4223316F766EB8A5DD23 /* AppConfig.swift in Sources */,
 				38914C161F05B4534658A304 /* AppState.swift in Sources */,
 				12DD05FA8F961776E2C74BE3 /* AppUser.swift in Sources */,
