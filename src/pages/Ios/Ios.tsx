@@ -58,7 +58,7 @@ const Ios = () => {
           Wunder<span className="text-primary">.rip</span> for iOS
         </h1>
         <p className="mt-3 text-base sm:text-lg text-text-secondary dark:text-text-dark-secondary max-w-xl mx-auto">
-          The killed Wunderlist, back as a fast, native task manager for iPhone — synced with the
+          A fast, native task manager for iPhone, iPad and Apple Watch — free, and synced with the
           web app you already use.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">

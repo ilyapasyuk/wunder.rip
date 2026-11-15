@@ -17,7 +17,7 @@ struct LoginView: View {
                     .foregroundStyle(.tint)
                 Text(verbatim: "wunder.rip")
                     .font(.largeTitle.bold())
-                Text("The killed Wunderlist")
+                Text("Tasks, notes and photos in one place")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }

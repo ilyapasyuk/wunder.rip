@@ -1229,12 +1229,12 @@
         }
       }
     },
-    "The killed Wunderlist": {
+    "Tasks, notes and photos in one place": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Убитый Wunderlist"
+            "value": "Задачи, заметки и фото в одном месте"
           }
         }
       }

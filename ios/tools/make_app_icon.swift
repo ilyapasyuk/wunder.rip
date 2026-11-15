@@ -1,4 +1,4 @@
-// Draws the app icon: a tombstone engraved with a "W" and a small flower at its foot ("the killed Wunderlist"),
+// Draws the app icon: a tombstone engraved with a "W" and a small flower at its foot,
 // in the brand red-orange. Deliberately no check mark or checkbox, so it can't be mistaken for another to-do app.
 // Writes AppIcon-1024.png (light), AppIcon-dark.png and AppIcon-tinted.png into the given appiconset folder.
 // Usage: swift tools/make_app_icon.swift WunderRip/Resources/Assets.xcassets/AppIcon.appiconset
