@@ -1,14 +1,14 @@
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import {
-  ArchiveBoxIcon,
   CalendarDaysIcon,
   CheckCircleIcon,
+  ClockIcon,
   ListBulletIcon,
-  MoonIcon,
+  PauseCircleIcon,
   PlusIcon,
-  Square3Stack3DIcon,
-  StarIcon,
+  QueueListIcon,
   StopIcon,
+  SunIcon,
 } from '@heroicons/react/24/outline'
 import type { Day, SmartList, TaskFields } from '@shared/task-model'
 import { TodoItem } from 'components/task/Todo'
@@ -34,11 +34,11 @@ interface TodoListProps {
 const SECTION_ICONS: Record<SectionIcon, ComponentType<{ className?: string }>> = {
   todo: ListBulletIcon,
   done: CheckCircleIcon,
-  today: StarIcon,
-  evening: MoonIcon,
+  today: SunIcon,
+  evening: ClockIcon,
   day: CalendarDaysIcon,
-  anytime: Square3Stack3DIcon,
-  someday: ArchiveBoxIcon,
+  anytime: QueueListIcon,
+  someday: PauseCircleIcon,
 }
 
 /** Where a task typed into this view lands, and what it is scheduled for; null = no add box. */

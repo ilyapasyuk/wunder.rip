@@ -1,11 +1,11 @@
 import {
-  ArchiveBoxIcon,
   ArrowPathIcon,
   BellIcon,
+  ClockIcon,
   FlagIcon,
-  MoonIcon,
+  ForwardIcon,
+  PauseCircleIcon,
   PlusIcon,
-  StarIcon,
   SunIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
@@ -79,14 +79,14 @@ const WhenField = ({ todo, onChange, today }: DetailsProps & { today: Day }) => 
   return (
     <Field label={label ? `When · ${label}` : 'When'}>
       <div className="flex flex-wrap items-center gap-2">
-        <Pill Icon={StarIcon} active={isOn(when, today, false)} onClick={() => plan('today')}>
+        <Pill Icon={SunIcon} active={isOn(when, today, false)} onClick={() => plan('today')}>
           Today
         </Pill>
-        <Pill Icon={MoonIcon} active={isOn(when, today, true)} onClick={() => plan('evening')}>
+        <Pill Icon={ClockIcon} active={isOn(when, today, true)} onClick={() => plan('evening')}>
           This Evening
         </Pill>
         <Pill
-          Icon={SunIcon}
+          Icon={ForwardIcon}
           active={isOn(when, addDays(today, 1), false)}
           onClick={() => plan('tomorrow')}
         >
@@ -103,7 +103,7 @@ const WhenField = ({ todo, onChange, today }: DetailsProps & { today: Day }) => 
           }}
         />
         <Pill
-          Icon={ArchiveBoxIcon}
+          Icon={PauseCircleIcon}
           active={when.kind === 'someday'}
           onClick={() => plan('someday')}
         >

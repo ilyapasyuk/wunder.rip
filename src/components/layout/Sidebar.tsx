@@ -1,14 +1,14 @@
 import { useDroppable } from '@dnd-kit/core'
 import {
-  ArchiveBoxIcon,
-  BookOpenIcon,
   CalendarDaysIcon,
+  CheckBadgeIcon,
   CheckIcon,
   InboxIcon,
+  PauseCircleIcon,
   PencilSquareIcon,
   PlusIcon,
-  Square3Stack3DIcon,
-  StarIcon,
+  QueueListIcon,
+  SunIcon,
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
@@ -85,11 +85,11 @@ const CountBadge = ({ active, children }: { active: boolean; children: ReactNode
 )
 
 const SMART_ROWS: { list: SmartList; Icon: ComponentType<{ className?: string }> }[] = [
-  { list: 'today', Icon: StarIcon },
+  { list: 'today', Icon: SunIcon },
   { list: 'upcoming', Icon: CalendarDaysIcon },
-  { list: 'anytime', Icon: Square3Stack3DIcon },
-  { list: 'someday', Icon: ArchiveBoxIcon },
-  { list: 'logbook', Icon: BookOpenIcon },
+  { list: 'anytime', Icon: QueueListIcon },
+  { list: 'someday', Icon: PauseCircleIcon },
+  { list: 'logbook', Icon: CheckBadgeIcon },
 ]
 
 const Sidebar = ({ today, todos, todosStatus, folders, foldersStatus }: SidebarProps) => {

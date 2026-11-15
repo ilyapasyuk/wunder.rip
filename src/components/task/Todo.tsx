@@ -1,13 +1,13 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
-  ArchiveBoxIcon,
   ArrowPathIcon,
   Bars3BottomLeftIcon,
   CalendarIcon,
   CheckCircleIcon,
+  ClockIcon,
   FlagIcon,
-  MoonIcon,
+  PauseCircleIcon,
   PhotoIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
@@ -50,9 +50,9 @@ const ScheduleChips = ({ todo }: { todo: Todo }) => {
   const when = whenLabel(todo.when, today)
   const WhenIcon =
     todo.when.kind === 'someday'
-      ? ArchiveBoxIcon
+      ? PauseCircleIcon
       : todo.when.kind === 'day' && todo.when.evening
-        ? MoonIcon
+        ? ClockIcon
         : CalendarIcon
   const checked = todo.checklist.filter(item => item.done).length
   const overdue = isOverdue(todo, today)

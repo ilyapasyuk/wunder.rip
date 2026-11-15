@@ -17,9 +17,9 @@ export const INBOX_VIEW: View = { kind: 'list', folderId: null }
 export const SMART_LIST_TITLES: Record<SmartList, string> = {
   today: 'Today',
   upcoming: 'Upcoming',
-  anytime: 'Anytime',
+  anytime: 'No Date',
   someday: 'Someday',
-  logbook: 'Logbook',
+  logbook: 'Completed',
 }
 
 export type SectionIcon = 'todo' | 'done' | 'today' | 'evening' | 'day' | 'anytime' | 'someday'
@@ -97,7 +97,7 @@ const smartSections = (list: SmartList, todos: Todo[], today: Day): Section[] =>
     case 'upcoming':
       return groupByDay(members, today)
     case 'anytime':
-      return section('anytime', 'Anytime', 'anytime', members)
+      return section('anytime', 'No Date', 'anytime', members)
     case 'someday':
       return section('someday', 'Someday', 'someday', members)
     case 'logbook':
