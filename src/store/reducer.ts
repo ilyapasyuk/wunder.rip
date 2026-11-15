@@ -1,3 +1,4 @@
+import { encodeView } from 'lib/views'
 import { AppAction } from './actions'
 import { CURRENT_FOLDER_STORAGE_KEY, Store } from './store'
 
@@ -7,11 +8,12 @@ const reducer = (currentStore: Store, action: AppAction): Store => {
       return { ...currentStore, user: action.payload.user }
     case 'SET_AUTH_MODAL':
       return { ...currentStore, isShowAuthModal: action.payload.isOpen }
-    case 'SET_CURRENT_FOLDER':
+    case 'SET_VIEW': {
+      const stored = encodeView(action.payload.view)
       if (typeof window !== 'undefined') {
         try {
-          if (action.payload.folderId) {
-            window.localStorage.setItem(CURRENT_FOLDER_STORAGE_KEY, action.payload.folderId)
+          if (stored) {
+            window.localStorage.setItem(CURRENT_FOLDER_STORAGE_KEY, stored)
           } else {
             window.localStorage.removeItem(CURRENT_FOLDER_STORAGE_KEY)
           }
@@ -19,7 +21,8 @@ const reducer = (currentStore: Store, action: AppAction): Store => {
           // ignore quota / unavailable storage
         }
       }
-      return { ...currentStore, currentFolderId: action.payload.folderId }
+      return { ...currentStore, view: action.payload.view }
+    }
 
     default:
       return currentStore

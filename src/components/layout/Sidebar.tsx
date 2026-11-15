@@ -1,16 +1,24 @@
 import { useDroppable } from '@dnd-kit/core'
 import {
+  ArchiveBoxIcon,
+  BookOpenIcon,
+  CalendarDaysIcon,
   CheckIcon,
   InboxIcon,
   PencilSquareIcon,
   PlusIcon,
+  Square3Stack3DIcon,
+  StarIcon,
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid'
+import { type Day, type SmartList, smartList } from '@shared/task-model'
 import { Skeleton } from 'components/ui/Skeleton'
 import { LoadStatus } from 'hooks/useRealtimeData'
+import { INBOX_VIEW, SMART_LIST_TITLES } from 'lib/views'
 import { FOLDER_DROPPABLE_PREFIX, INBOX_DROPPABLE_ID } from 'pages/Workspace/droppable'
 import {
+  ComponentType,
   KeyboardEvent,
   ReactNode,
   PointerEvent as ReactPointerEvent,
@@ -26,6 +34,7 @@ import { Todo } from 'services/task'
 import { StoreContext } from 'store/store'
 
 interface SidebarProps {
+  today: Day
   todos: Todo[]
   todosStatus: LoadStatus
   folders: Folder[]
@@ -44,18 +53,19 @@ interface DroppableRowProps {
   children: ReactNode
 }
 
+const ROW_BASE =
+  'w-full flex items-center justify-between gap-2 rounded-xl pl-3.5 pr-2 py-2 text-[15px] font-semibold transition-[background-color,box-shadow,color] group min-h-11'
+const ROW_IDLE = 'text-text-tertiary hover:bg-muted hover:text-text-primary'
+const ROW_ACTIVE = 'bg-surface text-text-primary shadow-tile ring-1 ring-border'
+
 const DroppableRow = ({ id, isActive, isCurrentFolder, children }: DroppableRowProps) => {
   const { isOver, setNodeRef } = useDroppable({ id })
-  const itemBase =
-    'w-full flex items-center justify-between gap-2 rounded-xl pl-3.5 pr-2 py-2 text-[15px] font-semibold transition-[background-color,box-shadow,color] group min-h-11'
-  const itemIdle = 'text-text-tertiary hover:bg-muted hover:text-text-primary'
-  const itemActive = 'bg-surface text-text-primary shadow-tile ring-1 ring-border'
   const dropTarget = 'ring-2 ring-inset ring-accent bg-accent/15'
   const showDropTarget = isOver && !isCurrentFolder
   return (
     <div
       ref={setNodeRef}
-      className={`${itemBase} ${isActive ? itemActive : itemIdle} ${
+      className={`${ROW_BASE} ${isActive ? ROW_ACTIVE : ROW_IDLE} ${
         showDropTarget ? dropTarget : ''
       }`}
     >
@@ -74,8 +84,18 @@ const CountBadge = ({ active, children }: { active: boolean; children: ReactNode
   </span>
 )
 
-const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) => {
+const SMART_ROWS: { list: SmartList; Icon: ComponentType<{ className?: string }> }[] = [
+  { list: 'today', Icon: StarIcon },
+  { list: 'upcoming', Icon: CalendarDaysIcon },
+  { list: 'anytime', Icon: Square3Stack3DIcon },
+  { list: 'someday', Icon: ArchiveBoxIcon },
+  { list: 'logbook', Icon: BookOpenIcon },
+]
+
+const Sidebar = ({ today, todos, todosStatus, folders, foldersStatus }: SidebarProps) => {
   const { state, dispatch } = useContext(StoreContext)
+  // undefined while a smart list is open: no list row is current then.
+  const currentFolderId = state.view.kind === 'list' ? state.view.folderId : undefined
   const [newFolderName, setNewFolderName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingName, setEditingName] = useState('')
@@ -158,11 +178,11 @@ const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) =
 
   // The saved folder was deleted elsewhere — fall back to Inbox once we know for sure.
   useEffect(() => {
-    if (foldersStatus !== 'ready' || !state.currentFolderId) return
-    if (!folders.some(f => f.id === state.currentFolderId)) {
-      dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId: null } })
+    if (foldersStatus !== 'ready' || !currentFolderId) return
+    if (!folders.some(f => f.id === currentFolderId)) {
+      dispatch({ type: 'SET_VIEW', payload: { view: INBOX_VIEW } })
     }
-  }, [foldersStatus, folders, state.currentFolderId, dispatch])
+  }, [foldersStatus, folders, currentFolderId, dispatch])
 
   const countsReady = todosStatus === 'ready'
 
@@ -182,6 +202,8 @@ const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) =
     }
     return map
   }, [todos])
+
+  const todayCount = useMemo(() => smartList(todos, 'today', today).length, [todos, today])
 
   const handleCreate = async () => {
     const value = newFolderName.trim()
@@ -228,24 +250,52 @@ const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) =
     if (!folder.id || !state?.user?.id) return
     const confirmed = window.confirm(`Delete list "${folder.name}"? Tasks will be moved to Inbox.`)
     if (!confirmed) return
-    if (state.currentFolderId === folder.id) {
-      dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId: null } })
+    if (currentFolderId === folder.id) {
+      dispatch({ type: 'SET_VIEW', payload: { view: INBOX_VIEW } })
     }
     await deleteFolder(folder.id, state.user.id)
   }
 
   const setCurrent = (folderId: string | null) => {
-    dispatch({ type: 'SET_CURRENT_FOLDER', payload: { folderId } })
+    dispatch({ type: 'SET_VIEW', payload: { view: { kind: 'list', folderId } } })
+  }
+
+  const setSmart = (list: SmartList) => {
+    dispatch({ type: 'SET_VIEW', payload: { view: { kind: 'smart', list } } })
   }
 
   return (
     <aside className="relative w-full md:w-[var(--sidebar-w)] md:shrink-0 bg-background md:h-full flex flex-col">
       <div className="px-3 sm:px-4 pt-2 pb-4 flex flex-col gap-1 flex-1 min-h-0 md:overflow-y-auto">
+        <nav aria-label="Smart lists" className="flex flex-col gap-1 pt-5">
+          {SMART_ROWS.map(({ list, Icon }) => {
+            const isActive = state.view.kind === 'smart' && state.view.list === list
+            return (
+              <button
+                key={list}
+                type="button"
+                onClick={() => setSmart(list)}
+                aria-current={isActive || undefined}
+                className={`${ROW_BASE} ${isActive ? ROW_ACTIVE : ROW_IDLE}`}
+              >
+                <span className="flex flex-1 items-center gap-2 min-w-0 text-left">
+                  <Icon className="size-5 shrink-0 opacity-60" />
+                  <span className="truncate">{SMART_LIST_TITLES[list]}</span>
+                </span>
+                <span className="flex items-center justify-end shrink-0 min-w-[3.5rem]">
+                  {list === 'today' && countsReady && todayCount > 0 && (
+                    <CountBadge active={isActive}>{todayCount}</CountBadge>
+                  )}
+                </span>
+              </button>
+            )
+          })}
+        </nav>
         <div className="px-3.5 pb-2 pt-5 text-sm font-semibold text-text-secondary">Lists</div>
         <DroppableRow
           id={INBOX_DROPPABLE_ID}
-          isActive={state.currentFolderId === null}
-          isCurrentFolder={state.currentFolderId === null}
+          isActive={currentFolderId === null}
+          isCurrentFolder={currentFolderId === null}
         >
           <button
             type="button"
@@ -257,7 +307,7 @@ const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) =
           </button>
           <div className="flex items-center justify-end shrink-0 min-w-[3.5rem]">
             {countsReady && counts.__inbox__ > 0 && (
-              <CountBadge active={state.currentFolderId === null}>{counts.__inbox__}</CountBadge>
+              <CountBadge active={currentFolderId === null}>{counts.__inbox__}</CountBadge>
             )}
           </div>
         </DroppableRow>
@@ -273,7 +323,7 @@ const Sidebar = ({ todos, todosStatus, folders, foldersStatus }: SidebarProps) =
         )}
 
         {folders.map(folder => {
-          const isActive = state.currentFolderId === folder.id
+          const isActive = currentFolderId === folder.id
           const isEditing = editingId === folder.id
           const count = folder.id ? counts[folder.id] || 0 : 0
           return (
