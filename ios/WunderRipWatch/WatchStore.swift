@@ -46,7 +46,8 @@ final class WatchStore: ObservableObject {
         }
     }
 
-    func today(_ day: Day = .today()) -> (main: [Todo], evening: [Todo]) {
+    func today(_ day: Day? = nil) -> (main: [Todo], evening: [Todo]) {
+        let day = day ?? .today()
         let sections = Destination.smart(.today).sections(of: todos, today: day)
         return (sections.first { $0.kind == .tasks }?.todos ?? [], sections.first { $0.kind == .evening }?.todos ?? [])
     }
@@ -81,7 +82,8 @@ final class WatchStore: ObservableObject {
         }
     }
 
-    func add(_ title: String, today day: Day = .today()) {
+    func add(_ title: String, today day: Day? = nil) {
+        let day = day ?? .today()
         let title = Todo.cleanTitle(title)
         guard !title.isEmpty else { return }
         let id = "watch-\(UUID().uuidString)"

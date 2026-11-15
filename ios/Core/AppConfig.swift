@@ -1,7 +1,7 @@
 import Foundation
 
 /// Identifiers shared by the app, the Share Extension and (later) widgets and the watch app.
-enum AppConfig {
+nonisolated enum AppConfig {
     static let appGroupID = "group.com.ilyapasyuk.wunderrip"
     static let databaseURL = "https://wundertodo-app.firebaseio.com"
 

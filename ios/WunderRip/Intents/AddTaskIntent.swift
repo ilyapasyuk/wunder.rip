@@ -32,6 +32,7 @@ struct AddTaskIntent: AppIntent {
         Summary("Add \(\.$title) for \(\.$whenOption)")
     }
 
+    @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let title = Todo.cleanTitle(title)
         guard !title.isEmpty else { throw $title.needsValueError() }
