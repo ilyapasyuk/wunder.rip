@@ -14,17 +14,24 @@
 		13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		14EC914D7A292553863CE3CD /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569BCF3C0791860A542D1587 /* DatabaseService.swift */; };
 		190341AE6650853C7B494364 /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEBAD884D28D013046133 /* CoreTests.swift */; };
+		1928D19C60C82B8BF1AC9D4B /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */; };
+		1E5683C69E1111EB04A2BAE5 /* WunderRipWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34233A831F9BEAC8A64DE8E /* WunderRipWatchApp.swift */; };
+		1E661BFAC6D63870786AF522 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		254D3CC153968496FDB66A2B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933DB04168A2E2D452A12CE /* ContentView.swift */; };
+		2782EFC5670A5938FB92EBD9 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
 		3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		354A50C72DE6591850AC589C /* WatchLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */; };
 		38914C161F05B4534658A304 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EED33454B0EB020EDFB5B0 /* AppState.swift */; };
 		3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		3D974C47B55E7A20BDC38658 /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96282E618839C3DC7551F4BD /* TaskDetailView.swift */; };
 		455D4796968828901CBE6CA2 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
 		46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E23EE22863326A196424E6 /* TaskRowView.swift */; };
 		4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A089D98F38172363B2555B1 /* GoogleSignIn */; };
 		52C8D2029FC679252E3D48DA /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
+		5501711F50A59716FF817EDE /* WatchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF0B11BA1EA215A2011FB2 /* WatchStore.swift */; };
 		5AAB4223316F766EB8A5DD23 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
 		5DF67C58DCAB67B89DC1F33C /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		5E92CE688B6A221C9320E1D9 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
@@ -36,14 +43,18 @@
 		79F8866E700F9B578518780A /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */; };
 		88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		8E7249FA4191B72C26C9CBA0 /* WunderRipWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C042607845B9AD100BD6D548 /* WunderRipWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		99BFB0EDEB5BA684FC403E86 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
 		9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */; };
 		A24EAB9A269ACB0D84071BB7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A4CB141F0F54E8B4D265A9 /* AuthService.swift */; };
+		A30FB0E3B729767DDF4FCBFE /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
 		A3AABFDD03EC50C7D0E6CDE4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 07A208FA696F8E4FDC66F75A /* FirebaseAuth */; };
 		A4DCB78406254BB513FB7F60 /* WunderRipShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 76D049984A1ED912F525640A /* WunderRipShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A53425713D650F0033BD600A /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		A7F2504553BB3A3E21ADFB7A /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
+		A9427E056CE8B744A3FDE201 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
+		AEAC981DAC73E7387954D2EA /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		B326F3A0B8A22062DBCEDC78 /* OutboxUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD034A5759F2AEE17FFF2D6D /* OutboxUploader.swift */; };
 		B832E8A808788D8634A8E144 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
 		BBD30BCAE91C4A3F84795658 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628F298A8E5BA8111EA2A1FE /* LoginView.swift */; };
@@ -53,9 +64,12 @@
 		C6FB9F3D371017D3884A28DB /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F01C893F75AC1D7721D10E /* WorkspaceView.swift */; };
 		CC2D9E73B7445C28E1BEEAD6 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
 		D6B334C6B6B50DDE6CA57943 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		D6F63065FAA833842A1FD717 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
 		DD75253637DAC05BB0A42E22 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878219B2A642CBD2D34F0632 /* ShareView.swift */; };
 		DFF2C5F34F620F15E267D8EA /* model-vectors.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A978D84264CB1DD92331FD2 /* model-vectors.json */; };
 		E4A365B703FD6149A77EC47B /* ModelVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */; };
+		E4AD1574D22921856BF2E7A6 /* WatchLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */; };
+		F46E000EE72CE5CB0AB94CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACB0BD8D04FD00E3185B6866 /* Assets.xcassets */; };
 		F50C5CD208763E29C1CA2ED5 /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
 		F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F5672730F3646BA31D3C9E /* TaskListView.swift */; };
 		FA78020D7B9819B6D14EAAC8 /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
@@ -71,6 +85,13 @@
 			remoteGlobalIDString = 0B1154A2AB08F43F1B636970;
 			remoteInfo = WunderRipShare;
 		};
+		E65AC7FD6CF6ACA61DA382A7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E07298A59A9D31B3A805BE65 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A9B5B72A974E2CED5B9AF99;
+			remoteInfo = WunderRipWatch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -85,6 +106,17 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFA49AF9386D361701ED85F3 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				8E7249FA4191B72C26C9CBA0 /* WunderRipWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +128,7 @@
 		34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C3DEBAD884D28D013046133 /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
 		439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
+		45EF0B11BA1EA215A2011FB2 /* WatchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchStore.swift; sourceTree = "<group>"; };
 		45F01C893F75AC1D7721D10E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		464B4BD14AF06C02C64E206F /* DeviceAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAPITests.swift; sourceTree = "<group>"; };
 		48A024CC0F37D791F4510075 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -112,16 +145,21 @@
 		85C8E352F082124CD56AFFA8 /* Outbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outbox.swift; sourceTree = "<group>"; };
 		878219B2A642CBD2D34F0632 /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
 		87AC013AFB3C50324F3A051B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8F35E6C5313933C2DC9718F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		93E23EE22863326A196424E6 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		96282E618839C3DC7551F4BD /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLink.swift; sourceTree = "<group>"; };
 		9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = WunderRipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudinaryService.swift; sourceTree = "<group>"; };
 		A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WunderRipApp.swift; sourceTree = "<group>"; };
 		A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		A933DB04168A2E2D452A12CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		ACB0BD8D04FD00E3185B6866 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD034A5759F2AEE17FFF2D6D /* OutboxUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxUploader.swift; sourceTree = "<group>"; };
 		C03F6C8B269FD346133F2059 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		C042607845B9AD100BD6D548 /* WunderRipWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WunderRipWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C34233A831F9BEAC8A64DE8E /* WunderRipWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WunderRipWatchApp.swift; sourceTree = "<group>"; };
 		C3CA59A7384CA12AC8DCF6CA /* Planning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planning.swift; sourceTree = "<group>"; };
 		C6F5672730F3646BA31D3C9E /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVectorTests.swift; sourceTree = "<group>"; };
@@ -202,6 +240,17 @@
 			path = WunderRipTests;
 			sourceTree = "<group>";
 		};
+		6B58C9ED887FB4DD8383D553 /* WunderRipWatch */ = {
+			isa = PBXGroup;
+			children = (
+				ACB0BD8D04FD00E3185B6866 /* Assets.xcassets */,
+				8F35E6C5313933C2DC9718F3 /* Info.plist */,
+				45EF0B11BA1EA215A2011FB2 /* WatchStore.swift */,
+				C34233A831F9BEAC8A64DE8E /* WunderRipWatchApp.swift */,
+			);
+			path = WunderRipWatch;
+			sourceTree = "<group>";
+		};
 		77EA88490940FD6443127D7F /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +310,7 @@
 				2C8A262874522139C8D1C69B /* WunderRip */,
 				8D8880904402B7FBB031017E /* WunderRipShare */,
 				586A4821D00060725CCD7F2E /* WunderRipTests */,
+				6B58C9ED887FB4DD8383D553 /* WunderRipWatch */,
 				DF099A05E23316E7DE07E4DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -307,6 +357,7 @@
 				62368401FD1ACBEE0778BE04 /* WunderRip.app */,
 				76D049984A1ED912F525640A /* WunderRipShare.appex */,
 				9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */,
+				C042607845B9AD100BD6D548 /* WunderRipWatch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -330,6 +381,7 @@
 				439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */,
 				85C8E352F082124CD56AFFA8 /* Outbox.swift */,
 				9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */,
+				9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */,
 				CA923347C6F29D14D47787C0 /* Models */,
 			);
 			path = Core;
@@ -364,11 +416,13 @@
 				C8FCD471B83BD649BBB3AB16 /* Resources */,
 				126F088DB149C58E46DBE7D1 /* Frameworks */,
 				50E8B247DD28F0D71566B356 /* Embed Foundation Extensions */,
+				CFA49AF9386D361701ED85F3 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				6C81DDD9F75F9F20C6E71617 /* PBXTargetDependency */,
+				CEB630C9D6E2D7DB267F1AC8 /* PBXTargetDependency */,
 			);
 			name = WunderRip;
 			packageProductDependencies = (
@@ -378,6 +432,24 @@
 			);
 			productName = WunderRip;
 			productReference = 62368401FD1ACBEE0778BE04 /* WunderRip.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4A9B5B72A974E2CED5B9AF99 /* WunderRipWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 790F868A10AEDE96A33BB716 /* Build configuration list for PBXNativeTarget "WunderRipWatch" */;
+			buildPhases = (
+				DCA7F421EB08A0454F04785F /* Sources */,
+				75F2F0D565B73FA844361E17 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WunderRipWatch;
+			packageProductDependencies = (
+			);
+			productName = WunderRipWatch;
+			productReference = C042607845B9AD100BD6D548 /* WunderRipWatch.app */;
 			productType = "com.apple.product-type.application";
 		};
 		ED13BF8D27602993702ED21B /* WunderRipTests */ = {
@@ -415,6 +487,10 @@
 						DevelopmentTeam = 26VYTSFAG2;
 						ProvisioningStyle = Automatic;
 					};
+					4A9B5B72A974E2CED5B9AF99 = {
+						DevelopmentTeam = 26VYTSFAG2;
+						ProvisioningStyle = Automatic;
+					};
 					ED13BF8D27602993702ED21B = {
 						DevelopmentTeam = 26VYTSFAG2;
 						ProvisioningStyle = Automatic;
@@ -441,6 +517,7 @@
 			targets = (
 				1D37AFD5C1386B8773EBC072 /* WunderRip */,
 				0B1154A2AB08F43F1B636970 /* WunderRipShare */,
+				4A9B5B72A974E2CED5B9AF99 /* WunderRipWatch */,
 				ED13BF8D27602993702ED21B /* WunderRipTests */,
 			);
 		};
@@ -452,6 +529,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		75F2F0D565B73FA844361E17 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F46E000EE72CE5CB0AB94CC7 /* Assets.xcassets in Resources */,
+				1E661BFAC6D63870786AF522 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,8 +623,26 @@
 				13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */,
 				3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */,
 				F50C5CD208763E29C1CA2ED5 /* TodoPlanning.swift in Sources */,
+				E4AD1574D22921856BF2E7A6 /* WatchLink.swift in Sources */,
 				C6FB9F3D371017D3884A28DB /* WorkspaceView.swift in Sources */,
 				9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCA7F421EB08A0454F04785F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6F63065FAA833842A1FD717 /* AppConfig.swift in Sources */,
+				2782EFC5670A5938FB92EBD9 /* DeviceAPI.swift in Sources */,
+				1928D19C60C82B8BF1AC9D4B /* Planning.swift in Sources */,
+				A9427E056CE8B744A3FDE201 /* Snapshot.swift in Sources */,
+				AEAC981DAC73E7387954D2EA /* Todo.swift in Sources */,
+				3D974C47B55E7A20BDC38658 /* TodoFolder.swift in Sources */,
+				A30FB0E3B729767DDF4FCBFE /* TodoPlanning.swift in Sources */,
+				354A50C72DE6591850AC589C /* WatchLink.swift in Sources */,
+				5501711F50A59716FF817EDE /* WatchStore.swift in Sources */,
+				1E5683C69E1111EB04A2BAE5 /* WunderRipWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +653,11 @@
 			isa = PBXTargetDependency;
 			target = 0B1154A2AB08F43F1B636970 /* WunderRipShare */;
 			targetProxy = CEE384689884A028E6BDF306 /* PBXContainerItemProxy */;
+		};
+		CEB630C9D6E2D7DB267F1AC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A9B5B72A974E2CED5B9AF99 /* WunderRipWatch */;
+			targetProxy = E65AC7FD6CF6ACA61DA382A7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -652,7 +761,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -660,6 +768,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -712,6 +821,34 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9FED19F7E3166BE5C79BE9C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WunderRipWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.watchkitapp;
+				PRODUCT_NAME = wunderrip;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
+		A9EBECA2FACFDB36206C82AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WunderRipWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.watchkitapp;
+				PRODUCT_NAME = wunderrip;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Debug;
 		};
@@ -805,7 +942,6 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -813,6 +949,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -833,6 +970,15 @@
 			buildConfigurations = (
 				2A1251750AA27D4211B8201C /* Debug */,
 				AEEFF5582A48CF3241108F63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		790F868A10AEDE96A33BB716 /* Build configuration list for PBXNativeTarget "WunderRipWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9EBECA2FACFDB36206C82AE /* Debug */,
+				9FED19F7E3166BE5C79BE9C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

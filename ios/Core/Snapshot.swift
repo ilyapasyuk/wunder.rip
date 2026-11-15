@@ -24,6 +24,12 @@ enum SnapshotStore {
         return snapshot
     }
 
+    /// The stored snapshot, whoever it belongs to (the watch has no signed-in user of its own).
+    static func loadAny(container: URL?) -> Snapshot? {
+        guard let url = url(in: container), let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(Snapshot.self, from: data)
+    }
+
     static func save(_ snapshot: Snapshot, container: URL? = AppConfig.groupContainer) {
         guard let url = url(in: container), let data = try? JSONEncoder().encode(snapshot) else { return }
         try? data.write(to: url, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
