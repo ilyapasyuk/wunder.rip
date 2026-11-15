@@ -7,7 +7,9 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            if auth.isLoading {
+            if appState.isDemo {
+                WorkspaceView()
+            } else if auth.isLoading {
                 ProgressView()
             } else if auth.user != nil {
                 WorkspaceView()
@@ -18,13 +20,14 @@ struct ContentView: View {
         .onAppear { userChanged(auth.user?.id) }
         .onChange(of: auth.user?.id) { _, newId in userChanged(newId) }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active, let userId = auth.user?.id {
+            if phase == .active, !appState.isDemo, let userId = auth.user?.id {
                 OutboxUploader.shared.drain(userId: userId)
             }
         }
     }
 
     private func userChanged(_ userId: String?) {
+        guard !appState.isDemo else { return }
         appState.attach(userId: userId)
         if let userId {
             OutboxUploader.shared.drain(userId: userId)
