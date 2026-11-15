@@ -89,7 +89,10 @@ extension Todo {
     }
 
     /// A fresh task as the web app creates it: newest first (`order = -createdAt`).
-    static func new(title: String, folderId: String?, files: [String] = [], now: Date = .now) -> [String: Any] {
+    static func new(
+        title: String, folderId: String?, files: [String] = [],
+        when: When = .anytime, deadline: Day? = nil, tags: [String] = [], now: Date = .now
+    ) -> [String: Any] {
         let timestamp = now.millisecondsSince1970
         return Todo(
             id: "",
@@ -100,7 +103,10 @@ extension Todo {
             files: files,
             order: -timestamp,
             isPublic: false,
-            folderId: folderId
+            folderId: folderId,
+            when: when,
+            deadline: deadline,
+            tags: tags
         ).dictionary
     }
 

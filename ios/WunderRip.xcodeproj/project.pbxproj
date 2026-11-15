@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0ADEA932E106A4AFFB52737D /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		0D4B79B4CB08D9392370A388 /* TaskWrites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */; };
 		0D75AEC81980455D53BEA3F3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		10AF6296A528A0F057264B76 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		12DD05FA8F961776E2C74BE3 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5282213028D2320D36CCE6AA /* AppUser.swift */; };
@@ -16,8 +17,10 @@
 		190341AE6650853C7B494364 /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEBAD884D28D013046133 /* CoreTests.swift */; };
 		19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */; };
 		1F997630CFBDF87264854661 /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
+		2037786C2FF299022AFB937E /* TaskWritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17491A7FF6ABFEC16166426C /* TaskWritesTests.swift */; };
 		21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		254D3CC153968496FDB66A2B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933DB04168A2E2D452A12CE /* ContentView.swift */; };
+		33C68A91228D82E3B4B938AE /* TaskWrites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */; };
 		3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		38914C161F05B4534658A304 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EED33454B0EB020EDFB5B0 /* AppState.swift */; };
 		3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
@@ -42,6 +45,7 @@
 		8D645210D2A9B0D20BDDDD3E /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EAF9D98636B1BB39EAED9 /* Navigation.swift */; };
 		8DE0C26169747177AC513DBB /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
 		9443698E26E071CC43FC3B10 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EAF9D98636B1BB39EAED9 /* Navigation.swift */; };
+		94B84CD451A05738406BFA4C /* TaskWrites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */; };
 		9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */; };
 		A24EAB9A269ACB0D84071BB7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A4CB141F0F54E8B4D265A9 /* AuthService.swift */; };
@@ -96,6 +100,7 @@
 		02F1514601CBDA06C7C717CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoPlanning.swift; sourceTree = "<group>"; };
 		1489F0F5E519622B0C661FE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		17491A7FF6ABFEC16166426C /* TaskWritesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskWritesTests.swift; sourceTree = "<group>"; };
 		22060C0DF4BF958D3B15DE46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		2F2A840B02AE73CC1EFBCEE3 /* model-vectors.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "model-vectors.json"; sourceTree = "<group>"; };
 		34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -133,6 +138,7 @@
 		C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVectorTests.swift; sourceTree = "<group>"; };
 		CAF701E265713188478C800F /* TaskDisplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDisplayTests.swift; sourceTree = "<group>"; };
 		CC9465BF944DB6301ACF3CEA /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskWrites.swift; sourceTree = "<group>"; };
 		DC2BD0BD7B147143A8F2E957 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 		E0E31506884E51A5E83B28EC /* WunderRip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRip.entitlements; sourceTree = "<group>"; };
 		E9BEE65F7040810E171A22FB /* WunderRipShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRipShare.entitlements; sourceTree = "<group>"; };
@@ -188,6 +194,7 @@
 			children = (
 				C52EAF9D98636B1BB39EAED9 /* Navigation.swift */,
 				541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */,
+				D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */,
 			);
 			path = Planning;
 			sourceTree = "<group>";
@@ -199,6 +206,7 @@
 				C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */,
 				AE58A26A22289C859415F61F /* NavigationTests.swift */,
 				CAF701E265713188478C800F /* TaskDisplayTests.swift */,
+				17491A7FF6ABFEC16166426C /* TaskWritesTests.swift */,
 				DC2BD0BD7B147143A8F2E957 /* TestSupport.swift */,
 			);
 			path = WunderRipTests;
@@ -509,6 +517,8 @@
 				5E92CE688B6A221C9320E1D9 /* Snapshot.swift in Sources */,
 				8DE0C26169747177AC513DBB /* TaskDisplay.swift in Sources */,
 				C7A34D8D702B23BA616EA63E /* TaskDisplayTests.swift in Sources */,
+				0D4B79B4CB08D9392370A388 /* TaskWrites.swift in Sources */,
+				2037786C2FF299022AFB937E /* TaskWritesTests.swift in Sources */,
 				56781E053BA3F06FCAD7C50C /* TestSupport.swift in Sources */,
 				0D75AEC81980455D53BEA3F3 /* Todo.swift in Sources */,
 				3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */,
@@ -529,6 +539,7 @@
 				66AF253A87408AB3196E47C7 /* SharedContentExtractor.swift in Sources */,
 				5DF67C58DCAB67B89DC1F33C /* Snapshot.swift in Sources */,
 				1F997630CFBDF87264854661 /* TaskDisplay.swift in Sources */,
+				33C68A91228D82E3B4B938AE /* TaskWrites.swift in Sources */,
 				BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */,
 				88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */,
 				FBF06D2A60FFED5ECDC689ED /* TodoPlanning.swift in Sources */,
@@ -558,6 +569,7 @@
 				3F2A4AD6BAABBD33473C2E6A /* TaskDisplay.swift in Sources */,
 				F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */,
 				46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */,
+				94B84CD451A05738406BFA4C /* TaskWrites.swift in Sources */,
 				13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */,
 				3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */,
 				F50C5CD208763E29C1CA2ED5 /* TodoPlanning.swift in Sources */,
