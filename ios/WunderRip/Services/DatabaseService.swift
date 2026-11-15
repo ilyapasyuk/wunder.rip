@@ -71,10 +71,25 @@ final class DatabaseService {
     // MARK: - Tasks
 
     @discardableResult
-    func createTask(_ text: String, folderId: String?, files: [String] = [], userId: String) -> String? {
+    func createTask(
+        _ text: String, folderId: String?, files: [String] = [],
+        when: When = .anytime, deadline: Day? = nil, tags: [String] = [], userId: String
+    ) -> String? {
         let ref = db.child(DBPaths.tasks(for: userId)).childByAutoId()
-        ref.setValue(Todo.new(title: text, folderId: folderId, files: files))
+        ref.setValue(Todo.new(title: text, folderId: folderId, files: files, when: when, deadline: deadline, tags: tags))
         return ref.key
+    }
+
+    /// Completes a task through the model. A repeating task's successor is written in the same multi-path update,
+    /// with a key from `childByAutoId`, so the database never has a completed task without its next one.
+    func complete(_ todo: Todo, today: Day, userId: String) {
+        let root = DBPaths.tasks(for: userId)
+        guard let nextId = db.child(root).childByAutoId().key else { return }
+        db.updateChildValues(TaskWrites.completion(of: todo, today: today, now: Date().millisecondsSince1970, nextId: nextId, root: root))
+    }
+
+    func reopen(_ todo: Todo, userId: String) {
+        updateTask(todo.reopened(), userId: userId)
     }
 
     /// Writes a task under a fixed key and waits for the server to confirm it.

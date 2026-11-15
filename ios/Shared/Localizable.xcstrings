@@ -1,7 +1,20 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ evening": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ вечером"
+          }
+        }
+      }
+    },
     "%lld": {
+      "shouldTranslate": false
+    },
+    "%lld/%lld": {
       "shouldTranslate": false
     },
     "Account": {
@@ -34,12 +47,32 @@
         }
       }
     },
-    "Add a note...": {
+    "Add a task below.": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Добавить заметку…"
+            "value": "Добавьте задачу внизу."
+          }
+        }
+      }
+    },
+    "Add item": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить пункт"
+          }
+        }
+      }
+    },
+    "Add tag": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить тег"
           }
         }
       }
@@ -54,6 +87,26 @@
         }
       }
     },
+    "After completion": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "После выполнения"
+          }
+        }
+      }
+    },
+    "Anytime": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В любое время"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "ru": {
@@ -64,12 +117,112 @@
         }
       }
     },
+    "Checklist": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чек-лист"
+          }
+        }
+      }
+    },
+    "Checklist %lld/%lld": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чек-лист %1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "Choose a list": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выберите список"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Убрать дату"
+          }
+        }
+      }
+    },
+    "Complete": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполнить"
+          }
+        }
+      }
+    },
+    "Completed": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполнено"
+          }
+        }
+      }
+    },
+    "Completed tasks show up here.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Здесь появятся выполненные задачи."
+          }
+        }
+      }
+    },
     "Couldn't save. Please try again.": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Не удалось сохранить. Попробуйте ещё раз."
+          }
+        }
+      }
+    },
+    "Date": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дата"
+          }
+        }
+      }
+    },
+    "Day": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "День"
+          }
+        }
+      }
+    },
+    "Deadline": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Крайний срок"
           }
         }
       }
@@ -114,6 +267,26 @@
         }
       }
     },
+    "Delete Task": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить задачу"
+          }
+        }
+      }
+    },
+    "Delete this task?": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить эту задачу?"
+          }
+        }
+      }
+    },
     "Delete your account? This removes all tasks and lists and cannot be undone.": {
       "localizations": {
         "ru": {
@@ -134,12 +307,260 @@
         }
       }
     },
+    "Due": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Срок"
+          }
+        }
+      }
+    },
+    "Evening": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вечером"
+          }
+        }
+      }
+    },
+    "Every %lld day(s)": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every %lld days"
+                }
+              }
+            }
+          }
+        },
+        "ru": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld дня"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld дней"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждый %lld день"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld дней"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Every %lld month(s)": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every month"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every %lld months"
+                }
+              }
+            }
+          }
+        },
+        "ru": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld месяца"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld месяцев"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждый %lld месяц"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld месяцев"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Every %lld week(s)": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every week"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every %lld weeks"
+                }
+              }
+            }
+          }
+        },
+        "ru": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld недели"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld недель"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждую %lld неделю"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld недель"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Every %lld year(s)": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every year"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every %lld years"
+                }
+              }
+            }
+          }
+        },
+        "ru": {
+          "variations": {
+            "plural": {
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld года"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld лет"
+                }
+              },
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждый %lld год"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Каждые %lld лет"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Inbox": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Входящие"
+          }
+        }
+      }
+    },
+    "Item": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пункт"
+          }
+        }
+      }
+    },
+    "List": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Список"
           }
         }
       }
@@ -154,6 +575,26 @@
         }
       }
     },
+    "Logbook": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Журнал"
+          }
+        }
+      }
+    },
+    "Mark as not done": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отметить невыполненной"
+          }
+        }
+      }
+    },
     "Missing Google client ID.": {
       "localizations": {
         "ru": {
@@ -164,22 +605,22 @@
         }
       }
     },
-    "Move to %@": {
+    "Month": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Переместить в «%@»"
+            "value": "Месяц"
           }
         }
       }
     },
-    "Move to Inbox": {
+    "Move": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Переместить во «Входящие»"
+            "value": "Переместить"
           }
         }
       }
@@ -214,6 +655,36 @@
         }
       }
     },
+    "Next one": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Следующая"
+          }
+        }
+      }
+    },
+    "No completed tasks": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет выполненных задач"
+          }
+        }
+      }
+    },
+    "No task selected": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Задача не выбрана"
+          }
+        }
+      }
+    },
     "No tasks yet": {
       "localizations": {
         "ru": {
@@ -240,6 +711,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Заметка"
+          }
+        }
+      }
+    },
+    "Notes": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заметки"
+          }
+        }
+      }
+    },
+    "Nothing for today": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На сегодня ничего"
+          }
+        }
+      }
+    },
+    "Nothing planned": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ничего не запланировано"
+          }
+        }
+      }
+    },
+    "On schedule": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "По расписанию"
           }
         }
       }
@@ -284,6 +795,26 @@
         }
       }
     },
+    "Reminder": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Напоминание"
+          }
+        }
+      }
+    },
+    "Remove tag %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить тег %@"
+          }
+        }
+      }
+    },
     "Rename": {
       "localizations": {
         "ru": {
@@ -304,12 +835,42 @@
         }
       }
     },
+    "Repeat": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повтор"
+          }
+        }
+      }
+    },
+    "Repeats": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторяется"
+          }
+        }
+      }
+    },
     "Save": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Сохранить"
+          }
+        }
+      }
+    },
+    "Search all tasks": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Поиск по всем задачам"
           }
         }
       }
@@ -354,6 +915,26 @@
         }
       }
     },
+    "Someday": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Когда-нибудь"
+          }
+        }
+      }
+    },
+    "Tags": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Теги"
+          }
+        }
+      }
+    },
     "Task": {
       "localizations": {
         "ru": {
@@ -370,6 +951,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Убитый Wunderlist"
+          }
+        }
+      }
+    },
+    "This Evening": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня вечером"
           }
         }
       }
@@ -394,6 +985,46 @@
         }
       }
     },
+    "Time": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Время"
+          }
+        }
+      }
+    },
+    "Today": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня"
+          }
+        }
+      }
+    },
+    "Tomorrow": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Завтра"
+          }
+        }
+      }
+    },
+    "Try typing \"tomorrow\" or \"friday\" in a new task.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Попробуйте написать в новой задаче «завтра» или «в пятницу»."
+          }
+        }
+      }
+    },
     "Undone": {
       "localizations": {
         "ru": {
@@ -414,12 +1045,62 @@
         }
       }
     },
+    "Unit": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Единица"
+          }
+        }
+      }
+    },
+    "Upcoming": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предстоящие"
+          }
+        }
+      }
+    },
     "Upload failed": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Не удалось загрузить"
+          }
+        }
+      }
+    },
+    "Week": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Неделя"
+          }
+        }
+      }
+    },
+    "When": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Когда"
+          }
+        }
+      }
+    },
+    "Year": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Год"
           }
         }
       }

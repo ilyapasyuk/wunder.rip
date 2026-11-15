@@ -1,21 +1,42 @@
 import Combine
 import FirebaseDatabase
 import Foundation
+import UIKit
 
 @MainActor
 final class AppState: ObservableObject {
     @Published var todos: [Todo] = []
     @Published var folders: [TodoFolder] = []
-    @Published var currentFolderId: String?
+    /// Sidebar selection. Optional because a compact split view clears it when you go back to the sidebar.
+    @Published var destination: Destination? = .smart(.today)
+    /// Task shown in the detail column. Lives here, not in a view, so it survives size-class changes (fold/unfold, iPad multitasking).
+    @Published var selectedTaskId: String?
+    /// The local calendar day; refreshed at midnight and when the app comes back.
+    @Published private(set) var today = Day.today()
+
+    /// DEBUG `-demo 1`: sample data, no Firebase; edits stay in memory.
+    @Published private(set) var isDemo = false
 
     private var tasksHandle: DatabaseHandle?
     private var foldersHandle: DatabaseHandle?
     private var observedUserId: String?
+    private var dayObserver: AnyCancellable?
 
     private let db = DatabaseService.shared
 
+    init() {
+        dayObserver = NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)
+            .merge(with: NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification))
+            .sink { [weak self] _ in self?.refreshToday() }
+    }
+
+    func refreshToday() {
+        let now = Day.today()
+        if now != today { today = now }
+    }
+
     func attach(userId: String?) {
-        guard userId != observedUserId else { return }
+        guard !isDemo, userId != observedUserId else { return }
         detach()
         observedUserId = userId
         guard let userId else { return }
@@ -32,8 +53,8 @@ final class AppState: ObservableObject {
             guard let self else { return }
             self.folders = folders
             self.saveSnapshot()
-            if let currentFolderId = self.currentFolderId, !folders.contains(where: { $0.id == currentFolderId }) {
-                self.currentFolderId = nil
+            if let destination = self.destination, !destination.exists(in: folders) {
+                self.destination = .inbox
             }
         }
     }
@@ -51,7 +72,8 @@ final class AppState: ObservableObject {
         foldersHandle = nil
         todos = []
         folders = []
-        currentFolderId = nil
+        destination = .smart(.today)
+        selectedTaskId = nil
         observedUserId = nil
     }
 
@@ -60,21 +82,151 @@ final class AppState: ObservableObject {
         SnapshotStore.save(Snapshot(userId: observedUserId, todos: todos, folders: folders, savedAt: .now))
     }
 
-    var visibleTodos: [Todo] {
-        todos.filter { $0.folderId == currentFolderId }
+    // MARK: - Reading
+
+    func todo(id: String?) -> Todo? {
+        guard let id else { return nil }
+        return todos.first { $0.id == id }
     }
 
-    var currentFolderName: String {
-        guard let currentFolderId else { return String(localized: "Inbox") }
-        return folders.first(where: { $0.id == currentFolderId })?.name ?? String(localized: "Inbox")
-    }
-
-    func counts() -> [String: Int] {
-        var map: [String: Int] = ["__inbox__": 0]
-        for todo in todos where !todo.done {
-            let key = todo.folderId ?? "__inbox__"
-            map[key, default: 0] += 1
+    func title(of destination: Destination) -> String {
+        switch destination {
+        case let .smart(list): list.title
+        case .inbox: String(localized: "Inbox")
+        case let .list(id): folders.first { $0.id == id }?.name ?? String(localized: "Inbox")
         }
-        return map
     }
+
+    var allTags: [String] { TagSuggestions.suggestions(for: "", in: todos, excluding: [], limit: .max) }
+
+    // MARK: - Writing (Firebase, or memory in demo mode)
+
+    /// Creates a task from the compose bar; a plan typed in the text wins over the current view's default.
+    func create(_ entry: QuickEntry) {
+        let title = Todo.cleanTitle(entry.title)
+        guard !title.isEmpty else { return }
+        let plan = entry.plan(in: destination ?? .inbox, today: today)
+        if isDemo {
+            var todo = Todo(id: "demo-\(UUID().uuidString)", dictionary: Todo.new(
+                title: title, folderId: plan.folderId, when: plan.when, deadline: entry.deadline, tags: entry.tags
+            ))
+            todo.order = (todos.map(\.order).min() ?? 0) - 1
+            todos.append(todo)
+        } else if let userId = observedUserId {
+            db.createTask(title, folderId: plan.folderId, when: plan.when, deadline: entry.deadline, tags: entry.tags, userId: userId)
+        }
+    }
+
+    /// Every "done" toggle goes through here, so completion always follows the model (repeats, completedAt).
+    func toggleDone(_ todo: Todo) {
+        todo.done ? reopen(todo) : complete(todo)
+    }
+
+    func complete(_ todo: Todo) {
+        refreshToday()
+        if isDemo {
+            let (completed, next) = todo.complete(today: today, now: Date().millisecondsSince1970, nextId: "demo-\(UUID().uuidString)")
+            replace(completed)
+            if let next { todos.append(next) }
+        } else if let userId = observedUserId {
+            db.complete(todo, today: today, userId: userId)
+        }
+    }
+
+    func reopen(_ todo: Todo) {
+        if isDemo {
+            replace(todo.reopened())
+        } else if let userId = observedUserId {
+            db.reopen(todo, userId: userId)
+        }
+    }
+
+    func update(_ todo: Todo) {
+        if isDemo {
+            replace(todo)
+        } else if let userId = observedUserId {
+            db.updateTask(todo, userId: userId)
+        }
+    }
+
+    func delete(_ todo: Todo) {
+        if selectedTaskId == todo.id { selectedTaskId = nil }
+        if isDemo {
+            todos.removeAll { $0.id == todo.id }
+        } else if let userId = observedUserId {
+            db.deleteTask(todo.id, userId: userId)
+        }
+    }
+
+    func move(_ todo: Todo, to folderId: String?) {
+        if isDemo {
+            var moved = todo
+            moved.folderId = folderId
+            moved.order = -Date().millisecondsSince1970
+            replace(moved)
+        } else if let userId = observedUserId {
+            db.moveTask(todo.id, toFolder: folderId, userId: userId)
+        }
+    }
+
+    /// Drag-to-reorder inside `items` (one section): renumbers just those tasks.
+    func reorder(_ items: [Todo], moving draggedId: String, onto targetId: String) {
+        var items = items
+        guard draggedId != targetId,
+              let from = items.firstIndex(where: { $0.id == draggedId }),
+              let to = items.firstIndex(where: { $0.id == targetId })
+        else { return }
+        items.insert(items.remove(at: from), at: to)
+        for index in items.indices { items[index].order = Double(index) }
+        if isDemo {
+            items.forEach(replace)
+        } else if let userId = observedUserId {
+            db.updateTasksOrder(items, userId: userId)
+        }
+    }
+
+    func createFolder(_ name: String) {
+        let value = TodoFolder.cleanName(name)
+        guard !value.isEmpty else { return }
+        if isDemo {
+            folders.append(TodoFolder(id: "demo-\(UUID().uuidString)", name: value, createdAt: 0, order: Double(folders.count)))
+        } else if let userId = observedUserId {
+            db.createFolder(value, userId: userId)
+        }
+    }
+
+    func renameFolder(_ folder: TodoFolder, to name: String) {
+        let value = TodoFolder.cleanName(name)
+        guard !value.isEmpty else { return }
+        if isDemo {
+            if let index = folders.firstIndex(where: { $0.id == folder.id }) { folders[index].name = value }
+        } else if let userId = observedUserId {
+            db.renameFolder(folder.id, name: value, userId: userId)
+        }
+    }
+
+    func deleteFolder(_ folder: TodoFolder) {
+        if destination == .list(folder.id) { destination = .inbox }
+        if isDemo {
+            folders.removeAll { $0.id == folder.id }
+            for index in todos.indices where todos[index].folderId == folder.id { todos[index].folderId = nil }
+        } else if let userId = observedUserId {
+            db.deleteFolder(folder.id, userId: userId, tasks: todos)
+        }
+    }
+
+    private func replace(_ todo: Todo) {
+        if let index = todos.firstIndex(where: { $0.id == todo.id }) { todos[index] = todo }
+    }
+
+    // MARK: - Demo
+
+    #if DEBUG
+    func startDemo(todos: [Todo], folders: [TodoFolder]) {
+        detach()
+        isDemo = true
+        self.todos = todos
+        self.folders = folders
+    }
+    #endif
 }

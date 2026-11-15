@@ -11,7 +11,11 @@ struct WunderRipApp: App {
         FirebaseApp.configure()
         DatabaseService.enableOfflinePersistence()
         _auth = StateObject(wrappedValue: AuthService.shared)
-        _appState = StateObject(wrappedValue: AppState())
+        let appState = AppState()
+        #if DEBUG
+        if DemoData.isRequested { DemoData.start(appState) }
+        #endif
+        _appState = StateObject(wrappedValue: appState)
     }
 
     var body: some Scene {

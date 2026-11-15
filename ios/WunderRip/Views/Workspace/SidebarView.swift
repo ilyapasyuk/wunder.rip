@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SidebarView: View {
     @EnvironmentObject private var appState: AppState
-    @EnvironmentObject private var auth: AuthService
 
     @State private var newFolderName = ""
     @State private var renamingFolder: TodoFolder?
@@ -10,58 +9,57 @@ struct SidebarView: View {
     @State private var folderPendingDelete: TodoFolder?
 
     var body: some View {
-        List(selection: Binding(
-            get: { appState.currentFolderId },
-            set: { appState.currentFolderId = $0 }
-        )) {
-            let counts = appState.counts()
-
-            Label {
-                HStack {
-                    Text("Inbox")
-                    Spacer()
-                    if counts["__inbox__", default: 0] > 0 {
-                        Text("\(counts["__inbox__", default: 0])")
-                            .foregroundStyle(.secondary)
-                    }
+        List(selection: $appState.destination) {
+            Section {
+                ForEach(SmartList.allCases, id: \.self) { list in
+                    row(.smart(list), title: list.title)
                 }
-            } icon: {
-                Image(systemName: "tray")
             }
-            .tag(Optional<String>.none)
+
+            Section {
+                row(.inbox, title: String(localized: "Inbox"))
+            }
 
             Section("Lists") {
                 ForEach(appState.folders) { folder in
-                    HStack {
-                        Text(folder.name)
-                        Spacer()
-                        let count = counts[folder.id, default: 0]
-                        if count > 0 {
-                            Text("\(count)").foregroundStyle(.secondary)
+                    row(.list(folder.id), title: folder.name)
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                folderPendingDelete = folder
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                            Button {
+                                renamingFolder = folder
+                                renameText = folder.name
+                            } label: {
+                                Label("Rename", systemImage: "pencil")
+                            }
+                            .tint(.orange)
                         }
-                    }
-                    .tag(Optional.some(folder.id))
-                    .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                            folderPendingDelete = folder
-                        } label: {
-                            Label("Delete", systemImage: "trash")
+                        .contextMenu {
+                            Button {
+                                renamingFolder = folder
+                                renameText = folder.name
+                            } label: {
+                                Label("Rename", systemImage: "pencil")
+                            }
+                            Button(role: .destructive) {
+                                folderPendingDelete = folder
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
                         }
-                        Button {
-                            renamingFolder = folder
-                            renameText = folder.name
-                        } label: {
-                            Label("Rename", systemImage: "pencil")
-                        }
-                        .tint(.orange)
-                    }
                 }
 
                 HStack {
                     Image(systemName: "plus")
                         .foregroundStyle(.secondary)
                     TextField("New list...", text: $newFolderName)
-                        .onSubmit(createFolder)
+                        .onSubmit {
+                            appState.createFolder(newFolderName)
+                            newFolderName = ""
+                        }
                 }
             }
         }
@@ -76,9 +74,7 @@ struct SidebarView: View {
             TextField("Name", text: $renameText)
             Button("Cancel", role: .cancel) { renamingFolder = nil }
             Button("Save") {
-                if let folder = renamingFolder, let userId = auth.user?.id {
-                    DatabaseService.shared.renameFolder(folder.id, name: renameText, userId: userId)
-                }
+                if let folder = renamingFolder { appState.renameFolder(folder, to: renameText) }
                 renamingFolder = nil
             }
         }
@@ -91,22 +87,28 @@ struct SidebarView: View {
             titleVisibility: .visible
         ) {
             Button("Delete List", role: .destructive) {
-                if let folder = folderPendingDelete, let userId = auth.user?.id {
-                    if appState.currentFolderId == folder.id {
-                        appState.currentFolderId = nil
-                    }
-                    DatabaseService.shared.deleteFolder(folder.id, userId: userId, tasks: appState.todos)
-                }
+                if let folder = folderPendingDelete { appState.deleteFolder(folder) }
                 folderPendingDelete = nil
             }
             Button("Cancel", role: .cancel) { folderPendingDelete = nil }
         }
     }
 
-    private func createFolder() {
-        let value = TodoFolder.cleanName(newFolderName)
-        guard !value.isEmpty, let userId = auth.user?.id else { return }
-        newFolderName = ""
-        DatabaseService.shared.createFolder(value, userId: userId)
+    private func row(_ destination: Destination, title: String) -> some View {
+        Label {
+            HStack {
+                Text(title)
+                Spacer()
+                if let count = destination.badgeCount(of: appState.todos, today: appState.today), count > 0 {
+                    Text("\(count)")
+                        .foregroundStyle(destination == .smart(.today) ? AnyShapeStyle(.primary) : AnyShapeStyle(.secondary))
+                        .monospacedDigit()
+                }
+            }
+        } icon: {
+            Image(systemName: destination.symbol)
+                .foregroundStyle(destination.color)
+        }
+        .tag(destination)
     }
 }

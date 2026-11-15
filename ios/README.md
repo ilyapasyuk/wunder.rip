@@ -12,10 +12,14 @@ open WunderRip.xcodeproj   # scheme WunderRip (app + Share Extension + tests)
 `project.yml` is the source of truth; never edit the `.xcodeproj` by hand, regenerate it and commit both.
 Tests: `xcodebuild -project WunderRip.xcodeproj -scheme WunderRip -destination 'platform=iOS Simulator,name=iPhone 18 Pro' test`
 
+Simulator without signing in (DEBUG only): launch with `-demo 1` for sample tasks in every list and badge;
+`-demoDestination upcoming|anytime|someday|logbook|inbox|work|sidebar`, `-demoTask review`, `-demoCompose "Call tomorrow at 9"`
+pick what opens (see `WunderRip/Store/DemoData.swift`). Edits stay in memory.
+
 ## Layout
 | Folder | Targets | What |
 | --- | --- | --- |
-| `Core/` | app, share, tests (later widgets, watch) | Models + parsing of database nodes, `AppConfig` (App Group), `Outbox`, `SnapshotStore`. No Firebase here. |
+| `Core/` | app, share, tests (later widgets, watch) | Models + parsing of database nodes, `AppConfig` (App Group), `Outbox`, `SnapshotStore`; `Core/Planning`: navigation sections, row badges, quick-entry parser, search, multi-path writes. No Firebase here. |
 | `Shared/` | app, share | `Localizable.xcstrings` (en, ru) |
 | `WunderRip/` | app | Firebase services (auth, database), `AppState`, views |
 | `WunderRipShare/` | share | Share sheet UI; writes to the outbox |
