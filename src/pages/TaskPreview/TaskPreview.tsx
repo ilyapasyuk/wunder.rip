@@ -11,6 +11,7 @@ import { getUserRoute } from 'services/db-paths'
 import { db } from 'services/firebase'
 import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
 import { Todo, updateTask } from 'services/task'
+import { parseTodo } from 'services/task-record'
 import { StoreContext } from 'store/store'
 
 interface TaskPreviewProps {
@@ -90,7 +91,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
       const unsubscribe = onValue(taskRef, snapshot => {
         const item = snapshot.val()
         if (item) {
-          setTodo({ ...item, id })
+          setTodo(parseTodo(id, item))
           setStatus('ready')
           if (!wasLoaded) trackTaskViewed()
           wasLoaded = true

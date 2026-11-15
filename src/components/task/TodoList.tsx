@@ -8,7 +8,7 @@ import { FormEvent, ReactNode, useContext, useMemo, useState } from 'react'
 import { useMatch, useNavigate } from 'react-router-dom'
 import { ROUTE } from 'routes'
 import { Folder } from 'services/folder'
-import { createTodo, deleteTodo, Todo, updateTask } from 'services/task'
+import { createTodo, deleteTodo, Todo, toggleTodoDone } from 'services/task'
 import { StoreContext } from 'store/store'
 
 interface TodoListProps {
@@ -32,13 +32,8 @@ const TodoList = ({ visibleTodos, todosStatus, folders, foldersStatus }: TodoLis
   }
 
   const handleToggleDone = async (todo: Todo) => {
-    const value: Todo = {
-      ...todo,
-      done: !todo.done,
-    }
-
     if (todo.id && state?.user?.id) {
-      await updateTask(value, state?.user?.id)
+      await toggleTodoDone(todo, state.user.id)
       trackTaskCompleted(!todo.done)
     }
   }
