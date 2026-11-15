@@ -1,4 +1,11 @@
-import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import {
+  type AuthProvider,
+  GoogleAuthProvider,
+  OAuthProvider,
+  signInWithPopup,
+  signOut,
+  type User as FirebaseUser,
+} from 'firebase/auth'
 
 import { trackLogin } from 'lib/analytics'
 import { auth } from 'services/firebase'
@@ -12,18 +19,26 @@ export type User = {
 }
 
 export enum PROVIDER {
-  FACEBOOK = 'facebook',
   GOOGLE = 'google',
+  APPLE = 'apple',
 }
 
-const getProvider = (provider: PROVIDER): GoogleAuthProvider | GithubAuthProvider => {
+const getProvider = (provider: PROVIDER): AuthProvider => {
   switch (provider) {
     case PROVIDER.GOOGLE:
       return new GoogleAuthProvider()
-    case PROVIDER.FACEBOOK:
-      return new GithubAuthProvider()
+    case PROVIDER.APPLE: {
+      const apple = new OAuthProvider('apple.com')
+      apple.addScope('email')
+      apple.addScope('name')
+      return apple
+    }
   }
 }
+
+/** The provider the user signed up with (Firebase "one account per email": there is exactly one). */
+const getUserProvider = (user: FirebaseUser): PROVIDER =>
+  user.providerData.some(p => p.providerId === 'apple.com') ? PROVIDER.APPLE : PROVIDER.GOOGLE
 
 const signIn = async (
   provider: PROVIDER,
@@ -45,6 +60,16 @@ const signIn = async (
       user: preparedUser,
     }
   } catch (error) {
+    const code = (error as { code?: string })?.code
+    if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+      return { error: error as Error }
+    }
+    if (code === 'auth/account-exists-with-different-credential') {
+      notify.error(
+        'This email is already registered with another sign-in method. Use the one you signed up with.',
+      )
+      return { error: error as Error }
+    }
     const errorMessage = `Login error: ${error}`
     console.error(errorMessage)
     notify.error(errorMessage)
@@ -58,4 +83,4 @@ const logOut = async (): Promise<void> => {
   return signOut(auth)
 }
 
-export { logOut, signIn }
+export { getProvider, getUserProvider, logOut, signIn }

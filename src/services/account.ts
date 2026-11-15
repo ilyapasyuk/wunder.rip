@@ -1,6 +1,7 @@
-import { deleteUser, GoogleAuthProvider, reauthenticateWithPopup } from 'firebase/auth'
+import { deleteUser, reauthenticateWithPopup } from 'firebase/auth'
 import { ref, remove } from 'firebase/database'
 
+import { getProvider, getUserProvider } from 'services/auth'
 import { auth, db } from 'services/firebase'
 import { getFoldersRoute, getUserRoute } from 'services/db-paths'
 
@@ -10,10 +11,10 @@ const deleteAccount = async (userId: string): Promise<void> => {
     throw new Error('Not signed in')
   }
 
-  // Re-confirm with the identity provider. The Google popup doubles as the
-  // final "are you sure" gate; cancelling it aborts the whole flow before any
-  // data is removed.
-  await reauthenticateWithPopup(current, new GoogleAuthProvider())
+  // Re-confirm with the identity provider. The popup doubles as the final
+  // "are you sure" gate; cancelling it aborts the whole flow before any data
+  // is removed.
+  await reauthenticateWithPopup(current, getProvider(getUserProvider(current)))
 
   await Promise.all([
     remove(ref(db, getUserRoute(userId))),

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { PROVIDER } from 'services/auth'
 
+import { AppleIcon } from './AppleIcon'
 import { GoogleIcon } from './GoogleIcon'
 
 interface Props {
@@ -19,7 +20,15 @@ const LoginForm = ({ onLogin }: Props) => {
           Tasks, notes and images in one place. Synced to your phone.
         </p>
 
-        <div className="mt-10 rounded-3xl bg-muted shadow-card p-3">
+        <div className="mt-10 rounded-3xl bg-muted shadow-card p-3 flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => onLogin(PROVIDER.APPLE)}
+            className="w-full h-16 inline-flex items-center justify-center gap-3 rounded-2xl bg-black text-white dark:bg-white dark:text-black shadow-tile text-[17px] font-semibold transition-transform hover:scale-[1.01] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+          >
+            <AppleIcon className="size-5 shrink-0" />
+            <span>Continue with Apple</span>
+          </button>
           <button
             type="button"
             onClick={() => onLogin(PROVIDER.GOOGLE)}

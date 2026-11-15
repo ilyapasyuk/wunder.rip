@@ -4,7 +4,8 @@ import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { deleteAccount } from 'services/account'
-import { logOut } from 'services/auth'
+import { getUserProvider, logOut, PROVIDER } from 'services/auth'
+import { auth } from 'services/firebase'
 import { notify } from 'lib/notify'
 
 import { DeleteAccountDialog } from './DeleteAccountDialog'
@@ -66,7 +67,10 @@ const Account = () => {
               {user.email}
             </div>
             <div className="text-xs text-text-secondary/80 dark:text-text-dark-secondary/80 mt-1">
-              Signed in with Google
+              Signed in with{' '}
+              {auth.currentUser && getUserProvider(auth.currentUser) === PROVIDER.APPLE
+                ? 'Apple'
+                : 'Google'}
             </div>
           </div>
         </div>
@@ -91,8 +95,8 @@ const Account = () => {
           <div className="flex-1 min-w-0">
             <h2 className="text-base font-semibold text-danger">Danger zone</h2>
             <p className="mt-1 text-sm text-text-primary dark:text-text-dark-primary">
-              Permanently delete your account and all associated data. This action cannot be
-              undone. Images uploaded to Cloudinary live on public URLs and are not removed.
+              Permanently delete your account and all associated data. This action cannot be undone.
+              Images uploaded to Cloudinary live on public URLs and are not removed.
             </p>
 
             <button
