@@ -62,6 +62,8 @@ targets:
       - target: WunderRipShare
         embed: true
       - target: WunderRipWatch
+      - target: WunderRipWidget
+        embed: true
   WunderRipShare:
     type: app-extension
     platform: iOS
@@ -78,6 +80,25 @@ targets:
         INFOPLIST_FILE: WunderRipShare/Info.plist
         CODE_SIGN_ENTITLEMENTS: WunderRipShare/WunderRipShare.entitlements
         SKIP_INSTALL: YES
+  WunderRipWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: WunderRipWidget
+      - path: Core
+        excludes: ["CloudinaryService.swift", "WatchLink.swift", "Outbox.swift"]
+      - path: Shared/Localizable.xcstrings
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilyapasyuk.wunderrip.widget
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: WunderRipWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: WunderRipWidget/WunderRipWidget.entitlements
+        SKIP_INSTALL: YES
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
   WunderRipWatch:
     type: application
     platform: watchOS

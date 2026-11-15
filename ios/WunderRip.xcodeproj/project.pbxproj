@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0ADEA932E106A4AFFB52737D /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		0BEA7DAF06BC86F87B12172D /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
 		0D75AEC81980455D53BEA3F3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		10AF6296A528A0F057264B76 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		12DD05FA8F961776E2C74BE3 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5282213028D2320D36CCE6AA /* AppUser.swift */; };
 		13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		14EC914D7A292553863CE3CD /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569BCF3C0791860A542D1587 /* DatabaseService.swift */; };
+		16A07395796BDCA4B608ACFD /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		190341AE6650853C7B494364 /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEBAD884D28D013046133 /* CoreTests.swift */; };
 		1928D19C60C82B8BF1AC9D4B /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */; };
@@ -23,6 +25,8 @@
 		2782EFC5670A5938FB92EBD9 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
 		3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		354A50C72DE6591850AC589C /* WatchLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */; };
+		365AF6B1E6C41BF5B8990840 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		37CEB6BA00AC739D53A7F31D /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0023BDF092965B4B44272C79 /* TodayWidget.swift */; };
 		38914C161F05B4534658A304 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EED33454B0EB020EDFB5B0 /* AppState.swift */; };
 		3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		3D974C47B55E7A20BDC38658 /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
@@ -30,6 +34,7 @@
 		455D4796968828901CBE6CA2 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
 		46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E23EE22863326A196424E6 /* TaskRowView.swift */; };
 		4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A089D98F38172363B2555B1 /* GoogleSignIn */; };
+		4E5E1C64F88C317AE0E4FAF5 /* WunderRipWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 75EB0C5118BDB995D06C079B /* WunderRipWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52C8D2029FC679252E3D48DA /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
 		5501711F50A59716FF817EDE /* WatchStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EF0B11BA1EA215A2011FB2 /* WatchStore.swift */; };
 		5AAB4223316F766EB8A5DD23 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
@@ -41,8 +46,14 @@
 		66AF253A87408AB3196E47C7 /* SharedContentExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E1DD0DF33EDF51729CCAF2 /* SharedContentExtractor.swift */; };
 		678C651DE5A92433745314E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */; };
 		79F8866E700F9B578518780A /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
+		7B8F76FFEC8349A1A17724F4 /* CompleteTaskIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E862467A4D3C1314D0028615 /* CompleteTaskIntent.swift */; };
+		8055FDE021254EC45C11E73A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D22093C4BA528ACAEA23DAE /* WidgetKit.framework */; };
 		8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */; };
+		869DCECB9073F01877891F02 /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		8B1E90DBFCB08CD2E137C04B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
+		8C0F410834067B17F9105E8D /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
+		8CFB0CD6013B750E7FBEC96F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 599097CAF86EEE94B829D2F2 /* SwiftUI.framework */; };
 		8E7249FA4191B72C26C9CBA0 /* WunderRipWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C042607845B9AD100BD6D548 /* WunderRipWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		99BFB0EDEB5BA684FC403E86 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
 		9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
@@ -69,6 +80,8 @@
 		DFF2C5F34F620F15E267D8EA /* model-vectors.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A978D84264CB1DD92331FD2 /* model-vectors.json */; };
 		E4A365B703FD6149A77EC47B /* ModelVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */; };
 		E4AD1574D22921856BF2E7A6 /* WatchLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */; };
+		E948FE7B92200647744B389B /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
+		F3A46121C274E2970894F63A /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		F46E000EE72CE5CB0AB94CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACB0BD8D04FD00E3185B6866 /* Assets.xcassets */; };
 		F50C5CD208763E29C1CA2ED5 /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
 		F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F5672730F3646BA31D3C9E /* TaskListView.swift */; };
@@ -78,6 +91,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C0F920E3517BDAAAB55E1A88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E07298A59A9D31B3A805BE65 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F827D96CA0D10732DF6DC9A3;
+			remoteInfo = WunderRipWidget;
+		};
 		CEE384689884A028E6BDF306 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E07298A59A9D31B3A805BE65 /* Project object */;
@@ -102,6 +122,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				A4DCB78406254BB513FB7F60 /* WunderRipShare.appex in Embed Foundation Extensions */,
+				4E5E1C64F88C317AE0E4FAF5 /* WunderRipWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,11 +141,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0023BDF092965B4B44272C79 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
 		02F1514601CBDA06C7C717CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoPlanning.swift; sourceTree = "<group>"; };
 		1489F0F5E519622B0C661FE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A978D84264CB1DD92331FD2 /* model-vectors.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "model-vectors.json"; sourceTree = "<group>"; };
 		22060C0DF4BF958D3B15DE46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		2CFF6FC4D77C89B246F0EE49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2D22093C4BA528ACAEA23DAE /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C3DEBAD884D28D013046133 /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
 		439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
@@ -132,12 +156,15 @@
 		45F01C893F75AC1D7721D10E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		464B4BD14AF06C02C64E206F /* DeviceAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAPITests.swift; sourceTree = "<group>"; };
 		48A024CC0F37D791F4510075 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		4C979D460A8224F30D0B31AA /* WunderRipWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRipWidget.entitlements; sourceTree = "<group>"; };
 		5282213028D2320D36CCE6AA /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		569BCF3C0791860A542D1587 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		599097CAF86EEE94B829D2F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		62368401FD1ACBEE0778BE04 /* WunderRip.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WunderRip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		628F298A8E5BA8111EA2A1FE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		68E1DD0DF33EDF51729CCAF2 /* SharedContentExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContentExtractor.swift; sourceTree = "<group>"; };
 		6CE91ACB9764778E2A054440 /* TodoFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoFolder.swift; sourceTree = "<group>"; };
+		75EB0C5118BDB995D06C079B /* WunderRipWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = WunderRipWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		76A4CB141F0F54E8B4D265A9 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		76D049984A1ED912F525640A /* WunderRipShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = WunderRipShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
@@ -165,6 +192,7 @@
 		C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVectorTests.swift; sourceTree = "<group>"; };
 		CC9465BF944DB6301ACF3CEA /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		E0E31506884E51A5E83B28EC /* WunderRip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRip.entitlements; sourceTree = "<group>"; };
+		E862467A4D3C1314D0028615 /* CompleteTaskIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTaskIntent.swift; sourceTree = "<group>"; };
 		E9BEE65F7040810E171A22FB /* WunderRipShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRipShare.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +204,15 @@
 				A3AABFDD03EC50C7D0E6CDE4 /* FirebaseAuth in Frameworks */,
 				19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */,
 				4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C92CB9FCC2AB2ADFD1454924 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8055FDE021254EC45C11E73A /* WidgetKit.framework in Frameworks */,
+				8CFB0CD6013B750E7FBEC96F /* SwiftUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +234,17 @@
 			);
 			name = wunder.rip;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		1F738D8A2E19F832EAFFD7A0 /* WunderRipWidget */ = {
+			isa = PBXGroup;
+			children = (
+				E862467A4D3C1314D0028615 /* CompleteTaskIntent.swift */,
+				2CFF6FC4D77C89B246F0EE49 /* Info.plist */,
+				0023BDF092965B4B44272C79 /* TodayWidget.swift */,
+				4C979D460A8224F30D0B31AA /* WunderRipWidget.entitlements */,
+			);
+			path = WunderRipWidget;
 			sourceTree = "<group>";
 		};
 		2C8A262874522139C8D1C69B /* WunderRip */ = {
@@ -249,6 +297,15 @@
 				C34233A831F9BEAC8A64DE8E /* WunderRipWatchApp.swift */,
 			);
 			path = WunderRipWatch;
+			sourceTree = "<group>";
+		};
+		6B739C16344982ACAD08D581 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				599097CAF86EEE94B829D2F2 /* SwiftUI.framework */,
+				2D22093C4BA528ACAEA23DAE /* WidgetKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		77EA88490940FD6443127D7F /* Workspace */ = {
@@ -311,6 +368,8 @@
 				8D8880904402B7FBB031017E /* WunderRipShare */,
 				586A4821D00060725CCD7F2E /* WunderRipTests */,
 				6B58C9ED887FB4DD8383D553 /* WunderRipWatch */,
+				1F738D8A2E19F832EAFFD7A0 /* WunderRipWidget */,
+				6B739C16344982ACAD08D581 /* Frameworks */,
 				DF099A05E23316E7DE07E4DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -358,6 +417,7 @@
 				76D049984A1ED912F525640A /* WunderRipShare.appex */,
 				9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */,
 				C042607845B9AD100BD6D548 /* WunderRipWatch.app */,
+				75EB0C5118BDB995D06C079B /* WunderRipWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -423,6 +483,7 @@
 			dependencies = (
 				6C81DDD9F75F9F20C6E71617 /* PBXTargetDependency */,
 				CEB630C9D6E2D7DB267F1AC8 /* PBXTargetDependency */,
+				EF4295529F402149763A6B7B /* PBXTargetDependency */,
 			);
 			name = WunderRip;
 			packageProductDependencies = (
@@ -470,6 +531,25 @@
 			productReference = 9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		F827D96CA0D10732DF6DC9A3 /* WunderRipWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCE34DA0462F69D4E019B75D /* Build configuration list for PBXNativeTarget "WunderRipWidget" */;
+			buildPhases = (
+				AB5825FD6014CDFE2CC059E8 /* Sources */,
+				F8EDF313BBA2D4E0A776A945 /* Resources */,
+				C92CB9FCC2AB2ADFD1454924 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WunderRipWidget;
+			packageProductDependencies = (
+			);
+			productName = WunderRipWidget;
+			productReference = 75EB0C5118BDB995D06C079B /* WunderRipWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -495,6 +575,10 @@
 						DevelopmentTeam = 26VYTSFAG2;
 						ProvisioningStyle = Automatic;
 					};
+					F827D96CA0D10732DF6DC9A3 = {
+						DevelopmentTeam = 26VYTSFAG2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 8B21AD6D40137FFCCA4DE929 /* Build configuration list for PBXProject "WunderRip" */;
@@ -517,6 +601,7 @@
 			targets = (
 				1D37AFD5C1386B8773EBC072 /* WunderRip */,
 				0B1154A2AB08F43F1B636970 /* WunderRipShare */,
+				F827D96CA0D10732DF6DC9A3 /* WunderRipWidget */,
 				4A9B5B72A974E2CED5B9AF99 /* WunderRipWatch */,
 				ED13BF8D27602993702ED21B /* WunderRipTests */,
 			);
@@ -559,6 +644,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F8EDF313BBA2D4E0A776A945 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B1E90DBFCB08CD2E137C04B /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -595,6 +688,22 @@
 				BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */,
 				88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */,
 				FBF06D2A60FFED5ECDC689ED /* TodoPlanning.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB5825FD6014CDFE2CC059E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				365AF6B1E6C41BF5B8990840 /* AppConfig.swift in Sources */,
+				7B8F76FFEC8349A1A17724F4 /* CompleteTaskIntent.swift in Sources */,
+				8C0F410834067B17F9105E8D /* DeviceAPI.swift in Sources */,
+				869DCECB9073F01877891F02 /* Planning.swift in Sources */,
+				F3A46121C274E2970894F63A /* Snapshot.swift in Sources */,
+				37CEB6BA00AC739D53A7F31D /* TodayWidget.swift in Sources */,
+				E948FE7B92200647744B389B /* Todo.swift in Sources */,
+				16A07395796BDCA4B608ACFD /* TodoFolder.swift in Sources */,
+				0BEA7DAF06BC86F87B12172D /* TodoPlanning.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,6 +767,11 @@
 			isa = PBXTargetDependency;
 			target = 4A9B5B72A974E2CED5B9AF99 /* WunderRipWatch */;
 			targetProxy = E65AC7FD6CF6ACA61DA382A7 /* PBXContainerItemProxy */;
+		};
+		EF4295529F402149763A6B7B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F827D96CA0D10732DF6DC9A3 /* WunderRipWidget */;
+			targetProxy = C0F920E3517BDAAAB55E1A88 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -788,6 +902,24 @@
 			};
 			name = Release;
 		};
+		63A87F874F802F8F247C9480 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WunderRipWidget/WunderRipWidget.entitlements;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WunderRipWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.widget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		6DDCA50F5990BF1F409E84E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -818,6 +950,24 @@
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.Share;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9DA4589097E8428AFAA6F338 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WunderRipWidget/WunderRipWidget.entitlements;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WunderRipWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.widget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -997,6 +1147,15 @@
 			buildConfigurations = (
 				BF065968F1668AF780812089 /* Debug */,
 				497D5FF17FD5F7386001CC5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CCE34DA0462F69D4E019B75D /* Build configuration list for PBXNativeTarget "WunderRipWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9DA4589097E8428AFAA6F338 /* Debug */,
+				63A87F874F802F8F247C9480 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
