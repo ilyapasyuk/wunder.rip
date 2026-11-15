@@ -11,11 +11,20 @@ final class WatchStore: ObservableObject {
 
     private let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     private var userId = ""
+    /// DEBUG `-demo 1`: sample tasks for screenshots, no phone or API needed; edits stay in memory.
+    private var isDemo = false
     private lazy var api = DeviceAPI(token: { [weak self] in
         MainActor.assumeIsolated { self?.token?.value }
     })
 
     init() {
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "demo") {
+            isDemo = true
+            todos = DemoTasks.make(today: .today(), now: .now, russian: Locale.preferredLanguages.first?.hasPrefix("ru") == true).0
+            return
+        }
+        #endif
         token = DeviceToken.load(container: folder)
         if let snapshot = SnapshotStore.loadAny(container: folder) {
             userId = snapshot.userId
@@ -25,7 +34,7 @@ final class WatchStore: ObservableObject {
         WatchLink.shared.activate()
     }
 
-    var isSignedIn: Bool { token != nil }
+    var isSignedIn: Bool { token != nil || isDemo }
 
     func apply(_ payload: WatchPayload) {
         if payload.signedOut {
@@ -57,7 +66,7 @@ final class WatchStore: ObservableObject {
     }
 
     func refresh() async {
-        guard isSignedIn else { return }
+        guard isSignedIn, !isDemo else { return }
         do {
             let snapshot = try await api.snapshot()
             todos = snapshot.todos
@@ -71,6 +80,7 @@ final class WatchStore: ObservableObject {
         let before = todos
         let result = todo.complete(today: .today(), now: Date.now.millisecondsSince1970, nextId: "pending-\(todo.id)")
         replace(todo.id, with: [result.completed] + (result.next.map { [$0] } ?? []))
+        if isDemo { return }
         Task {
             do {
                 _ = try await api.complete(taskId: todo.id, today: .today())
@@ -92,6 +102,7 @@ final class WatchStore: ObservableObject {
                         order: -Date.now.millisecondsSince1970, isPublic: false, folderId: nil)
         todo.when = when
         todos.insert(todo, at: 0)
+        if isDemo { return }
         Task {
             do {
                 try await api.create(id: id, title: title, when: when, folderId: nil)
