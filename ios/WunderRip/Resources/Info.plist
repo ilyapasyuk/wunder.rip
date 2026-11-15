@@ -13,5 +13,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSRemindersFullAccessUsageDescription</key>
+	<string>wunder.rip reads your reminders once to import them as tasks.</string>
 </dict>
 </plist>

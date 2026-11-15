@@ -7,6 +7,9 @@ struct AccountView: View {
     @State private var showDeleteConfirm = false
     @State private var isDeleting = false
     @State private var errorMessage: String?
+    @State private var isImporting = false
+    @State private var importResult: String?
+    @EnvironmentObject private var appState: AppState
 
     var body: some View {
         Form {
@@ -34,6 +37,23 @@ struct AccountView: View {
                         }
                     }
                 }
+            }
+
+            Section {
+                Button {
+                    importReminders()
+                } label: {
+                    HStack {
+                        Label("Import from Reminders", systemImage: "square.and.arrow.down")
+                        if isImporting {
+                            Spacer()
+                            ProgressView()
+                        }
+                    }
+                }
+                .disabled(isImporting)
+            } footer: {
+                if let importResult { Text(importResult) }
             }
 
             Section {
@@ -76,6 +96,21 @@ struct AccountView: View {
                 deleteAccount()
             }
             Button("Cancel", role: .cancel) {}
+        }
+    }
+
+    private func importReminders() {
+        guard let userId = auth.user?.id else { return }
+        isImporting = true
+        importResult = nil
+        Task {
+            defer { isImporting = false }
+            do {
+                let count = try await RemindersImporter.run(userId: userId, existingFolders: appState.folders)
+                importResult = String(localized: "Imported \(count) tasks.")
+            } catch {
+                importResult = error.localizedDescription
+            }
         }
     }
 

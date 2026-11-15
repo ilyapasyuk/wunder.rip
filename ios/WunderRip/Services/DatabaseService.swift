@@ -146,3 +146,15 @@ final class DatabaseService {
         ])
     }
 }
+
+extension DatabaseService {
+    /// Writes many tasks in one multi-path update; ids come from the caller, so re-running overwrites.
+    func importTasks(_ tasks: [Todo], userId: String) async throws {
+        guard !tasks.isEmpty else { return }
+        var updates: [String: Any] = [:]
+        for task in tasks {
+            updates[DBPaths.task(task.id, for: userId)] = task.dictionary.filter { !($0.value is NSNull) }
+        }
+        try await Database.database().reference().updateChildValues(updates)
+    }
+}
