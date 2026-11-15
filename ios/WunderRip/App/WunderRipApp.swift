@@ -16,6 +16,8 @@ struct WunderRipApp: App {
         if DemoData.isRequested { DemoData.start(appState) }
         #endif
         _appState = StateObject(wrappedValue: appState)
+        SyncHub.shared.activate()
+        appState.connectNotifications()
     }
 
     var body: some Scene {
@@ -24,7 +26,9 @@ struct WunderRipApp: App {
                 .environmentObject(auth)
                 .environmentObject(appState)
                 .onOpenURL { url in
-                    GIDSignIn.sharedInstance.handle(url)
+                    if !appState.open(url) {
+                        GIDSignIn.sharedInstance.handle(url)
+                    }
                 }
         }
     }

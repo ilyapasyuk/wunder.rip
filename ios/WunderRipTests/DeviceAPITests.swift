@@ -78,6 +78,17 @@ final class DeviceAPITests: XCTestCase {
         XCTAssertEqual(snapshot.folders.map(\.name), ["Home"])
     }
 
+    func testSessionExchangesTheFirebaseIdTokenWithoutABearer() async throws {
+        StubProtocol.handler = { _ in (200, Data(#"{"token":"dev-tok","expiresAt":1234}"#.utf8)) }
+        let token = try await api.createSession(idToken: "firebase-id")
+        XCTAssertEqual(token, DeviceToken(value: "dev-tok", expiresAt: 1234))
+        let request = try XCTUnwrap(StubProtocol.requests.first)
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.url?.path, "/api/device/session")
+        XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
+        XCTAssertEqual(body(request)["idToken"] as? String, "firebase-id")
+    }
+
     func testUnauthorizedIsReportedSoTheUserCanSignInAgain() async {
         StubProtocol.handler = { _ in (401, Data()) }
         do {

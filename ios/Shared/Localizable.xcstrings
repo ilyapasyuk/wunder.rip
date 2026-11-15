@@ -14,6 +14,16 @@
     "%lld": {
       "shouldTranslate": false
     },
+    "%lld for today": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На сегодня: %lld"
+          }
+        }
+      }
+    },
     "%lld/%lld": {
       "shouldTranslate": false
     },
@@ -37,12 +47,42 @@
         }
       }
     },
+    "Add ${title} for ${whenOption}": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить ${title} на ${whenOption}"
+          }
+        }
+      }
+    },
     "Add Photo": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "Добавить фото"
+          }
+        }
+      }
+    },
+    "Add Task": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить задачу"
+          }
+        }
+      }
+    },
+    "Add a note...": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить заметку…"
           }
         }
       }
@@ -87,6 +127,26 @@
         }
       }
     },
+    "Added “%@”.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавлено: «%@»."
+          }
+        }
+      }
+    },
+    "Adds a task to wunder.rip.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавляет задачу в wunder.rip."
+          }
+        }
+      }
+    },
     "After completion": {
       "localizations": {
         "ru": {
@@ -97,12 +157,42 @@
         }
       }
     },
+    "Allow access to Reminders in Settings to import them.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разрешите доступ к Напоминаниям в Настройках, чтобы импортировать их."
+          }
+        }
+      }
+    },
     "Anytime": {
       "localizations": {
         "ru": {
           "stringUnit": {
             "state": "translated",
             "value": "В любое время"
+          }
+        }
+      }
+    },
+    "Buy milk": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Купить молоко"
+          }
+        }
+      }
+    },
+    "Call the dentist": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Позвонить стоматологу"
           }
         }
       }
@@ -163,6 +253,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Выполнить"
+          }
+        }
+      }
+    },
+    "Complete Task": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполнить задачу"
           }
         }
       }
@@ -535,6 +635,60 @@
         }
       }
     },
+    "Import from Reminders": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Импорт из Напоминаний"
+          }
+        }
+      }
+    },
+    "Imported %lld tasks.": {
+      "localizations": {
+        "ru": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Импортирована %lld задача."
+                }
+              },
+              "few": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Импортировано %lld задачи."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Импортировано %lld задач."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Импортировано %lld задачи."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "In 1 hour": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Через час"
+          }
+        }
+      }
+    },
     "Inbox": {
       "localizations": {
         "ru": {
@@ -625,6 +779,26 @@
         }
       }
     },
+    "Move to %@": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переместить в «%@»"
+          }
+        }
+      }
+    },
+    "Move to Inbox": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Переместить во «Входящие»"
+          }
+        }
+      }
+    },
     "Name": {
       "localizations": {
         "ru": {
@@ -641,6 +815,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Новый список…"
+          }
+        }
+      }
+    },
+    "New task": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новая задача"
           }
         }
       }
@@ -671,6 +855,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Нет выполненных задач"
+          }
+        }
+      }
+    },
+    "No connection. Try again.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нет связи. Попробуйте ещё раз."
           }
         }
       }
@@ -765,6 +959,16 @@
         }
       }
     },
+    "Open wunder.rip on your iPhone to sign in.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Откройте wunder.rip на iPhone и войдите."
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "ru": {
@@ -781,6 +985,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Фото"
+          }
+        }
+      }
+    },
+    "Read a chapter": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Прочитать главу"
           }
         }
       }
@@ -945,6 +1159,26 @@
         }
       }
     },
+    "Task ID": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID задачи"
+          }
+        }
+      }
+    },
+    "Tasks for today. Tap the circle to complete.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Задачи на сегодня. Нажмите на кружок, чтобы выполнить."
+          }
+        }
+      }
+    },
     "The killed Wunderlist": {
       "localizations": {
         "ru": {
@@ -1081,6 +1315,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Неделя"
+          }
+        }
+      }
+    },
+    "What do you need to do?": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что нужно сделать?"
           }
         }
       }

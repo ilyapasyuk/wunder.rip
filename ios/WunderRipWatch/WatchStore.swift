@@ -28,6 +28,13 @@ final class WatchStore: ObservableObject {
     var isSignedIn: Bool { token != nil }
 
     func apply(_ payload: WatchPayload) {
+        if payload.signedOut {
+            token = nil
+            todos = []
+            DeviceToken.clear(container: folder)
+            SnapshotStore.clear(container: folder)
+            return
+        }
         if let token = payload.token {
             self.token = token
             token.save(container: folder)
@@ -40,16 +47,13 @@ final class WatchStore: ObservableObject {
     }
 
     func today(_ day: Day = .today()) -> (main: [Todo], evening: [Todo]) {
-        var main: [Todo] = [], evening: [Todo] = []
-        for todo in todos {
-            let placement = todo.placement(today: day)
-            guard placement.list == .today else { continue }
-            if placement.evening { evening.append(todo) } else { main.append(todo) }
-        }
-        return (main, evening)
+        let sections = Destination.smart(.today).sections(of: todos, today: day)
+        return (sections.first { $0.kind == .tasks }?.todos ?? [], sections.first { $0.kind == .evening }?.todos ?? [])
     }
 
-    var inbox: [Todo] { todos.filter { $0.folderId == nil && !$0.done } }
+    var inbox: [Todo] {
+        Destination.inbox.sections(of: todos, today: .today()).first { $0.kind == .tasks }?.todos ?? []
+    }
 
     func refresh() async {
         guard isSignedIn else { return }

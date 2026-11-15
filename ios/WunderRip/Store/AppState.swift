@@ -79,7 +79,9 @@ final class AppState: ObservableObject {
 
     private func saveSnapshot() {
         guard let observedUserId else { return }
-        SnapshotStore.save(Snapshot(userId: observedUserId, todos: todos, folders: folders, savedAt: .now))
+        let snapshot = Snapshot(userId: observedUserId, todos: todos, folders: folders, savedAt: .now)
+        SnapshotStore.save(snapshot)
+        SyncHub.shared.snapshotChanged(snapshot)
     }
 
     // MARK: - Reading
@@ -217,6 +219,37 @@ final class AppState: ObservableObject {
 
     private func replace(_ todo: Todo) {
         if let index = todos.firstIndex(where: { $0.id == todo.id }) { todos[index] = todo }
+    }
+
+    // MARK: - Outside the app (notifications, widgets)
+
+    /// Hooks notification buttons to the same writes the UI uses.
+    func connectNotifications() {
+        Notifier.shared.onComplete = { [weak self] taskId in
+            guard let self, let todo = self.todo(id: taskId) else { return }
+            self.complete(todo)
+        }
+        Notifier.shared.onSnooze = { [weak self] taskId, until in
+            guard let self, let todo = self.todo(id: taskId) else { return }
+            self.update(todo.snoozed(until: until))
+        }
+    }
+
+    /// `wunderrip://today`, `wunderrip://inbox`, `wunderrip://task/<id>` (from widgets).
+    @discardableResult
+    func open(_ url: URL) -> Bool {
+        guard url.scheme == "wunderrip" else { return false }
+        switch url.host() {
+        case "today": destination = .smart(.today)
+        case "inbox": destination = .inbox
+        case "task":
+            let id = url.lastPathComponent
+            guard let todo = todo(id: id) else { return true }
+            destination = destination ?? .smart(todo.placement(today: today).list)
+            selectedTaskId = id
+        default: return false
+        }
+        return true
     }
 
     // MARK: - Demo

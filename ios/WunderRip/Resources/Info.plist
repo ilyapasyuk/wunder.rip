@@ -12,6 +12,14 @@
 				<string>com.googleusercontent.apps.1060019824315-j4ig4kdhqpgah3stkkoodarcmi1cinps</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wunderrip</string>
+			</array>
+		</dict>
 	</array>
 	<key>NSRemindersFullAccessUsageDescription</key>
 	<string>wunder.rip reads your reminders once to import them as tasks.</string>

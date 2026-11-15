@@ -14,6 +14,9 @@ enum DemoData {
         let defaults = UserDefaults.standard
         let (todos, folders) = make(today: .today(), now: .now, russian: Locale.preferredLanguages.first?.hasPrefix("ru") == true)
         appState.startDemo(todos: todos, folders: folders)
+        // Widgets read the App Group snapshot: give them the demo tasks too (screenshots).
+        AppConfig.signedInUserId = "demo"
+        SnapshotStore.save(Snapshot(userId: "demo", todos: todos, folders: folders, savedAt: .now))
         switch defaults.string(forKey: "demoDestination") {
         case "upcoming": appState.destination = .smart(.upcoming)
         case "anytime": appState.destination = .smart(.anytime)

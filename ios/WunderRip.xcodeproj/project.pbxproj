@@ -89,6 +89,7 @@
 		99BFB0EDEB5BA684FC403E86 /* DeviceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */; };
 		9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		9B980B09C56EDB27639936E8 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EAF9D98636B1BB39EAED9 /* Navigation.swift */; };
+		9D00F7E73933A97990D72691 /* AppShortcuts.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 9A3552D472EE43CA9FB98200 /* AppShortcuts.xcstrings */; };
 		9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */; };
 		A1B6E99BD620568C87594AF4 /* ReminderImport.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38DCBFAEB052F6EEF545262 /* ReminderImport.swift */; };
 		A24EAB9A269ACB0D84071BB7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A4CB141F0F54E8B4D265A9 /* AuthService.swift */; };
@@ -126,6 +127,7 @@
 		E4AD1574D22921856BF2E7A6 /* WatchLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */; };
 		E80D8810AAC542FEF6CD6772 /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
 		E948FE7B92200647744B389B /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
+		EB1A56B184C791085F331F28 /* SyncHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE238D1BCD4E7CAC402FCBB /* SyncHub.swift */; };
 		F3A46121C274E2970894F63A /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		F46E000EE72CE5CB0AB94CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACB0BD8D04FD00E3185B6866 /* Assets.xcassets */; };
 		F50C5CD208763E29C1CA2ED5 /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
@@ -208,6 +210,7 @@
 		31820DBA9B988A23B58C4709 /* AddTaskIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskIntent.swift; sourceTree = "<group>"; };
 		34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3C3DEBAD884D28D013046133 /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
+		3EE238D1BCD4E7CAC402FCBB /* SyncHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncHub.swift; sourceTree = "<group>"; };
 		439F37E45BD064EDF33DF8E4 /* DeviceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceAPI.swift; sourceTree = "<group>"; };
 		45EF0B11BA1EA215A2011FB2 /* WatchStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchStore.swift; sourceTree = "<group>"; };
 		45F01C893F75AC1D7721D10E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
@@ -236,6 +239,7 @@
 		93E23EE22863326A196424E6 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		96282E618839C3DC7551F4BD /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		9A3552D472EE43CA9FB98200 /* AppShortcuts.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = AppShortcuts.xcstrings; sourceTree = "<group>"; };
 		9E944EC1FE3CED5AF8BE37E0 /* WatchLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLink.swift; sourceTree = "<group>"; };
 		9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = WunderRipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudinaryService.swift; sourceTree = "<group>"; };
@@ -339,6 +343,7 @@
 				6D73B498BE18D80EA24FE6C5 /* Notifier.swift */,
 				BD034A5759F2AEE17FFF2D6D /* OutboxUploader.swift */,
 				15781B287D79E6F5BEA9A821 /* RemindersImporter.swift */,
+				3EE238D1BCD4E7CAC402FCBB /* SyncHub.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -355,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				31820DBA9B988A23B58C4709 /* AddTaskIntent.swift */,
+				9A3552D472EE43CA9FB98200 /* AppShortcuts.xcstrings */,
 			);
 			path = Intents;
 			sourceTree = "<group>";
@@ -702,6 +708,7 @@
 			knownRegions = (
 				Base,
 				en,
+				ru,
 			);
 			mainGroup = AED8034E3CD0561092BBE211;
 			minimizedProjectReferenceProxies = 1;
@@ -753,6 +760,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D00F7E73933A97990D72691 /* AppShortcuts.xcstrings in Resources */,
 				5F7E1F0BF93ECDC55A217001 /* Assets.xcassets in Resources */,
 				678C651DE5A92433745314E7 /* GoogleService-Info.plist in Resources */,
 				10AF6296A528A0F057264B76 /* Localizable.xcstrings in Resources */,
@@ -880,6 +888,7 @@
 				5301E3C97FE08316A804F5EF /* RemindersImporter.swift in Sources */,
 				BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */,
 				9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */,
+				EB1A56B184C791085F331F28 /* SyncHub.swift in Sources */,
 				3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */,
 				3F2A4AD6BAABBD33473C2E6A /* TaskDisplay.swift in Sources */,
 				F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */,

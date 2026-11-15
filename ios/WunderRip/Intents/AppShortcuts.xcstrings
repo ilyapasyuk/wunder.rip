@@ -1,0 +1,46 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Add a task in ${applicationName}": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить задачу в ${applicationName}"
+          }
+        }
+      }
+    },
+    "Add to ${applicationName}": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить в ${applicationName}"
+          }
+        }
+      }
+    },
+    "New ${applicationName} task": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новая задача в ${applicationName}"
+          }
+        }
+      }
+    },
+    "Add Task": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить задачу"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

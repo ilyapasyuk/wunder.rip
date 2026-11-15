@@ -31,6 +31,7 @@ struct ContentView: View {
         appState.attach(userId: userId)
         if let userId {
             OutboxUploader.shared.drain(userId: userId)
+            Task { await SyncHub.shared.refreshDeviceToken() }
         }
     }
 }

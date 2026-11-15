@@ -35,14 +35,10 @@ struct TodayProvider: TimelineProvider {
         guard let userId = AppConfig.signedInUserId, let snapshot = SnapshotStore.load(userId: userId) else {
             return TodayEntry(date: date, signedIn: false, main: [], evening: [])
         }
-        let today = Day(date)
-        var main: [Todo] = [], evening: [Todo] = []
-        for todo in snapshot.todos {
-            let placement = todo.placement(today: today)
-            guard placement.list == .today else { continue }
-            if placement.evening { evening.append(todo) } else { main.append(todo) }
-        }
-        return TodayEntry(date: date, signedIn: true, main: main, evening: evening)
+        let sections = Destination.smart(.today).sections(of: snapshot.todos, today: Day(date))
+        return TodayEntry(date: date, signedIn: true,
+                          main: sections.first { $0.kind == .tasks }?.todos ?? [],
+                          evening: sections.first { $0.kind == .evening }?.todos ?? [])
     }
 }
 

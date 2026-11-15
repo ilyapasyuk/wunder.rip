@@ -5,6 +5,8 @@ import WatchConnectivity
 struct WatchPayload: Codable, Equatable {
     var snapshot: Snapshot?
     var token: DeviceToken?
+    /// The user signed out on the phone: the watch forgets tasks and token.
+    var signedOut = false
 }
 
 /// iPhone → Watch delivery over WatchConnectivity. Application context keeps only the latest payload,

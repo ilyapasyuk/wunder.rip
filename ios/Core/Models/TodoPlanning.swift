@@ -58,3 +58,14 @@ extension Todo {
         return task
     }
 }
+
+extension Todo {
+    /// "Remind me later": the reminder moves to `until` (its local day and time); evening and the rest stay.
+    func snoozed(until: Date, calendar: Calendar = .current) -> Todo {
+        var task = self
+        let parts = calendar.dateComponents([.hour, .minute], from: until)
+        task.when = .day(Day(until, in: calendar), evening: when.isEvening,
+                         reminder: TimeOfDay(hour: parts.hour ?? 0, minute: parts.minute ?? 0))
+        return task
+    }
+}

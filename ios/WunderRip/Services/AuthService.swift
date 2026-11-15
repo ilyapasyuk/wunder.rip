@@ -112,6 +112,7 @@ final class AuthService: ObservableObject {
         try? Auth.auth().signOut()
         GIDSignIn.sharedInstance.signOut()
         SnapshotStore.clear()
+        SyncHub.shared.signedOut()
     }
 
     // MARK: - Account deletion
@@ -143,6 +144,7 @@ final class AuthService: ObservableObject {
         try await currentUser.delete()
         GIDSignIn.sharedInstance.signOut()
         SnapshotStore.clear()
+        SyncHub.shared.signedOut()
     }
 
     // MARK: - Helpers

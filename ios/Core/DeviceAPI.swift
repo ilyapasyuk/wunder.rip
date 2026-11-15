@@ -27,6 +27,15 @@ struct DeviceAPI {
         self.token = token
     }
 
+    /// Exchanges a Firebase ID token (app only) for a device token the extensions and the watch can use.
+    func createSession(idToken: String) async throws -> DeviceToken {
+        let json = try await send("POST", "session", body: ["idToken": idToken], authorized: false)
+        guard let value = json["token"] as? String, let expiresAt = (json["expiresAt"] as? NSNumber)?.doubleValue else {
+            throw Failure.badResponse
+        }
+        return DeviceToken(value: value, expiresAt: expiresAt)
+    }
+
     func snapshot() async throws -> Snapshot {
         let json = try await send("GET", "snapshot")
         let todos = (json["todos"] as? [String: [String: Any]] ?? [:])
@@ -63,11 +72,13 @@ struct DeviceAPI {
         _ = try await send("PATCH", "tasks/\(taskId)", body: ["when": fields["when"]!, "evening": fields["evening"]!, "reminder": fields["reminder"]!])
     }
 
-    private func send(_ method: String, _ path: String, body: [String: Any]? = nil) async throws -> [String: Any] {
-        guard let token = token() else { throw Failure.signedOut }
+    private func send(_ method: String, _ path: String, body: [String: Any]? = nil, authorized: Bool = true) async throws -> [String: Any] {
         var request = URLRequest(url: baseURL.appendingPathComponent("api/device/\(path)"))
         request.httpMethod = method
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        if authorized {
+            guard let token = token() else { throw Failure.signedOut }
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         if let body {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = try JSONSerialization.data(withJSONObject: body)

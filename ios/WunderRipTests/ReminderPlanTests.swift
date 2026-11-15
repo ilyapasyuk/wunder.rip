@@ -50,3 +50,16 @@ final class ReminderPlanTests: XCTestCase {
                        ReminderPlan.reminders(for: [task], now: now, calendar: calendar).first?.id)
     }
 }
+
+final class SnoozeTests: XCTestCase {
+    func testSnoozeMovesTheTaskToThatDayAndTimeKeepingTheRest() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Europe/Nicosia")!
+        let until = calendar.date(from: DateComponents(year: 2026, month: 11, day: 15, hour: 23, minute: 40))!
+        let task = Todo(id: "a", dictionary: ["task": "Call", "when": "2026-11-14", "evening": true, "reminder": "22:40", "deadline": "2026-11-20"])
+        let snoozed = task.snoozed(until: until, calendar: calendar)
+        XCTAssertEqual(snoozed.when, .day(Day("2026-11-15")!, evening: true, reminder: TimeOfDay("23:40")))
+        XCTAssertEqual(snoozed.deadline, task.deadline)
+        XCTAssertEqual(snoozed.task, "Call")
+    }
+}
