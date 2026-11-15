@@ -1,6 +1,6 @@
 #!/bin/zsh
 # App Preview for iPhone 6.9"/6.5": title cards (tools/make_preview_card.swift, texts from appstore/captions.json "preview")
-# cut together with the raw take from tools/record_preview.sh. 886×1920 portrait, H.264 High@4.0 ~11 Mbps, 30 fps,
+# cut together with the raw take from tools/record_preview.sh. 886×1920 portrait, H.264 High@4.0 constant 11 Mbps, 30 fps,
 # silent stereo AAC 256 kbps 48 kHz (Apple wants an audio track), 15–30 s.
 # Output: appstore/preview/<store-locale>/iphone_67.mp4
 #   zsh tools/make_preview.sh [en ru]          (run from ios/)
@@ -42,7 +42,7 @@ for lang in $LANGS; do
   out=appstore/preview/$loc/iphone_67.mp4
   ffmpeg -loglevel error -y $inputs -f lavfi -i "anullsrc=r=48000:cl=stereo" \
     -filter_complex "${filter}concat=n=10:v=1:a=0[v]" -map "[v]" -map 10:a -shortest \
-    $X264 -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart $out
+    $X264 -minrate 11M -maxrate 11M -bufsize 11M -x264-params nal-hrd=cbr -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart $out
   ffprobe -v error -show_entries format=duration:stream=codec_name,width,height,r_frame_rate,channels,sample_rate -of compact $out
   echo "✓ $out"
 done
