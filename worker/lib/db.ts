@@ -1,11 +1,23 @@
+import {
+  completeTask,
+  type Day,
+  parseTaskFields,
+  type SmartList,
+  serializeTaskFields,
+  smartList,
+  type TaskFields,
+  uncompleteTask,
+} from '../../shared/task-model.js'
 import { rtdb } from './firebase.js'
+import { pushId } from './push-id.js'
+import { applyTaskFields, hasTaskFields, type TaskFieldsInput } from './task-input.js'
 
 // Read per call, not at module load, so a missing binding can't silently pin the dev paths.
 const taskDb = () => process.env.VITE_APP_DB_TASK_NAME || 'todos_dev'
 const folderDb = () => process.env.VITE_APP_DB_FOLDER_NAME || 'folders_dev'
 
-export type Todo = {
-  id?: string
+/** The stored, pre-v2 fields of a task node. */
+type TodoBase = {
   task: string
   done: boolean
   createdAt: number
@@ -15,6 +27,12 @@ export type Todo = {
   isPublic?: boolean
   folderId?: string | null
 }
+
+/** A task inside the worker: stored fields plus the normalized v2 model. */
+type StoredTask = TodoBase & TaskFields & { id: string }
+
+/** A task as tools return it: the node as stored, v2 fields in their stored shape. */
+export type Todo = TodoBase & ReturnType<typeof serializeTaskFields> & { id: string }
 
 export type Folder = {
   id?: string
@@ -65,18 +83,58 @@ const transaction = async <T>(path: string, apply: (current: T | null) => T): Pr
   throw new Error(`Realtime Database transaction on ${path} kept conflicting`)
 }
 
-export const listTasks = async (uid: string): Promise<Todo[]> => {
-  const value = (await read<Record<string, Omit<Todo, 'id'>>>(tasksPath(uid))) || {}
-  return Object.entries(value).map(([id, task]) => ({ id, ...task }))
+const parseStored = (id: string, raw: unknown): StoredTask => ({
+  ...(raw as TodoBase),
+  id,
+  done: Boolean((raw as Partial<TodoBase>).done),
+  ...parseTaskFields(raw),
+})
+
+const output = ({ when, deadline, repeat, checklist, tags, completedAt, ...rest }: StoredTask) => ({
+  ...rest,
+  ...serializeTaskFields({ when, deadline, repeat, checklist, tags, completedAt }),
+})
+
+/** The node to store for `task`: everything but the id. */
+const record = (task: StoredTask) => {
+  const { id: _id, ...rest } = output(task)
+  return rest
 }
+
+const readTasks = async (uid: string): Promise<StoredTask[]> => {
+  const value = (await read<Record<string, unknown>>(tasksPath(uid))) || {}
+  return Object.entries(value).map(([id, raw]) => parseStored(id, raw))
+}
+
+const readTask = async (uid: string, taskId: string): Promise<StoredTask> => {
+  const raw = await read<unknown>(taskPath(uid, taskId))
+  if (!raw) throw new Error(`Task ${taskId} not found`)
+  return parseStored(taskId, raw)
+}
+
+/** One path per field, so fields this server does not know about are left alone. */
+const fieldUpdates = (uid: string, task: StoredTask): Record<string, unknown> =>
+  Object.fromEntries(
+    Object.entries(record(task)).map(([field, value]) => [
+      `${taskPath(uid, task.id)}/${field}`,
+      value,
+    ]),
+  )
+
+export const listTasks = async (uid: string): Promise<Todo[]> => (await readTasks(uid)).map(output)
+
+/** One smart list for `today` (the client's local day), in the shared order. */
+export const listSmart = async (uid: string, list: SmartList, today: Day): Promise<Todo[]> =>
+  smartList(await readTasks(uid), list, today).map(output)
 
 export const createTask = async (
   uid: string,
   task: string,
   folderId?: string | null,
+  fields: TaskFieldsInput = {},
 ): Promise<Todo> => {
   const timestamp = Date.now()
-  const value: Omit<Todo, 'id'> = {
+  const value: TodoBase = {
     task: task.slice(0, 100).trim(),
     done: false,
     createdAt: timestamp,
@@ -86,20 +144,57 @@ export const createTask = async (
     isPublic: false,
     folderId: folderId || null,
   }
-  const id = await push(tasksPath(uid), value)
-  return { id, ...value }
+  const stored = hasTaskFields(fields)
+    ? { ...value, ...serializeTaskFields(applyTaskFields({}, fields, pushId)) }
+    : value
+  const id = await push(tasksPath(uid), stored)
+  return output(parseStored(id, stored))
 }
 
 export const updateTask = async (
   uid: string,
   taskId: string,
-  changes: Partial<Omit<Todo, 'id'>>,
+  changes: Partial<Pick<TodoBase, 'task' | 'note'>> & TaskFieldsInput,
 ): Promise<void> => {
-  await update(taskPath(uid, taskId), changes)
+  const { task, note, ...fields } = changes
+  const text = Object.fromEntries(
+    Object.entries({ task, note }).filter(([, value]) => value !== undefined),
+  )
+  if (!hasTaskFields(fields)) {
+    await update(taskPath(uid, taskId), text)
+    return
+  }
+  const current = await read<unknown>(taskPath(uid, taskId))
+  if (!current) throw new Error(`Task ${taskId} not found`)
+  await update(taskPath(uid, taskId), {
+    ...text,
+    ...serializeTaskFields(applyTaskFields(current, fields, pushId)),
+  })
 }
 
-export const setTaskDone = async (uid: string, taskId: string, done: boolean): Promise<void> => {
-  await update(taskPath(uid, taskId), { done })
+/**
+ * Marks a task done or not done. Completing a repeating task creates its next task in the same
+ * atomic multi-path write; completing an already done task changes nothing.
+ */
+export const setTaskDone = async (
+  uid: string,
+  taskId: string,
+  done: boolean,
+  today: Day,
+): Promise<{ task: Todo; next?: Todo }> => {
+  const current = await readTask(uid, taskId)
+  if (!done) {
+    const reopened = uncompleteTask(current)
+    await update('', fieldUpdates(uid, reopened))
+    return { task: output(reopened) }
+  }
+  if (current.done) return { task: output(current) }
+  const { completed, next } = completeTask(current, today, Date.now(), pushId())
+  await update('', {
+    ...fieldUpdates(uid, completed),
+    ...(next ? { [taskPath(uid, next.id)]: record(next) } : {}),
+  })
+  return { task: output(completed), ...(next ? { next: output(next) } : {}) }
 }
 
 export const deleteTask = async (uid: string, taskId: string): Promise<void> => {
@@ -107,8 +202,8 @@ export const deleteTask = async (uid: string, taskId: string): Promise<void> => 
 }
 
 export const getTask = async (uid: string, taskId: string): Promise<Todo | undefined> => {
-  const value = await read<Omit<Todo, 'id'>>(taskPath(uid, taskId))
-  return value ? { id: taskId, ...value } : undefined
+  const raw = await read<unknown>(taskPath(uid, taskId))
+  return raw ? output(parseStored(taskId, raw)) : undefined
 }
 
 export const addTaskFile = async (uid: string, taskId: string, fileId: string): Promise<void> => {

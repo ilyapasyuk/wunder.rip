@@ -5,6 +5,8 @@ import { TodoList } from 'components/task/TodoList'
 import { Checkbox } from 'components/ui/Checkbox'
 import { useFolders, useTodos } from 'hooks/useRealtimeData'
 import { useTaskDnd } from 'hooks/useTaskDnd'
+import { useToday } from 'hooks/useToday'
+import { viewSections } from 'lib/views'
 import { useContext, useMemo } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Todo } from 'services/task'
@@ -15,12 +17,11 @@ const Workspace = () => {
   const [todos, todosStatus, setTodos] = useTodos(state.user?.id)
   const [folders, foldersStatus] = useFolders(state.user?.id)
 
-  // Open tasks first, then completed — the list renders them as two sections, and
-  // drag-and-drop reorders against this same sequence.
-  const visibleTodos = useMemo(() => {
-    const inFolder = todos.filter(t => (t.folderId ?? null) === state.currentFolderId)
-    return [...inFolder.filter(t => !t.done), ...inFolder.filter(t => t.done)]
-  }, [todos, state.currentFolderId])
+  const today = useToday()
+
+  // The pane renders these sections in order, and drag-and-drop reorders against the same sequence.
+  const sections = useMemo(() => viewSections(state.view, todos, today), [state.view, todos, today])
+  const visibleTodos = useMemo(() => sections.flatMap(s => s.todos), [sections])
 
   const {
     sensors,
@@ -42,6 +43,7 @@ const Workspace = () => {
     >
       <div className="flex flex-col md:flex-row md:h-full">
         <Sidebar
+          today={today}
           todos={todos}
           todosStatus={todosStatus}
           folders={folders}
@@ -49,7 +51,8 @@ const Workspace = () => {
         />
         <div className="flex-1 min-w-0 md:min-h-0 md:overflow-y-auto">
           <TodoList
-            visibleTodos={visibleTodos}
+            sections={sections}
+            today={today}
             todosStatus={todosStatus}
             folders={folders}
             foldersStatus={foldersStatus}

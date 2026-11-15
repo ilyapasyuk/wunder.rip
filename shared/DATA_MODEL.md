@@ -55,3 +55,11 @@ Lists (Inbox and folders) still show every task in them, as before.
 - `advance` adds `every` units; months/years clamp to the last day of the month (Jan 31 + 1 month = Feb 28/29).
 
 Completing a task without `repeat` just sets `done` and `completedAt`.
+
+## Implementation notes
+- **Web + MCP server:** the model is `shared/task-model.ts`, imported by `src/` and `worker/`; `shared/test/task-model.test.ts` runs every vector.
+- Writes from the web app and the MCP server go one path per field, so fields a client does not know about survive. Completing a repeating task writes the completed task and the next one in one multi-path update.
+- Completing a task that is already done is a no-op (no second `next`).
+- `schedule` catch-up applies `advance` repeatedly to the previous result (so a month series that clamps to Feb 28 continues from the 28th).
+- A task with no day that repeats: its `deadline` moves by the distance from today to the new `when`.
+- The MCP server rejects a `reminder` or `evening: true` when the task would have no day, instead of silently dropping it.

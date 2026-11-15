@@ -11,7 +11,9 @@ import { getUserRoute } from 'services/db-paths'
 import { db } from 'services/firebase'
 import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
 import { Todo, updateTask } from 'services/task'
+import { parseTodo } from 'services/task-record'
 import { StoreContext } from 'store/store'
+import { TaskDetails } from './TaskDetails'
 
 interface TaskPreviewProps {
   onClose: () => void
@@ -90,7 +92,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
       const unsubscribe = onValue(taskRef, snapshot => {
         const item = snapshot.val()
         if (item) {
-          setTodo({ ...item, id })
+          setTodo(parseTodo(id, item))
           setStatus('ready')
           if (!wasLoaded) trackTaskViewed()
           wasLoaded = true
@@ -232,6 +234,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                   })
                 }
               />
+              <TaskDetails todo={todo} onChange={handleEditTask} />
               {Boolean(todo.files?.length) && (
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {todo.files?.map((file, idx) => (

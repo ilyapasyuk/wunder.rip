@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { getFoldersRoute, getUserRoute } from 'services/db-paths'
 import { db } from 'services/firebase'
 import { Folder } from 'services/folder'
-import { Todo } from 'services/task'
+import { parseTodo, Todo } from 'services/task-record'
 
 export type LoadStatus = 'loading' | 'ready' | 'error'
 
@@ -41,20 +41,7 @@ const useRealtimeList = <T>(
 
 const parseTodos = (items: Record<string, Record<string, unknown>>): Todo[] =>
   Object.keys(items)
-    .map(id => {
-      const item = items[id] as Partial<Todo>
-      return {
-        id,
-        createdAt: item.createdAt ?? 0,
-        task: item.task ?? '',
-        done: Boolean(item.done),
-        note: item.note ?? '',
-        files: item.files,
-        order: item.order || 0,
-        isPublic: item.isPublic || false,
-        folderId: item.folderId ?? null,
-      }
-    })
+    .map(id => parseTodo(id, items[id]))
     .sort((a, b) => (a.order || 0) - (b.order || 0))
 
 const parseFolders = (items: Record<string, Record<string, unknown>>): Folder[] =>

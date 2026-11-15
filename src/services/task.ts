@@ -1,26 +1,18 @@
+import { parseTaskFields, type TaskFields, todayLocal } from '@shared/task-model'
 import { push, ref, update } from 'firebase/database'
-
 import { trackTaskCreated, trackTaskDeleted } from 'lib/analytics'
-import { db } from 'services/firebase'
 import { notify } from 'lib/notify'
 import { getCreateTaskRoute, getUpdateTaskRoute } from 'services/db-paths'
+import { db } from 'services/firebase'
+import { type Todo, todoRecord, todoUpdates, toggleDoneUpdates } from 'services/task-record'
 
-export type Todo = {
-  task: string
-  done: boolean
-  id?: string
-  createdAt: number
-  note: string
-  files?: string[]
-  order?: number
-  isPublic?: boolean
-  folderId?: string | null
-}
+export type { Todo }
 
 const createTodo = async (
   todo: string,
   userId: string,
   folderId?: string | null,
+  fields: Partial<TaskFields> = {},
 ): Promise<{
   id?: string | null
   error?: Error
@@ -37,9 +29,11 @@ const createTodo = async (
       order: -timestamp,
       isPublic: false,
       folderId: folderId || null,
+      ...parseTaskFields({}),
+      ...fields,
     }
 
-    const taskRef = await push(ref(db, getCreateTaskRoute(userId)), value)
+    const taskRef = await push(ref(db, getCreateTaskRoute(userId)), todoRecord(value))
     notify.success('Task created')
     trackTaskCreated()
     return {
@@ -55,25 +49,20 @@ const createTodo = async (
   }
 }
 
-const prepareTaskForUpdate = (todo: Todo): Partial<Todo> =>
-  Object.fromEntries(Object.entries(todo).filter(([, value]) => value !== undefined))
-
 const updateTask = (todo: Todo, userId: string) => {
-  const newTask = prepareTaskForUpdate(todo)
   if (todo.id) {
-    return update(ref(db), { [getUpdateTaskRoute(userId, todo.id)]: newTask })
+    return update(ref(db), todoUpdates(userId, todo))
   }
 }
 
-const updateAllTasks = (todos: Todo[], userId: string) => {
-  const updates: Record<string, Partial<Todo>> = {}
-  todos.forEach(todo => {
-    if (todo.id) {
-      updates[getUpdateTaskRoute(userId, todo.id)] = prepareTaskForUpdate(todo)
-    }
-  })
+const updateAllTasks = (todos: Todo[], userId: string) =>
+  update(ref(db), Object.assign({}, ...todos.map(todo => todoUpdates(userId, todo))))
 
-  return update(ref(db), updates)
+/** Done <-> not done; completing a repeating task creates its next task in the same write. */
+const toggleTodoDone = (todo: Todo, userId: string) => {
+  const newId = push(ref(db, getCreateTaskRoute(userId))).key
+  if (!newId) throw new Error('Could not allocate a task id')
+  return update(ref(db), toggleDoneUpdates(userId, todo, todayLocal(), Date.now(), newId))
 }
 
 const deleteTodo = async (todo: Todo, userId: string) => {
@@ -107,11 +96,4 @@ const moveTodoToFolder = async (taskId: string, folderId: string | null, userId:
   })
 }
 
-export {
-  createTodo,
-  deleteTodo,
-  moveTodoToFolder,
-  prepareTaskForUpdate,
-  updateAllTasks,
-  updateTask,
-}
+export { createTodo, deleteTodo, moveTodoToFolder, toggleTodoDone, updateAllTasks, updateTask }

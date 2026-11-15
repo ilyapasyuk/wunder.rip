@@ -1,10 +1,12 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js'
 import { z } from 'zod'
+import { type Day, parseDay, SMART_LISTS } from '../../shared/task-model.js'
 import { getImageUrls, uploadImageFromBase64, uploadImageFromUrl } from '../lib/cloudinary.js'
 import * as data from '../lib/db.js'
 import { getBaseUrl, getBearerToken, html } from '../lib/http.js'
 import { escapeHtml, renderPage } from '../lib/page.js'
+import { taskFieldsInput } from '../lib/task-input.js'
 import { parseSession, resolveSessionUid, type Session } from '../lib/token.js'
 
 const jsonRpcError = (code: number, message: string) => ({
@@ -77,6 +79,20 @@ const renderInfoPage = (baseUrl: string): string =>
     </script>`,
   )
 
+const todayInput = z
+  .string()
+  .refine(value => parseDay(value) !== null, 'Expected YYYY-MM-DD')
+  .optional()
+  .describe("The user's local date YYYY-MM-DD; defaults to today's UTC date")
+
+/** The client's local day if it sent one, else the server's UTC date. */
+const resolveToday = (today: string | undefined): Day =>
+  parseDay(today) ?? (parseDay(new Date().toISOString().slice(0, 10)) as Day)
+
+const json = (value: unknown) => ({
+  content: [{ type: 'text' as const, text: JSON.stringify(value, null, 2) }],
+})
+
 const buildServer = (uid: string): McpServer => {
   const server = new McpServer({ name: 'wunder-rip', version: '1.0.0' })
 
@@ -96,14 +112,16 @@ const buildServer = (uid: string): McpServer => {
   server.registerTool(
     'create_task',
     {
-      description: 'Create a new task, optionally inside a list (folder)',
+      description:
+        'Create a new task, optionally inside a list (folder), optionally planned (when, evening, reminder), with a deadline, repeat, checklist and tags',
       inputSchema: {
         task: z.string().min(1).describe('Task text'),
         folderId: z.string().optional().describe('List id to place the task in'),
+        ...taskFieldsInput,
       },
     },
-    async ({ task, folderId }) => {
-      const created = await data.createTask(uid, task, folderId)
+    async ({ task, folderId, ...fields }) => {
+      const created = await data.createTask(uid, task, folderId, fields)
       return { content: [{ type: 'text', text: JSON.stringify(created, null, 2) }] }
     },
   )
@@ -111,17 +129,16 @@ const buildServer = (uid: string): McpServer => {
   server.registerTool(
     'update_task',
     {
-      description: 'Update a task text and/or note',
+      description:
+        'Update a task: text, note, when/evening/reminder, deadline, repeat, checklist, tags. Omitted fields stay as they are; null clears.',
       inputSchema: {
         id: z.string(),
         task: z.string().optional(),
         note: z.string().optional(),
+        ...taskFieldsInput,
       },
     },
-    async ({ id, task, note }) => {
-      const changes: Record<string, string> = {}
-      if (task !== undefined) changes.task = task
-      if (note !== undefined) changes.note = note
+    async ({ id, ...changes }) => {
       await data.updateTask(uid, id, changes)
       return { content: [{ type: 'text', text: 'ok' }] }
     },
@@ -130,13 +147,21 @@ const buildServer = (uid: string): McpServer => {
   server.registerTool(
     'set_task_done',
     {
-      description: 'Mark a task as done or not done',
-      inputSchema: { id: z.string(), done: z.boolean() },
+      description:
+        'Mark a task as done or not done. Completing a repeating task creates the next one and returns it as `next`.',
+      inputSchema: { id: z.string(), done: z.boolean(), today: todayInput },
     },
-    async ({ id, done }) => {
-      await data.setTaskDone(uid, id, done)
-      return { content: [{ type: 'text', text: 'ok' }] }
+    async ({ id, done, today }) => json(await data.setTaskDone(uid, id, done, resolveToday(today))),
+  )
+
+  server.registerTool(
+    'list_smart',
+    {
+      description:
+        'List a smart list across all lists: today (incl. evening tasks, evening: true), upcoming (by day), anytime, someday, logbook (newest completed first)',
+      inputSchema: { list: z.enum(SMART_LISTS), today: todayInput },
     },
+    async ({ list, today }) => json(await data.listSmart(uid, list, resolveToday(today))),
   )
 
   server.registerTool(

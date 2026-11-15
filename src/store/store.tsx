@@ -1,6 +1,7 @@
-import { reducer } from 'store/reducer'
+import { decodeView, INBOX_VIEW, View } from 'lib/views'
 import { createContext, Dispatch, ReactNode, useReducer } from 'react'
 import { User } from 'services/auth'
+import { reducer } from 'store/reducer'
 
 import { AppAction } from './actions'
 
@@ -9,23 +10,22 @@ const CURRENT_FOLDER_STORAGE_KEY = 'wunder.currentFolderId'
 export type Store = {
   user: User | null
   isShowAuthModal: boolean
-  currentFolderId: string | null
+  view: View
 }
 
-const readInitialFolderId = (): string | null => {
-  if (typeof window === 'undefined') return null
+const readInitialView = (): View => {
+  if (typeof window === 'undefined') return INBOX_VIEW
   try {
-    const raw = window.localStorage.getItem(CURRENT_FOLDER_STORAGE_KEY)
-    return raw && raw !== 'null' ? raw : null
+    return decodeView(window.localStorage.getItem(CURRENT_FOLDER_STORAGE_KEY))
   } catch {
-    return null
+    return INBOX_VIEW
   }
 }
 
 const DEFAULT_STORE: Store = {
   user: null,
   isShowAuthModal: false,
-  currentFolderId: readInitialFolderId(),
+  view: readInitialView(),
 }
 
 type AppContext = {

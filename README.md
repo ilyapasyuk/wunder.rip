@@ -34,3 +34,10 @@ claude mcp add --transport http wunder-rip https://notes.pasyuk.com/api/mcp
 ```
 
 Either way, the client opens notes.pasyuk.com the first time: sign in (Google or Apple), click **Allow**, and it's connected.
+
+**Tools:** `list_tasks`, `create_task`, `update_task`, `set_task_done`, `delete_task`, `move_task_to_folder`, `list_task_images`, `upload_task_image`, `delete_task_image`, `list_folders`, `create_folder`, `rename_folder`, `delete_folder`, and `list_smart`.
+
+- Tasks carry the fields from [`shared/DATA_MODEL.md`](shared/DATA_MODEL.md): `when` (`YYYY-MM-DD`, `"someday"` or `null`), `evening`, `reminder` (`HH:mm`, only with a day), `deadline`, `repeat` (`{ unit, every, from }`), `checklist`, `tags`, `completedAt`.
+- `create_task` and `update_task` accept those fields; in `update_task`, fields you leave out stay as they are and `null` clears one. A reminder or evening needs a day.
+- `set_task_done` on a repeating task creates the next task and returns it as `next`.
+- `list_smart` returns one smart list — `today`, `upcoming`, `anytime`, `someday` or `logbook`. Pass `today` (your local `YYYY-MM-DD`); without it the server uses the UTC date. `set_task_done` takes the same `today` for scheduling the next repeat.

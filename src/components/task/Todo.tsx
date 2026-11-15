@@ -1,7 +1,19 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Bars3BottomLeftIcon, CalendarIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import {
+  ArchiveBoxIcon,
+  ArrowPathIcon,
+  Bars3BottomLeftIcon,
+  CalendarIcon,
+  CheckCircleIcon,
+  FlagIcon,
+  MoonIcon,
+  PhotoIcon,
+  XMarkIcon,
+} from '@heroicons/react/20/solid'
+import { todayLocal } from '@shared/task-model'
 import { Checkbox } from 'components/ui/Checkbox'
+import { dayLabel, isOverdue, whenLabel } from 'lib/views'
 import { CSSProperties, ReactNode } from 'react'
 import { Todo } from 'services/task'
 
@@ -20,11 +32,69 @@ const formatDay = (timestamp: number): string => {
   })
 }
 
-const Chip = ({ children }: { children: ReactNode }) => (
-  <span className="inline-flex h-8 items-center gap-1.5 rounded-full bg-surface px-3 text-sm font-medium tabular-nums text-text-primary transition-colors group-data-[selected=true]:bg-muted">
+const Chip = ({ children, danger }: { children: ReactNode; danger?: boolean }) => (
+  <span
+    className={`inline-flex h-8 items-center gap-1.5 rounded-full bg-surface px-3 text-sm font-medium tabular-nums transition-colors group-data-[selected=true]:bg-muted ${
+      danger ? 'text-danger' : 'text-text-primary'
+    }`}
+  >
     {children}
   </span>
 )
+
+const ICON = 'size-4 shrink-0 text-text-tertiary'
+
+/** Schedule badges: when, deadline (red once overdue), repeat, checklist progress, tags. */
+const ScheduleChips = ({ todo }: { todo: Todo }) => {
+  const today = todayLocal()
+  const when = whenLabel(todo.when, today)
+  const WhenIcon =
+    todo.when.kind === 'someday'
+      ? ArchiveBoxIcon
+      : todo.when.kind === 'day' && todo.when.evening
+        ? MoonIcon
+        : CalendarIcon
+  const checked = todo.checklist.filter(item => item.done).length
+  const overdue = isOverdue(todo, today)
+  return (
+    <>
+      {todo.tags.map(tag => (
+        <span key={tag} className="hidden sm:inline-flex">
+          <Chip>#{tag}</Chip>
+        </span>
+      ))}
+      {todo.checklist.length > 0 && (
+        <Chip>
+          <CheckCircleIcon className={ICON} aria-hidden="true" />
+          {checked}/{todo.checklist.length}
+          <span className="sr-only">checklist items done</span>
+        </Chip>
+      )}
+      {todo.repeat && (
+        <Chip>
+          <ArrowPathIcon className={ICON} aria-hidden="true" />
+          <span className="sr-only">Repeats</span>
+        </Chip>
+      )}
+      {when && !todo.done && (
+        <Chip>
+          <WhenIcon className={ICON} aria-hidden="true" />
+          {when}
+        </Chip>
+      )}
+      {todo.deadline && !todo.done && (
+        <Chip danger={overdue}>
+          <FlagIcon
+            className={`size-4 shrink-0 ${overdue ? 'text-danger' : 'text-text-tertiary'}`}
+            aria-hidden="true"
+          />
+          <span className="sr-only">{overdue ? 'Overdue, deadline' : 'Deadline'}</span>
+          {dayLabel(todo.deadline, today)}
+        </Chip>
+      )}
+    </>
+  )
+}
 
 interface TodoCardProps {
   todo: Todo
@@ -81,7 +151,9 @@ const TodoCard = ({ todo, check, onSelect, onDelete, lifted, selected }: TodoCar
             {fileCount}
           </Chip>
         )}
-        {!todo.done && todo.createdAt ? (
+        <ScheduleChips todo={todo} />
+        {/* A planned task shows its When instead; tasks without one look as they always did. */}
+        {!todo.done && todo.createdAt && todo.when.kind === 'anytime' ? (
           <span className="hidden sm:inline-flex">
             <Chip>
               <CalendarIcon className="size-4 shrink-0 text-text-tertiary" aria-hidden="true" />
