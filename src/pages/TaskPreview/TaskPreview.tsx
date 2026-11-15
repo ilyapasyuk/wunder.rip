@@ -13,6 +13,7 @@ import { getCloudinaryDownloadUrl, getCloudinaryThumb } from 'services/image'
 import { Todo, updateTask } from 'services/task'
 import { parseTodo } from 'services/task-record'
 import { StoreContext } from 'store/store'
+import { TaskDetails } from './TaskDetails'
 
 interface TaskPreviewProps {
   onClose: () => void
@@ -233,6 +234,7 @@ const TaskPreview = ({ onClose }: TaskPreviewProps) => {
                   })
                 }
               />
+              <TaskDetails todo={todo} onChange={handleEditTask} />
               {Boolean(todo.files?.length) && (
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {todo.files?.map((file, idx) => (
