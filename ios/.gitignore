@@ -14,3 +14,10 @@ xcuserdata/
 
 # Local builds (xcodebuild -derivedDataPath build/dd)
 build/
+
+# App Store media: raw simulator captures and recordings are regenerated (tools/capture_*.sh, tools/record_preview.sh)
+appstore/raw/
+appstore/preview/raw/
+appstore/preview/work/
+tools/promo/*.xcodeproj
+appstore/preview/*/*.mp4
