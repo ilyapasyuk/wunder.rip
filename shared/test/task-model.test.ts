@@ -47,6 +47,10 @@ describe('model-vectors.json: nextRepeat', () => {
   for (const v of vectors.nextRepeat) {
     test(v.name, () => {
       const { next } = completeTask(task(v.raw as Raw), day(v.today), 1, 'n1')
+      if (v.next === null) {
+        expect(next).toBeUndefined()
+        return
+      }
       const { when, deadline } = serializeTaskFields(must(next))
       expect({ when, deadline }).toEqual(v.next)
     })

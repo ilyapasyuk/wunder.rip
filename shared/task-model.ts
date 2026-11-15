@@ -217,9 +217,8 @@ export const classify = (task: ModelTask, today: Day): { list: SmartList; evenin
   if (task.done) return { list: 'logbook', evening: false }
   const { when, deadline } = task
   if (when.kind === 'day' && when.day <= today) return { list: 'today', evening: when.evening }
-  if (deadline !== null && deadline <= today) {
-    return { list: 'today', evening: when.kind === 'day' && when.evening }
-  }
+  // Due by deadline only: evening belongs to the planned day, which is later.
+  if (deadline !== null && deadline <= today) return { list: 'today', evening: false }
   if (when.kind === 'day') return { list: 'upcoming', evening: false }
   if (when.kind === 'someday') return { list: 'someday', evening: false }
   return { list: 'anytime', evening: false }

@@ -30,14 +30,14 @@ New fields are all optional; an old client simply ignores them.
 | `deadline` | `"YYYY-MM-DD"` \| null | invalid = null |
 | `repeat` | `{ unit: "day"\|"week"\|"month"\|"year", every: int ≥ 1, from: "schedule"\|"completion" }` \| null | unknown unit = no repeat; `every < 1` = 1; unknown `from` = `"schedule"` |
 | `checklist` | `[{ id: string, title: string, done: bool }]` | missing = empty |
-| `tags` | `string[]` | missing = empty |
+| `tags` | `string[]` | missing = empty; trimmed, blanks dropped, case-insensitive duplicates removed (first spelling kept) |
 | `completedAt` | ms since epoch \| null | set when `done` becomes true, cleared when undone |
 
 Parse once where data comes in (database snapshot, MCP input) into the normalized shape; inside, trust it.
 
 ## Smart lists
 For an **open** task (`done == false`) and `today`:
-1. `when` is a day ≤ today, **or** `deadline` ≤ today → **Today** (in the *Evening* section if `evening`).
+1. `when` is a day ≤ today → **Today** (in the *Evening* section if `evening`); otherwise `deadline` ≤ today → **Today** (never Evening: evening belongs to the planned day).
 2. `when` is a day > today → **Upcoming**.
 3. `when` is Someday → **Someday**.
 4. otherwise → **Anytime**.
@@ -54,7 +54,7 @@ Lists (Inbox and folders) still show every task in them, as before.
   - `deadline` (if any) moves by the same number of days as `when`; `evening` and `reminder` are kept.
 - `advance` adds `every` units; months/years clamp to the last day of the month (Jan 31 + 1 month = Feb 28/29).
 
-Completing a task without `repeat` just sets `done` and `completedAt`.
+Completing a task without `repeat` just sets `done` and `completedAt`. Completing a task that is already done changes nothing and creates no next task.
 
 ## Implementation notes
 - **Web + MCP server:** the model is `shared/task-model.ts`, imported by `src/` and `worker/`; `shared/test/task-model.test.ts` runs every vector.

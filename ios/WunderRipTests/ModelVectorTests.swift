@@ -39,8 +39,11 @@ final class ModelVectorTests: XCTestCase {
         for vector in cases("nextRepeat") {
             let raw = try XCTUnwrap(vector["raw"] as? [String: Any])
             let today = try XCTUnwrap(Day(vector["today"] as? String ?? ""))
-            let expected = try XCTUnwrap(vector["next"] as? [String: Any])
             let result = Todo(id: "x", dictionary: raw).complete(today: today, now: 1, nextId: "n")
+            guard let expected = vector["next"] as? [String: Any] else {
+                XCTAssertNil(result.next, "\(vector["name"] ?? "")")
+                continue
+            }
             let next = try XCTUnwrap(result.next, "\(vector["name"] ?? "")")
             XCTAssertEqual(next.when.day?.string, expected["when"] as? String, "\(vector["name"] ?? "")")
             XCTAssertEqual(next.deadline?.string, expected["deadline"] as? String, "\(vector["name"] ?? "")")

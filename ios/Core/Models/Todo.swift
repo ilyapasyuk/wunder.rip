@@ -40,9 +40,17 @@ extension Todo {
             deadline: (dict["deadline"] as? String).flatMap(Day.init),
             repeatRule: RepeatRule(dictionary: dict["repeat"] as? [String: Any]),
             checklist: (dict["checklist"] as? [[String: Any]] ?? []).compactMap(ChecklistItem.init(dictionary:)),
-            tags: (dict["tags"] as? [Any] ?? []).compactMap { $0 as? String },
+            tags: Self.normalizedTags((dict["tags"] as? [Any] ?? []).compactMap { $0 as? String }),
             completedAt: (dict["completedAt"] as? NSNumber)?.doubleValue
         )
+    }
+
+    /// Trimmed, no blanks, no case-insensitive duplicates (first spelling wins).
+    static func normalizedTags(_ tags: [String]) -> [String] {
+        var seen = Set<String>()
+        return tags
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty && seen.insert($0.lowercased()).inserted }
     }
 
     private static func parseWhen(_ dict: [String: Any]) -> When {

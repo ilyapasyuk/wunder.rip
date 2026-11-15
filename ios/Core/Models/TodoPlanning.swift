@@ -22,6 +22,7 @@ extension Todo {
 
     /// Marks the task done. A repeating task hands its rule to a new task (`next`) planned for the next day in the series.
     func complete(today: Day, now: Double, nextId: String) -> (completed: Todo, next: Todo?) {
+        if done { return (self, nil) }
         var completed = self
         completed.done = true
         completed.completedAt = now
