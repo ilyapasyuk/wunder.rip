@@ -5,7 +5,7 @@ const Terms = () => {
     <main className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-10 text-text-primary dark:text-text-dark-primary">
       <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">Terms of Service</h1>
       <p className="text-sm text-text-secondary dark:text-text-dark-secondary mb-8">
-        Last updated: July 2026 · Applies to wunder.rip on the web and the wunder.rip iOS app
+        Last updated: November 2026 · Applies to wunder.rip on the web and the wunder.rip iOS app
       </p>
 
       <Section title="1. The service">
@@ -18,8 +18,9 @@ const Terms = () => {
 
       <Section title="2. Account">
         <p>
-          You sign in with a Google account. We do not manage passwords — authentication is handled
-          by Google. By signing in, you confirm that you are authorized to use that account.
+          You sign in with an Apple or Google account. We do not manage passwords — authentication
+          is handled by Apple or Google. By signing in, you confirm that you are authorized to use
+          that account.
         </p>
       </Section>
 
