@@ -21,6 +21,9 @@ final class AuthService: ObservableObject {
             let user = firebaseUser.map { AppUser(firebaseUser: $0) }
             self?.user = user
             self?.isLoading = false
+            #if DEBUG
+            if DemoData.isRequested { return }   // demo mode set "demo" for the widget; keep it
+            #endif
             AppConfig.signedInUserId = user?.id
         }
     }

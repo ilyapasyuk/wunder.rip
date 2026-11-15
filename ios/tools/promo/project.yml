@@ -1,0 +1,42 @@
+# Promo/screenshot automation only — never shipped. A UI-test bundle that drives the installed wunder.rip
+# (com.ilyapasyuk.wunderrip, DEBUG -demo 1 build) and SpringBoard; the host app is an empty placeholder
+# so the bundle builds without Firebase. Used by tools/capture_*.sh and tools/record_preview.sh.
+#   cd ios/tools/promo && xcodegen generate
+name: WRPromo
+options:
+  bundleIdPrefix: com.ilyapasyuk.wrpromo
+  deploymentTarget:
+    iOS: "26.0"
+settings:
+  base:
+    DEVELOPMENT_TEAM: 26VYTSFAG2
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_VERSION: "5.0"
+targets:
+  WRPromoHost:
+    type: application
+    platform: iOS
+    sources: [Host]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+  WRPromoUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: WRPromoHost
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: WRPromoHost
+        TARGETED_DEVICE_FAMILY: "1,2"
+schemes:
+  WRPromo:
+    build:
+      targets:
+        WRPromoUITests: [test]
+    test:
+      targets: [WRPromoUITests]

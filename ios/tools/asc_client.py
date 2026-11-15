@@ -24,11 +24,11 @@ class APIError(Exception): pass
 
 def call(method, path, body=None, params=None, ok=(200, 201, 204)):
     url = path if path.startswith("http") else BASE + path
-    for attempt in range(4):
+    for attempt in range(8):
         r = requests.request(method, url, params=params, json=body,
                              headers={"Authorization": f"Bearer {token()}", "Content-Type": "application/json"}, timeout=60)
         if r.status_code == 429 or r.status_code >= 500:
-            time.sleep(2 * (attempt + 1)); continue
+            time.sleep(min(60, 2 ** attempt * 2)); continue   # 2, 4, 8 … 60 s: parallel uploads hit 429s
         break
     if r.status_code not in ok:
         raise APIError(f"{method} {path} -> {r.status_code}: {r.text[:800]}")
