@@ -1,0 +1,837 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0ADEA932E106A4AFFB52737D /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		0D75AEC81980455D53BEA3F3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
+		10AF6296A528A0F057264B76 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
+		12DD05FA8F961776E2C74BE3 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5282213028D2320D36CCE6AA /* AppUser.swift */; };
+		13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
+		14EC914D7A292553863CE3CD /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569BCF3C0791860A542D1587 /* DatabaseService.swift */; };
+		190341AE6650853C7B494364 /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEBAD884D28D013046133 /* CoreTests.swift */; };
+		19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */; };
+		21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
+		254D3CC153968496FDB66A2B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933DB04168A2E2D452A12CE /* ContentView.swift */; };
+		3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		38914C161F05B4534658A304 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EED33454B0EB020EDFB5B0 /* AppState.swift */; };
+		3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96282E618839C3DC7551F4BD /* TaskDetailView.swift */; };
+		455D4796968828901CBE6CA2 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
+		46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E23EE22863326A196424E6 /* TaskRowView.swift */; };
+		4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A089D98F38172363B2555B1 /* GoogleSignIn */; };
+		5AAB4223316F766EB8A5DD23 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		5DF67C58DCAB67B89DC1F33C /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
+		5E92CE688B6A221C9320E1D9 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
+		5F7E1F0BF93ECDC55A217001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1489F0F5E519622B0C661FE0 /* Assets.xcassets */; };
+		6112A0BC5FDCB13EEEFF7A71 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC9465BF944DB6301ACF3CEA /* AccountView.swift */; };
+		66AF253A87408AB3196E47C7 /* SharedContentExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E1DD0DF33EDF51729CCAF2 /* SharedContentExtractor.swift */; };
+		678C651DE5A92433745314E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */; };
+		8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */; };
+		88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
+		9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
+		9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */; };
+		A24EAB9A269ACB0D84071BB7 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A4CB141F0F54E8B4D265A9 /* AuthService.swift */; };
+		A3AABFDD03EC50C7D0E6CDE4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 07A208FA696F8E4FDC66F75A /* FirebaseAuth */; };
+		A4DCB78406254BB513FB7F60 /* WunderRipShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 76D049984A1ED912F525640A /* WunderRipShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A7F2504553BB3A3E21ADFB7A /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
+		B326F3A0B8A22062DBCEDC78 /* OutboxUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD034A5759F2AEE17FFF2D6D /* OutboxUploader.swift */; };
+		B832E8A808788D8634A8E144 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
+		BBD30BCAE91C4A3F84795658 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628F298A8E5BA8111EA2A1FE /* LoginView.swift */; };
+		BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22060C0DF4BF958D3B15DE46 /* SidebarView.swift */; };
+		BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
+		C6FB9F3D371017D3884A28DB /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F01C893F75AC1D7721D10E /* WorkspaceView.swift */; };
+		D6B334C6B6B50DDE6CA57943 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
+		DD75253637DAC05BB0A42E22 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878219B2A642CBD2D34F0632 /* ShareView.swift */; };
+		F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F5672730F3646BA31D3C9E /* TaskListView.swift */; };
+		FC513B495940DC1B66AFE6A2 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A024CC0F37D791F4510075 /* ShareViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CEE384689884A028E6BDF306 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E07298A59A9D31B3A805BE65 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B1154A2AB08F43F1B636970;
+			remoteInfo = WunderRipShare;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		50E8B247DD28F0D71566B356 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A4DCB78406254BB513FB7F60 /* WunderRipShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		02F1514601CBDA06C7C717CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1489F0F5E519622B0C661FE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		22060C0DF4BF958D3B15DE46 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3C3DEBAD884D28D013046133 /* CoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreTests.swift; sourceTree = "<group>"; };
+		45F01C893F75AC1D7721D10E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
+		48A024CC0F37D791F4510075 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		5282213028D2320D36CCE6AA /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
+		569BCF3C0791860A542D1587 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		62368401FD1ACBEE0778BE04 /* WunderRip.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WunderRip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		628F298A8E5BA8111EA2A1FE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		68E1DD0DF33EDF51729CCAF2 /* SharedContentExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContentExtractor.swift; sourceTree = "<group>"; };
+		6CE91ACB9764778E2A054440 /* TodoFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoFolder.swift; sourceTree = "<group>"; };
+		76A4CB141F0F54E8B4D265A9 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		76D049984A1ED912F525640A /* WunderRipShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = WunderRipShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		83EED33454B0EB020EDFB5B0 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		85C8E352F082124CD56AFFA8 /* Outbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Outbox.swift; sourceTree = "<group>"; };
+		878219B2A642CBD2D34F0632 /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
+		87AC013AFB3C50324F3A051B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		93E23EE22863326A196424E6 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		96282E618839C3DC7551F4BD /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
+		9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = WunderRipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudinaryService.swift; sourceTree = "<group>"; };
+		A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WunderRipApp.swift; sourceTree = "<group>"; };
+		A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A933DB04168A2E2D452A12CE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BD034A5759F2AEE17FFF2D6D /* OutboxUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutboxUploader.swift; sourceTree = "<group>"; };
+		C03F6C8B269FD346133F2059 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		C6F5672730F3646BA31D3C9E /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
+		CC9465BF944DB6301ACF3CEA /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		E0E31506884E51A5E83B28EC /* WunderRip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRip.entitlements; sourceTree = "<group>"; };
+		E9BEE65F7040810E171A22FB /* WunderRipShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRipShare.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		126F088DB149C58E46DBE7D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3AABFDD03EC50C7D0E6CDE4 /* FirebaseAuth in Frameworks */,
+				19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */,
+				4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2C8A262874522139C8D1C69B /* WunderRip */ = {
+			isa = PBXGroup;
+			children = (
+				BA7B490AA8374308AEBFFB43 /* App */,
+				ED87FBA738BB46A371449445 /* Resources */,
+				2D999C9F882A888AB3CE0D1F /* Services */,
+				B2742D507947F8F850DEC979 /* Store */,
+				7C639FF6457F3C0EF797DB79 /* Views */,
+			);
+			path = WunderRip;
+			sourceTree = "<group>";
+		};
+		2D999C9F882A888AB3CE0D1F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5282213028D2320D36CCE6AA /* AppUser.swift */,
+				76A4CB141F0F54E8B4D265A9 /* AuthService.swift */,
+				569BCF3C0791860A542D1587 /* DatabaseService.swift */,
+				BD034A5759F2AEE17FFF2D6D /* OutboxUploader.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		335B98895247C69C9AEA9593 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		586A4821D00060725CCD7F2E /* WunderRipTests */ = {
+			isa = PBXGroup;
+			children = (
+				3C3DEBAD884D28D013046133 /* CoreTests.swift */,
+			);
+			path = WunderRipTests;
+			sourceTree = "<group>";
+		};
+		77EA88490940FD6443127D7F /* Workspace */ = {
+			isa = PBXGroup;
+			children = (
+				22060C0DF4BF958D3B15DE46 /* SidebarView.swift */,
+				C6F5672730F3646BA31D3C9E /* TaskListView.swift */,
+				93E23EE22863326A196424E6 /* TaskRowView.swift */,
+				45F01C893F75AC1D7721D10E /* WorkspaceView.swift */,
+			);
+			path = Workspace;
+			sourceTree = "<group>";
+		};
+		78BE0B2C8E64EA9C6731971A /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				CC9465BF944DB6301ACF3CEA /* AccountView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		7C639FF6457F3C0EF797DB79 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				78BE0B2C8E64EA9C6731971A /* Account */,
+				DB36E2E09D0CED519DEF21C1 /* Auth */,
+				9FF62F3ECCB08B7151C30C8B /* TaskDetail */,
+				77EA88490940FD6443127D7F /* Workspace */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8D8880904402B7FBB031017E /* WunderRipShare */ = {
+			isa = PBXGroup;
+			children = (
+				02F1514601CBDA06C7C717CA /* Info.plist */,
+				68E1DD0DF33EDF51729CCAF2 /* SharedContentExtractor.swift */,
+				878219B2A642CBD2D34F0632 /* ShareView.swift */,
+				48A024CC0F37D791F4510075 /* ShareViewController.swift */,
+				E9BEE65F7040810E171A22FB /* WunderRipShare.entitlements */,
+			);
+			path = WunderRipShare;
+			sourceTree = "<group>";
+		};
+		9FF62F3ECCB08B7151C30C8B /* TaskDetail */ = {
+			isa = PBXGroup;
+			children = (
+				96282E618839C3DC7551F4BD /* TaskDetailView.swift */,
+			);
+			path = TaskDetail;
+			sourceTree = "<group>";
+		};
+		AED8034E3CD0561092BBE211 = {
+			isa = PBXGroup;
+			children = (
+				FFEEEA03CB195767AA734216 /* Core */,
+				335B98895247C69C9AEA9593 /* Shared */,
+				2C8A262874522139C8D1C69B /* WunderRip */,
+				8D8880904402B7FBB031017E /* WunderRipShare */,
+				586A4821D00060725CCD7F2E /* WunderRipTests */,
+				DF099A05E23316E7DE07E4DF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B2742D507947F8F850DEC979 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				83EED33454B0EB020EDFB5B0 /* AppState.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		BA7B490AA8374308AEBFFB43 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A933DB04168A2E2D452A12CE /* ContentView.swift */,
+				A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		CA923347C6F29D14D47787C0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C03F6C8B269FD346133F2059 /* Todo.swift */,
+				6CE91ACB9764778E2A054440 /* TodoFolder.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DB36E2E09D0CED519DEF21C1 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				628F298A8E5BA8111EA2A1FE /* LoginView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		DF099A05E23316E7DE07E4DF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				62368401FD1ACBEE0778BE04 /* WunderRip.app */,
+				76D049984A1ED912F525640A /* WunderRipShare.appex */,
+				9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ED87FBA738BB46A371449445 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1489F0F5E519622B0C661FE0 /* Assets.xcassets */,
+				34FE1EDB0DED13C564E83708 /* GoogleService-Info.plist */,
+				87AC013AFB3C50324F3A051B /* Info.plist */,
+				E0E31506884E51A5E83B28EC /* WunderRip.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FFEEEA03CB195767AA734216 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */,
+				A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */,
+				85C8E352F082124CD56AFFA8 /* Outbox.swift */,
+				9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */,
+				CA923347C6F29D14D47787C0 /* Models */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0B1154A2AB08F43F1B636970 /* WunderRipShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 881C05FF107B803A9647E995 /* Build configuration list for PBXNativeTarget "WunderRipShare" */;
+			buildPhases = (
+				43D956047C89C289191E7879 /* Sources */,
+				648FE5070D0285C993071DD1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WunderRipShare;
+			packageProductDependencies = (
+			);
+			productName = WunderRipShare;
+			productReference = 76D049984A1ED912F525640A /* WunderRipShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		1D37AFD5C1386B8773EBC072 /* WunderRip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 204B020F74C66EB86DAA8D92 /* Build configuration list for PBXNativeTarget "WunderRip" */;
+			buildPhases = (
+				BB7C08ABE1D0211F212000A8 /* Sources */,
+				C8FCD471B83BD649BBB3AB16 /* Resources */,
+				126F088DB149C58E46DBE7D1 /* Frameworks */,
+				50E8B247DD28F0D71566B356 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6C81DDD9F75F9F20C6E71617 /* PBXTargetDependency */,
+			);
+			name = WunderRip;
+			packageProductDependencies = (
+				07A208FA696F8E4FDC66F75A /* FirebaseAuth */,
+				8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */,
+				5A089D98F38172363B2555B1 /* GoogleSignIn */,
+			);
+			productName = WunderRip;
+			productReference = 62368401FD1ACBEE0778BE04 /* WunderRip.app */;
+			productType = "com.apple.product-type.application";
+		};
+		ED13BF8D27602993702ED21B /* WunderRipTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09B0EAA22872807EEC0C4A4C /* Build configuration list for PBXNativeTarget "WunderRipTests" */;
+			buildPhases = (
+				26A90AA9733A4AD0ABDABC7D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WunderRipTests;
+			packageProductDependencies = (
+			);
+			productName = WunderRipTests;
+			productReference = 9EC45FCA57CCDB1BE19D4A8B /* WunderRipTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E07298A59A9D31B3A805BE65 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0B1154A2AB08F43F1B636970 = {
+						DevelopmentTeam = 26VYTSFAG2;
+						ProvisioningStyle = Automatic;
+					};
+					1D37AFD5C1386B8773EBC072 = {
+						DevelopmentTeam = 26VYTSFAG2;
+						ProvisioningStyle = Automatic;
+					};
+					ED13BF8D27602993702ED21B = {
+						DevelopmentTeam = 26VYTSFAG2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 8B21AD6D40137FFCCA4DE929 /* Build configuration list for PBXProject "WunderRip" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = AED8034E3CD0561092BBE211;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9CEEECA4F1CCEF21E0974E71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5B1EBF2CF2055AAAF1EB3498 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DF099A05E23316E7DE07E4DF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D37AFD5C1386B8773EBC072 /* WunderRip */,
+				0B1154A2AB08F43F1B636970 /* WunderRipShare */,
+				ED13BF8D27602993702ED21B /* WunderRipTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		648FE5070D0285C993071DD1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8FCD471B83BD649BBB3AB16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F7E1F0BF93ECDC55A217001 /* Assets.xcassets in Resources */,
+				678C651DE5A92433745314E7 /* GoogleService-Info.plist in Resources */,
+				10AF6296A528A0F057264B76 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26A90AA9733A4AD0ABDABC7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0ADEA932E106A4AFFB52737D /* AppConfig.swift in Sources */,
+				190341AE6650853C7B494364 /* CoreTests.swift in Sources */,
+				455D4796968828901CBE6CA2 /* Outbox.swift in Sources */,
+				5E92CE688B6A221C9320E1D9 /* Snapshot.swift in Sources */,
+				0D75AEC81980455D53BEA3F3 /* Todo.swift in Sources */,
+				3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		43D956047C89C289191E7879 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6B334C6B6B50DDE6CA57943 /* AppConfig.swift in Sources */,
+				A7F2504553BB3A3E21ADFB7A /* Outbox.swift in Sources */,
+				DD75253637DAC05BB0A42E22 /* ShareView.swift in Sources */,
+				FC513B495940DC1B66AFE6A2 /* ShareViewController.swift in Sources */,
+				66AF253A87408AB3196E47C7 /* SharedContentExtractor.swift in Sources */,
+				5DF67C58DCAB67B89DC1F33C /* Snapshot.swift in Sources */,
+				BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */,
+				88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB7C08ABE1D0211F212000A8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6112A0BC5FDCB13EEEFF7A71 /* AccountView.swift in Sources */,
+				5AAB4223316F766EB8A5DD23 /* AppConfig.swift in Sources */,
+				38914C161F05B4534658A304 /* AppState.swift in Sources */,
+				12DD05FA8F961776E2C74BE3 /* AppUser.swift in Sources */,
+				A24EAB9A269ACB0D84071BB7 /* AuthService.swift in Sources */,
+				8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */,
+				254D3CC153968496FDB66A2B /* ContentView.swift in Sources */,
+				14EC914D7A292553863CE3CD /* DatabaseService.swift in Sources */,
+				BBD30BCAE91C4A3F84795658 /* LoginView.swift in Sources */,
+				B832E8A808788D8634A8E144 /* Outbox.swift in Sources */,
+				B326F3A0B8A22062DBCEDC78 /* OutboxUploader.swift in Sources */,
+				BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */,
+				9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */,
+				3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */,
+				F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */,
+				46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */,
+				13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */,
+				3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */,
+				C6FB9F3D371017D3884A28DB /* WorkspaceView.swift in Sources */,
+				9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6C81DDD9F75F9F20C6E71617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B1154A2AB08F43F1B636970 /* WunderRipShare */;
+			targetProxy = CEE384689884A028E6BDF306 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2A1251750AA27D4211B8201C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WunderRip/Resources/WunderRip.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WunderRip/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = wunder.rip;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip;
+				PRODUCT_NAME = wunderrip;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4190E94E4DB2F4E3608D7CE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		497D5FF17FD5F7386001CC5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 26VYTSFAG2;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		50D9688B4DF48F0918C6A2D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6DDCA50F5990BF1F409E84E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WunderRipShare/WunderRipShare.entitlements;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WunderRipShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.Share;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		96637F080A7418E941405C3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = WunderRipShare/WunderRipShare.entitlements;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WunderRipShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip.Share;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AEEFF5582A48CF3241108F63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WunderRip/Resources/WunderRip.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WunderRip/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = wunder.rip;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ilyapasyuk.wunderrip;
+				PRODUCT_NAME = wunderrip;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BF065968F1668AF780812089 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 26VYTSFAG2;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		09B0EAA22872807EEC0C4A4C /* Build configuration list for PBXNativeTarget "WunderRipTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4190E94E4DB2F4E3608D7CE7 /* Debug */,
+				50D9688B4DF48F0918C6A2D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		204B020F74C66EB86DAA8D92 /* Build configuration list for PBXNativeTarget "WunderRip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A1251750AA27D4211B8201C /* Debug */,
+				AEEFF5582A48CF3241108F63 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		881C05FF107B803A9647E995 /* Build configuration list for PBXNativeTarget "WunderRipShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96637F080A7418E941405C3E /* Debug */,
+				6DDCA50F5990BF1F409E84E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8B21AD6D40137FFCCA4DE929 /* Build configuration list for PBXProject "WunderRip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF065968F1668AF780812089 /* Debug */,
+				497D5FF17FD5F7386001CC5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5B1EBF2CF2055AAAF1EB3498 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.0;
+			};
+		};
+		9CEEECA4F1CCEF21E0974E71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		07A208FA696F8E4FDC66F75A /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CEEECA4F1CCEF21E0974E71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		5A089D98F38172363B2555B1 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B1EBF2CF2055AAAF1EB3498 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CEEECA4F1CCEF21E0974E71 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = E07298A59A9D31B3A805BE65 /* Project object */;
+}

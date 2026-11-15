@@ -1,0 +1,97 @@
+name: WunderRip
+options:
+  bundleIdPrefix: com.ilyapasyuk
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    DEVELOPMENT_TEAM: 26VYTSFAG2
+    CODE_SIGN_STYLE: Automatic
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    majorVersion: 11.0.0
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    majorVersion: 7.1.0
+targets:
+  WunderRip:
+    type: application
+    platform: iOS
+    sources:
+      - path: WunderRip
+      - path: Core
+      - path: Shared/Localizable.xcstrings
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilyapasyuk.wunderrip
+        PRODUCT_NAME: wunderrip
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: WunderRip/Resources/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: wunder.rip
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+        CODE_SIGN_ENTITLEMENTS: WunderRip/Resources/WunderRip.entitlements
+    dependencies:
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseDatabase
+      - package: GoogleSignIn
+        product: GoogleSignIn
+      - target: WunderRipShare
+        embed: true
+  WunderRipShare:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: WunderRipShare
+      - path: Core
+        excludes: ["CloudinaryService.swift"]
+      - path: Shared/Localizable.xcstrings
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilyapasyuk.wunderrip.Share
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: WunderRipShare/Info.plist
+        CODE_SIGN_ENTITLEMENTS: WunderRipShare/WunderRipShare.entitlements
+        SKIP_INSTALL: YES
+  WunderRipTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: WunderRipTests
+      - path: Core
+        excludes: ["CloudinaryService.swift"]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ilyapasyuk.wunderrip.tests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  WunderRip:
+    build:
+      targets:
+        WunderRip: all
+        WunderRipTests: [test]
+    test:
+      targets: [WunderRipTests]
