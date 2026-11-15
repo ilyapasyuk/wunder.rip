@@ -20,6 +20,7 @@
 		2037786C2FF299022AFB937E /* TaskWritesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17491A7FF6ABFEC16166426C /* TaskWritesTests.swift */; };
 		21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		254D3CC153968496FDB66A2B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933DB04168A2E2D452A12CE /* ContentView.swift */; };
+		279B05E1CF82DC9D75439E04 /* QuickEntryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F2A8A4475B8BF0E7CB93EB /* QuickEntryParser.swift */; };
 		33C68A91228D82E3B4B938AE /* TaskWrites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */; };
 		3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		38914C161F05B4534658A304 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EED33454B0EB020EDFB5B0 /* AppState.swift */; };
@@ -28,6 +29,7 @@
 		3F2A4AD6BAABBD33473C2E6A /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
 		455D4796968828901CBE6CA2 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
 		46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E23EE22863326A196424E6 /* TaskRowView.swift */; };
+		4946B9DEB2DCC25F404C89BB /* QuickEntryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F2A8A4475B8BF0E7CB93EB /* QuickEntryParser.swift */; };
 		4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A089D98F38172363B2555B1 /* GoogleSignIn */; };
 		4D9A9C8753EF821918BBEC5D /* TaskSearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C4785B4D91E4812073E48 /* TaskSearchTests.swift */; };
 		52C8D2029FC679252E3D48DA /* TodoPlanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */; };
@@ -42,6 +44,7 @@
 		72510A8334C2A0A6E41B4488 /* NavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE58A26A22289C859415F61F /* NavigationTests.swift */; };
 		79F8866E700F9B578518780A /* Planning.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA59A7384CA12AC8DCF6CA /* Planning.swift */; };
 		8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */; };
+		8692815068E2FDDDE15FA5D0 /* QuickEntryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8F2A8A4475B8BF0E7CB93EB /* QuickEntryParser.swift */; };
 		88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		8D645210D2A9B0D20BDDDD3E /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EAF9D98636B1BB39EAED9 /* Navigation.swift */; };
 		8DE0C26169747177AC513DBB /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
@@ -62,6 +65,7 @@
 		B9EDD83D356C56C679ED7624 /* TaskSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B33F0008790EDF60CE29D2A /* TaskSearch.swift */; };
 		BBD30BCAE91C4A3F84795658 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628F298A8E5BA8111EA2A1FE /* LoginView.swift */; };
 		BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22060C0DF4BF958D3B15DE46 /* SidebarView.swift */; };
+		BDCC8D3164248009ED08F429 /* QuickEntryParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D37C8A8267C775E4CF9343 /* QuickEntryParserTests.swift */; };
 		BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		C6FB9F3D371017D3884A28DB /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F01C893F75AC1D7721D10E /* WorkspaceView.swift */; };
 		C7A34D8D702B23BA616EA63E /* TaskDisplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF701E265713188478C800F /* TaskDisplayTests.swift */; };
@@ -102,6 +106,7 @@
 
 /* Begin PBXFileReference section */
 		02F1514601CBDA06C7C717CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		06D37C8A8267C775E4CF9343 /* QuickEntryParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryParserTests.swift; sourceTree = "<group>"; };
 		0B0186E1A1F3000C05A2B194 /* TodoPlanning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoPlanning.swift; sourceTree = "<group>"; };
 		0B33F0008790EDF60CE29D2A /* TaskSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSearch.swift; sourceTree = "<group>"; };
 		1489F0F5E519622B0C661FE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -147,6 +152,7 @@
 		D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskWrites.swift; sourceTree = "<group>"; };
 		DC2BD0BD7B147143A8F2E957 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 		E0E31506884E51A5E83B28EC /* WunderRip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRip.entitlements; sourceTree = "<group>"; };
+		E8F2A8A4475B8BF0E7CB93EB /* QuickEntryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEntryParser.swift; sourceTree = "<group>"; };
 		E9BEE65F7040810E171A22FB /* WunderRipShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRipShare.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				C52EAF9D98636B1BB39EAED9 /* Navigation.swift */,
+				E8F2A8A4475B8BF0E7CB93EB /* QuickEntryParser.swift */,
 				541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */,
 				0B33F0008790EDF60CE29D2A /* TaskSearch.swift */,
 				D03FFA30E8FB9A922C088BEB /* TaskWrites.swift */,
@@ -212,6 +219,7 @@
 				3C3DEBAD884D28D013046133 /* CoreTests.swift */,
 				C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */,
 				AE58A26A22289C859415F61F /* NavigationTests.swift */,
+				06D37C8A8267C775E4CF9343 /* QuickEntryParserTests.swift */,
 				CAF701E265713188478C800F /* TaskDisplayTests.swift */,
 				745C4785B4D91E4812073E48 /* TaskSearchTests.swift */,
 				17491A7FF6ABFEC16166426C /* TaskWritesTests.swift */,
@@ -522,6 +530,8 @@
 				72510A8334C2A0A6E41B4488 /* NavigationTests.swift in Sources */,
 				455D4796968828901CBE6CA2 /* Outbox.swift in Sources */,
 				79F8866E700F9B578518780A /* Planning.swift in Sources */,
+				4946B9DEB2DCC25F404C89BB /* QuickEntryParser.swift in Sources */,
+				BDCC8D3164248009ED08F429 /* QuickEntryParserTests.swift in Sources */,
 				5E92CE688B6A221C9320E1D9 /* Snapshot.swift in Sources */,
 				8DE0C26169747177AC513DBB /* TaskDisplay.swift in Sources */,
 				C7A34D8D702B23BA616EA63E /* TaskDisplayTests.swift in Sources */,
@@ -544,6 +554,7 @@
 				8D645210D2A9B0D20BDDDD3E /* Navigation.swift in Sources */,
 				A7F2504553BB3A3E21ADFB7A /* Outbox.swift in Sources */,
 				FA78020D7B9819B6D14EAAC8 /* Planning.swift in Sources */,
+				8692815068E2FDDDE15FA5D0 /* QuickEntryParser.swift in Sources */,
 				DD75253637DAC05BB0A42E22 /* ShareView.swift in Sources */,
 				FC513B495940DC1B66AFE6A2 /* ShareViewController.swift in Sources */,
 				66AF253A87408AB3196E47C7 /* SharedContentExtractor.swift in Sources */,
@@ -574,6 +585,7 @@
 				B832E8A808788D8634A8E144 /* Outbox.swift in Sources */,
 				B326F3A0B8A22062DBCEDC78 /* OutboxUploader.swift in Sources */,
 				A53425713D650F0033BD600A /* Planning.swift in Sources */,
+				279B05E1CF82DC9D75439E04 /* QuickEntryParser.swift in Sources */,
 				BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */,
 				9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */,
 				3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */,
