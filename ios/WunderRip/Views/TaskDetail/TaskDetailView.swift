@@ -95,7 +95,7 @@ struct TaskDetailView: View {
 
     private func commitTask() {
         guard let userId = auth.user?.id else { return }
-        let trimmed = String(taskText.prefix(100)).trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmed = Todo.cleanTitle(taskText)
         guard !trimmed.isEmpty, trimmed != liveTodo.task else { return }
         var updated = liveTodo
         updated.task = trimmed

@@ -14,7 +14,7 @@ struct ShareView: View {
 
     private var canSave: Bool {
         !isLoadingContent && !isSaving &&
-            (!taskText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || pendingImageData != nil)
+            (!Todo.cleanTitle(taskText).isEmpty || pendingImageData != nil)
     }
 
     var body: some View {

@@ -100,7 +100,7 @@ struct TaskListView: View {
     }
 
     private func addTask() {
-        let value = newTaskText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let value = Todo.cleanTitle(newTaskText)
         guard !value.isEmpty, let userId = auth.user?.id else { return }
         newTaskText = ""
         DatabaseService.shared.createTask(value, folderId: appState.currentFolderId, userId: userId)

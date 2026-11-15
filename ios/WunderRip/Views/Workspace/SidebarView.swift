@@ -104,7 +104,7 @@ struct SidebarView: View {
     }
 
     private func createFolder() {
-        let value = newFolderName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let value = TodoFolder.cleanName(newFolderName)
         guard !value.isEmpty, let userId = auth.user?.id else { return }
         newFolderName = ""
         DatabaseService.shared.createFolder(value, userId: userId)
