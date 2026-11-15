@@ -15,12 +15,14 @@
 		14EC914D7A292553863CE3CD /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569BCF3C0791860A542D1587 /* DatabaseService.swift */; };
 		190341AE6650853C7B494364 /* CoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3DEBAD884D28D013046133 /* CoreTests.swift */; };
 		19E42A4047A810DBA5817532 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 8C7AE5A3D034B7018833ABF7 /* FirebaseDatabase */; };
+		1F997630CFBDF87264854661 /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
 		21A7AE693AB935A92EF86099 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A79D96EE3DB45AE1A6B5F6A9 /* Localizable.xcstrings */; };
 		254D3CC153968496FDB66A2B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933DB04168A2E2D452A12CE /* ContentView.swift */; };
 		3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		38914C161F05B4534658A304 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EED33454B0EB020EDFB5B0 /* AppState.swift */; };
 		3C6C8CC14AE78346D24F530D /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96282E618839C3DC7551F4BD /* TaskDetailView.swift */; };
+		3F2A4AD6BAABBD33473C2E6A /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
 		455D4796968828901CBE6CA2 /* Outbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C8E352F082124CD56AFFA8 /* Outbox.swift */; };
 		46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E23EE22863326A196424E6 /* TaskRowView.swift */; };
 		4C78D75BE6871FA616D043AF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A089D98F38172363B2555B1 /* GoogleSignIn */; };
@@ -38,6 +40,7 @@
 		8292F7AE69A7B4CE0C65E354 /* CloudinaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CE631B8A016A23EBDE10CC /* CloudinaryService.swift */; };
 		88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE91ACB9764778E2A054440 /* TodoFolder.swift */; };
 		8D645210D2A9B0D20BDDDD3E /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EAF9D98636B1BB39EAED9 /* Navigation.swift */; };
+		8DE0C26169747177AC513DBB /* TaskDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */; };
 		9443698E26E071CC43FC3B10 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52EAF9D98636B1BB39EAED9 /* Navigation.swift */; };
 		9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2192F3B4782FAEE7FD0154 /* Snapshot.swift */; };
 		9EB68187FB46DCB106EDFAC5 /* WunderRipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C2B397FCB97DD3DB2386F5 /* WunderRipApp.swift */; };
@@ -53,6 +56,7 @@
 		BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22060C0DF4BF958D3B15DE46 /* SidebarView.swift */; };
 		BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03F6C8B269FD346133F2059 /* Todo.swift */; };
 		C6FB9F3D371017D3884A28DB /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F01C893F75AC1D7721D10E /* WorkspaceView.swift */; };
+		C7A34D8D702B23BA616EA63E /* TaskDisplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF701E265713188478C800F /* TaskDisplayTests.swift */; };
 		D6B334C6B6B50DDE6CA57943 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC37ED7895F1EA197DAD5A8 /* AppConfig.swift */; };
 		DD75253637DAC05BB0A42E22 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 878219B2A642CBD2D34F0632 /* ShareView.swift */; };
 		E4A365B703FD6149A77EC47B /* ModelVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */; };
@@ -99,6 +103,7 @@
 		45F01C893F75AC1D7721D10E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		48A024CC0F37D791F4510075 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		5282213028D2320D36CCE6AA /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
+		541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDisplay.swift; sourceTree = "<group>"; };
 		569BCF3C0791860A542D1587 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		62368401FD1ACBEE0778BE04 /* WunderRip.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = WunderRip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		628F298A8E5BA8111EA2A1FE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -126,6 +131,7 @@
 		C52EAF9D98636B1BB39EAED9 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		C6F5672730F3646BA31D3C9E /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelVectorTests.swift; sourceTree = "<group>"; };
+		CAF701E265713188478C800F /* TaskDisplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDisplayTests.swift; sourceTree = "<group>"; };
 		CC9465BF944DB6301ACF3CEA /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		DC2BD0BD7B147143A8F2E957 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 		E0E31506884E51A5E83B28EC /* WunderRip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WunderRip.entitlements; sourceTree = "<group>"; };
@@ -181,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				C52EAF9D98636B1BB39EAED9 /* Navigation.swift */,
+				541DBA9965CC8B7A05157FAC /* TaskDisplay.swift */,
 			);
 			path = Planning;
 			sourceTree = "<group>";
@@ -191,6 +198,7 @@
 				3C3DEBAD884D28D013046133 /* CoreTests.swift */,
 				C77039212704E7D8A4242CB9 /* ModelVectorTests.swift */,
 				AE58A26A22289C859415F61F /* NavigationTests.swift */,
+				CAF701E265713188478C800F /* TaskDisplayTests.swift */,
 				DC2BD0BD7B147143A8F2E957 /* TestSupport.swift */,
 			);
 			path = WunderRipTests;
@@ -499,6 +507,8 @@
 				455D4796968828901CBE6CA2 /* Outbox.swift in Sources */,
 				79F8866E700F9B578518780A /* Planning.swift in Sources */,
 				5E92CE688B6A221C9320E1D9 /* Snapshot.swift in Sources */,
+				8DE0C26169747177AC513DBB /* TaskDisplay.swift in Sources */,
+				C7A34D8D702B23BA616EA63E /* TaskDisplayTests.swift in Sources */,
 				56781E053BA3F06FCAD7C50C /* TestSupport.swift in Sources */,
 				0D75AEC81980455D53BEA3F3 /* Todo.swift in Sources */,
 				3406D73E34DEE268150F903A /* TodoFolder.swift in Sources */,
@@ -518,6 +528,7 @@
 				FC513B495940DC1B66AFE6A2 /* ShareViewController.swift in Sources */,
 				66AF253A87408AB3196E47C7 /* SharedContentExtractor.swift in Sources */,
 				5DF67C58DCAB67B89DC1F33C /* Snapshot.swift in Sources */,
+				1F997630CFBDF87264854661 /* TaskDisplay.swift in Sources */,
 				BE1AE2556A0554D2DA4CADB3 /* Todo.swift in Sources */,
 				88AF984A3F18E28E861D68AE /* TodoFolder.swift in Sources */,
 				FBF06D2A60FFED5ECDC689ED /* TodoPlanning.swift in Sources */,
@@ -544,6 +555,7 @@
 				BC00183707E26B08AB6B3334 /* SidebarView.swift in Sources */,
 				9A81F8BF56BD7342C20596D7 /* Snapshot.swift in Sources */,
 				3ED88A540FF1384224F9A3FE /* TaskDetailView.swift in Sources */,
+				3F2A4AD6BAABBD33473C2E6A /* TaskDisplay.swift in Sources */,
 				F5CD27B14C2260DAE7910D8B /* TaskListView.swift in Sources */,
 				46EB3C0F014380D1C4F99644 /* TaskRowView.swift in Sources */,
 				13F28BCF1E40E010BCF0A6FE /* Todo.swift in Sources */,
