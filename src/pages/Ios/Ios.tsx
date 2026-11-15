@@ -1,46 +1,48 @@
 import {
   ArrowPathIcon,
-  ArrowsUpDownIcon,
-  FolderIcon,
+  BoltIcon,
+  CalendarDaysIcon,
+  DevicePhoneMobileIcon,
   LifebuoyIcon,
-  LockClosedIcon,
-  ShareIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 import { ROUTE } from 'routes'
 
 const FEATURES = [
   {
-    icon: FolderIcon,
-    title: 'Tasks & lists',
-    description: 'Organize tasks into folders, add notes, and attach photos to anything.',
+    icon: CalendarDaysIcon,
+    title: 'Plan your day',
+    description:
+      'Today with an evening section, Upcoming, Someday, deadlines, reminders and repeating tasks.',
   },
   {
-    icon: ArrowsUpDownIcon,
-    title: 'Drag to reorder',
-    description: 'Reorder tasks and folders by hand — order is saved instantly.',
+    icon: BoltIcon,
+    title: 'Type it like you say it',
+    description: '“Call mom tomorrow at 9 #family” — the day, time and tags are filled in for you.',
   },
   {
-    icon: ShareIcon,
-    title: 'Share sheet extension',
-    description: 'Send a link, photo, or text from any app straight into your Inbox.',
+    icon: DevicePhoneMobileIcon,
+    title: 'Widgets, Watch & Siri',
+    description:
+      'Tick off tasks from an interactive widget or your Apple Watch, add one with Siri or the share sheet.',
   },
   {
     icon: ArrowPathIcon,
     title: 'Synced with the web',
     description:
-      'Sign in with the same Google account as wunder.rip on the web — everything stays in sync.',
+      'Sign in with Apple or Google — the same tasks on iPhone, iPad and notes.pasyuk.com, even offline.',
   },
   {
-    icon: LockClosedIcon,
-    title: 'Stays signed in',
-    description:
-      'Your session is kept in the iOS Keychain, so you’re not asked to sign in again on every launch.',
+    icon: SparklesIcon,
+    title: 'Works with AI assistants',
+    description: 'Connect Claude or any MCP client and let it plan and update your tasks.',
   },
   {
     icon: LifebuoyIcon,
-    title: 'No ads, no tracking',
-    description: 'Free, with no ads and no sale of your data. See the Privacy Policy for details.',
+    title: 'Free, no ads, no tracking',
+    description:
+      'No subscription, no ads, no sale of your data. See the Privacy Policy for details.',
   },
 ]
 
@@ -58,8 +60,8 @@ const Ios = () => {
           Wunder<span className="text-primary">.rip</span> for iOS
         </h1>
         <p className="mt-3 text-base sm:text-lg text-text-secondary dark:text-text-dark-secondary max-w-xl mx-auto">
-          The killed Wunderlist, back as a fast, native task manager for iPhone — synced with the
-          web app you already use.
+          A fast, free, native planner for iPhone, iPad and Apple Watch — synced with the web app
+          you already use.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <span className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium border border-border dark:border-border-dark text-text-secondary dark:text-text-dark-secondary whitespace-nowrap">
