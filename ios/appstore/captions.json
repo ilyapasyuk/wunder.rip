@@ -1,0 +1,191 @@
+{
+  "en-US": {
+    "iphone": [["Your day, sorted.", "Today and This Evening at a glance"],
+               ["Just type it.", "Dates, times and #tags are understood"],
+               ["Every detail in one place", "Reminders, deadlines, repeats, checklists"],
+               ["See what's next", "Everything planned, day by day"],
+               ["Right on your Home Screen", "Tick off tasks from the widget"],
+               ["Synced everywhere", "iPhone, iPad, Apple Watch, web and AI"]],
+    "ipad":   [["Room to plan", "Lists, tasks and details side by side"],
+               ["See what's next", "Plan ahead in plain words"],
+               ["Notes on every task", "Keep the context next to the to-do"]],
+    "preview": ["Your day, sorted.", "Just type it.", "Every detail in one place.", "See what's next.", "Synced everywhere. Even with AI.", "Tasks, notes and photos in one place"]
+  },
+  "ru": {
+    "iphone": [["Ваш день по полочкам", "Сегодня и вечер — одним взглядом"],
+               ["Просто напишите", "Даты, время и #теги распознаются сами"],
+               ["Все детали под рукой", "Напоминания, сроки, повторы, чек-листы"],
+               ["Что дальше — видно сразу", "Все планы по дням"],
+               ["Прямо на экране «Домой»", "Отмечайте задачи из виджета"],
+               ["Синхронизация везде", "iPhone, iPad, Apple Watch, веб и ИИ"]],
+    "ipad":   [["Простор для планов", "Списки, задачи и детали рядом"],
+               ["Что дальше — видно сразу", "Планируйте обычными словами"],
+               ["Заметки к каждой задаче", "Контекст всегда рядом с делом"]],
+    "preview": ["Ваш день по полочкам.", "Просто напишите.", "Все детали под рукой.", "Что дальше — видно сразу.", "Синхронизация везде. Даже с ИИ.", "Задачи, заметки и фото в одном месте"]
+  },
+  "de-DE": {
+    "iphone": [["Dein Tag, sortiert.", "Heute und heute Abend auf einen Blick"],
+               ["Einfach eintippen.", "Datum, Uhrzeit und #Tags werden erkannt"],
+               ["Alle Details an einem Ort", "Erinnerungen, Fristen, Wiederholungen, Checklisten"],
+               ["Sieh, was ansteht", "Alles Geplante, Tag für Tag"],
+               ["Direkt auf dem Home-Bildschirm", "Aufgaben im Widget abhaken"],
+               ["Überall synchron", "iPhone, iPad, Apple Watch, Web und KI"]],
+    "ipad":   [["Platz zum Planen", "Listen, Aufgaben und Details nebeneinander"],
+               ["Sieh, was ansteht", "Plane in ganz normalen Worten"],
+               ["Notizen zu jeder Aufgabe", "Der Kontext bleibt direkt beim To-do"]]
+  },
+  "es-ES": {
+    "iphone": [["Tu día, en orden.", "Hoy y esta noche de un vistazo"],
+               ["Solo escríbelo.", "Entiende fechas, horas y #etiquetas"],
+               ["Todos los detalles en un lugar", "Recordatorios, plazos, repeticiones, listas"],
+               ["Mira lo que viene", "Todo lo planeado, día a día"],
+               ["En tu pantalla de inicio", "Marca tareas desde el widget"],
+               ["Sincronizado en todas partes", "iPhone, iPad, Apple Watch, web e IA"]],
+    "ipad":   [["Espacio para planificar", "Listas, tareas y detalles lado a lado"],
+               ["Mira lo que viene", "Planifica con palabras normales"],
+               ["Notas en cada tarea", "El contexto junto a cada pendiente"]]
+  },
+  "fr-FR": {
+    "iphone": [["Votre journée, en ordre.", "Aujourd'hui et ce soir en un coup d'œil"],
+               ["Tapez, c'est tout.", "Dates, heures et #tags compris"],
+               ["Tous les détails au même endroit", "Rappels, échéances, répétitions, check-lists"],
+               ["Voyez ce qui arrive", "Tout ce qui est prévu, jour par jour"],
+               ["Sur votre écran d'accueil", "Cochez vos tâches depuis le widget"],
+               ["Synchronisé partout", "iPhone, iPad, Apple Watch, web et IA"]],
+    "ipad":   [["De la place pour planifier", "Listes, tâches et détails côte à côte"],
+               ["Voyez ce qui arrive", "Planifiez avec vos propres mots"],
+               ["Des notes pour chaque tâche", "Le contexte reste à côté de la tâche"]]
+  },
+  "id": {
+    "iphone": [["Harimu, tertata.", "Hari ini dan nanti malam sekilas pandang"],
+               ["Ketik saja.", "Tanggal, jam, dan #tag langsung dikenali"],
+               ["Semua detail di satu tempat", "Pengingat, tenggat, pengulangan, checklist"],
+               ["Lihat yang akan datang", "Semua rencana, hari demi hari"],
+               ["Langsung di Layar Utama", "Centang tugas dari widget"],
+               ["Sinkron di mana saja", "iPhone, iPad, Apple Watch, web, dan AI"]],
+    "ipad":   [["Ruang untuk merencanakan", "Daftar, tugas, dan detail berdampingan"],
+               ["Lihat yang akan datang", "Rencanakan dengan kata-kata biasa"],
+               ["Catatan di setiap tugas", "Konteks selalu dekat dengan tugasnya"]]
+  },
+  "it": {
+    "iphone": [["La tua giornata, in ordine.", "Oggi e stasera a colpo d'occhio"],
+               ["Scrivilo e basta.", "Capisce date, orari e #tag"],
+               ["Ogni dettaglio in un posto", "Promemoria, scadenze, ripetizioni, checklist"],
+               ["Guarda cosa ti aspetta", "Tutto ciò che hai pianificato, giorno per giorno"],
+               ["Sulla schermata Home", "Spunta le attività dal widget"],
+               ["Sincronizzato ovunque", "iPhone, iPad, Apple Watch, web e IA"]],
+    "ipad":   [["Spazio per pianificare", "Liste, attività e dettagli fianco a fianco"],
+               ["Guarda cosa ti aspetta", "Pianifica con parole semplici"],
+               ["Note per ogni attività", "Il contesto accanto a ogni cosa da fare"]]
+  },
+  "ja": {
+    "iphone": [["今日を、すっきり。", "今日と今夜の予定がひと目でわかる"],
+               ["入力するだけ。", "日付・時刻・#タグを自動で認識"],
+               ["詳細はすべてここに", "通知・期限・繰り返し・チェックリスト"],
+               ["この先の予定が見える", "予定を日ごとに表示"],
+               ["ホーム画面にそのまま", "ウィジェットからタスクを完了"],
+               ["どこでも同期", "iPhone、iPad、Apple Watch、Web、AI"]],
+    "ipad":   [["広々と計画", "リスト、タスク、詳細を並べて表示"],
+               ["この先の予定が見える", "ふだんの言葉で予定を入力"],
+               ["タスクごとにメモ", "必要な情報をタスクのそばに"]]
+  },
+  "ko": {
+    "iphone": [["하루를 깔끔하게.", "오늘과 오늘 저녁 일정을 한눈에"],
+               ["그냥 입력하세요.", "날짜, 시간, #태그를 알아서 인식"],
+               ["모든 세부 정보를 한곳에", "알림, 마감일, 반복, 체크리스트"],
+               ["다가올 일을 한눈에", "계획한 일을 날짜별로"],
+               ["홈 화면에서 바로", "위젯에서 할 일 완료"],
+               ["어디서나 동기화", "iPhone, iPad, Apple Watch, 웹, AI"]],
+    "ipad":   [["넉넉한 계획 공간", "목록, 할 일, 세부 정보를 나란히"],
+               ["다가올 일을 한눈에", "평소 말투로 계획하세요"],
+               ["할 일마다 메모", "필요한 맥락을 할 일 옆에"]]
+  },
+  "nl-NL": {
+    "iphone": [["Je dag op orde.", "Vandaag en vanavond in één oogopslag"],
+               ["Typ het gewoon.", "Datums, tijden en #tags worden herkend"],
+               ["Alle details op één plek", "Herinneringen, deadlines, herhalingen, checklists"],
+               ["Zie wat eraan komt", "Alles wat gepland is, dag voor dag"],
+               ["Op je beginscherm", "Vink taken af vanuit de widget"],
+               ["Overal gesynchroniseerd", "iPhone, iPad, Apple Watch, web en AI"]],
+    "ipad":   [["Ruimte om te plannen", "Lijsten, taken en details naast elkaar"],
+               ["Zie wat eraan komt", "Plan in gewone woorden"],
+               ["Notities bij elke taak", "De context naast je to-do"]]
+  },
+  "pl": {
+    "iphone": [["Twój dzień w porządku.", "Dziś i dzisiejszy wieczór w jednym miejscu"],
+               ["Po prostu wpisz.", "Rozumie daty, godziny i #tagi"],
+               ["Wszystko w jednym miejscu", "Przypomnienia, terminy, powtórki, listy"],
+               ["Zobacz, co przed tobą", "Wszystkie plany dzień po dniu"],
+               ["Na ekranie początkowym", "Odhaczaj zadania w widżecie"],
+               ["Synchronizacja wszędzie", "iPhone, iPad, Apple Watch, web i AI"]],
+    "ipad":   [["Miejsce na plany", "Listy, zadania i szczegóły obok siebie"],
+               ["Zobacz, co przed tobą", "Planuj zwykłymi słowami"],
+               ["Notatki przy każdym zadaniu", "Kontekst zawsze obok zadania"]]
+  },
+  "pt-BR": {
+    "iphone": [["Seu dia em ordem.", "Hoje e esta noite num relance"],
+               ["É só digitar.", "Entende datas, horários e #tags"],
+               ["Todos os detalhes num só lugar", "Lembretes, prazos, repetições, checklists"],
+               ["Veja o que vem por aí", "Tudo o que foi planejado, dia a dia"],
+               ["Direto na Tela de Início", "Conclua tarefas pelo widget"],
+               ["Sincronizado em todo lugar", "iPhone, iPad, Apple Watch, web e IA"]],
+    "ipad":   [["Espaço para planejar", "Listas, tarefas e detalhes lado a lado"],
+               ["Veja o que vem por aí", "Planeje com palavras simples"],
+               ["Notas em cada tarefa", "O contexto ao lado de cada tarefa"]]
+  },
+  "sv": {
+    "iphone": [["Din dag i ordning.", "Idag och ikväll i en blick"],
+               ["Skriv bara.", "Datum, tider och #taggar förstås direkt"],
+               ["Alla detaljer på ett ställe", "Påminnelser, deadlines, upprepningar, checklistor"],
+               ["Se vad som väntar", "Allt planerat, dag för dag"],
+               ["Direkt på hemskärmen", "Bocka av uppgifter i widgeten"],
+               ["Synkat överallt", "iPhone, iPad, Apple Watch, webb och AI"]],
+    "ipad":   [["Plats att planera", "Listor, uppgifter och detaljer sida vid sida"],
+               ["Se vad som väntar", "Planera med vanliga ord"],
+               ["Anteckningar till varje uppgift", "Sammanhanget bredvid uppgiften"]]
+  },
+  "tr": {
+    "iphone": [["Gününüz düzende.", "Bugün ve bu akşam tek bakışta"],
+               ["Yazmanız yeterli.", "Tarih, saat ve #etiketler anlaşılır"],
+               ["Tüm ayrıntılar tek yerde", "Hatırlatıcılar, son tarihler, tekrarlar, kontrol listeleri"],
+               ["Sırada ne var, görün", "Tüm planlar gün gün"],
+               ["Doğrudan Ana Ekranda", "Görevleri widget'tan tamamlayın"],
+               ["Her yerde senkron", "iPhone, iPad, Apple Watch, web ve yapay zekâ"]],
+    "ipad":   [["Plan yapacak alan", "Listeler, görevler ve ayrıntılar yan yana"],
+               ["Sırada ne var, görün", "Gündelik kelimelerle planlayın"],
+               ["Her göreve not", "Bağlam her zaman görevin yanında"]]
+  },
+  "uk": {
+    "iphone": [["Ваш день на своїх місцях", "Сьогодні й вечір — одним поглядом"],
+               ["Просто напишіть", "Дати, час і #теги розпізнаються самі"],
+               ["Усі деталі під рукою", "Нагадування, терміни, повтори, чек-листи"],
+               ["Що далі — видно одразу", "Усі плани по днях"],
+               ["Просто на екрані «Дім»", "Позначайте задачі з віджета"],
+               ["Синхронізація всюди", "iPhone, iPad, Apple Watch, веб і ШІ"]],
+    "ipad":   [["Простір для планів", "Списки, задачі й деталі поруч"],
+               ["Що далі — видно одразу", "Плануйте звичайними словами"],
+               ["Нотатки до кожної задачі", "Контекст завжди поруч із справою"]]
+  },
+  "zh-Hans": {
+    "iphone": [["每一天，井井有条。", "今天和今晚的安排一目了然"],
+               ["直接输入就好。", "自动识别日期、时间和 #标签"],
+               ["所有细节，集中一处", "提醒、截止日期、重复、清单"],
+               ["接下来做什么，一看便知", "按天查看所有计划"],
+               ["就在主屏幕上", "在小组件中直接完成任务"],
+               ["处处同步", "iPhone、iPad、Apple Watch、网页和 AI"]],
+    "ipad":   [["宽敞的规划空间", "列表、任务和详情并排显示"],
+               ["接下来做什么，一看便知", "用日常语言做计划"],
+               ["每个任务都能记笔记", "背景信息就在待办旁边"]]
+  },
+  "zh-Hant": {
+    "iphone": [["每一天，井井有條。", "今天和今晚的安排一目了然"],
+               ["直接輸入就好。", "自動辨識日期、時間和 #標籤"],
+               ["所有細節，集中一處", "提醒、截止日期、重複、檢查清單"],
+               ["接下來做什麼，一看便知", "按天查看所有計畫"],
+               ["就在主畫面上", "在小工具中直接完成任務"],
+               ["處處同步", "iPhone、iPad、Apple Watch、網頁和 AI"]],
+    "ipad":   [["寬敞的規劃空間", "列表、任務和詳細資訊並排顯示"],
+               ["接下來做什麼，一看便知", "用日常語言做計畫"],
+               ["每個任務都能記筆記", "背景資訊就在待辦旁邊"]]
+  }
+}
